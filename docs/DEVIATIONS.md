@@ -36,3 +36,7 @@ for thousands of steps. A body that does not hold its shape cannot test anatomic
 partial output were deleted **without being read**. No H1–H4 number from the first rule A was seen.
 The first rule A is not analysed or published. Hypotheses, measures, sample sizes, suite seeds and
 decision rules are unchanged.
+
+## v0.2
+
+None. Every v0.2 test ran as fixed in `prereg/PREREGISTRATION_v2.json` (committed in a3fabe8, before any v0.2 confirmatory run). The design command writes its pattern to `results/design_rule_*.json`, and the tests read it from there.
