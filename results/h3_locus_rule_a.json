@@ -1,0 +1,89 @@
+{
+ "weights": "weights/rule_a.json",
+ "weights_meta": {
+  "trainer": "bptt+persistence-pool",
+  "iterations": 3000,
+  "batch": 16,
+  "lr": 0.002,
+  "seed": 0,
+  "final_loss_last50": 0.004809590385274911,
+  "seconds": 2256
+ },
+ "provenance": {
+  "morpheus": "0.1.0",
+  "python": "3.11.15",
+  "numpy": "2.4.6",
+  "platform": "Linux-6.18.44-fc-v37-x86_64-with-glibc2.39",
+  "git_commit": "d49bb5a8eebde79d1b67cc61cde09d3223d7e688",
+  "weights_sha256": "42a89dadb116d190d63d2024460dbfc52fd46ff35971701a56c21c9e6402d474",
+  "prereg_sha256": "2f3da11c8d840dcc73e07e556f8a851e9a01c1dc3d7f0e360aa543e8b3c6d47d",
+  "utc": "2026-09-28T11:04:51Z"
+ },
+ "H3_locus_exploratory": {
+  "exploratory": true,
+  "n_tissues": 128,
+  "restored_group_deficit_vs_control": {
+   "none": {
+    "n": 128,
+    "mean": 0.002791216442346922,
+    "ci95": [
+     0.0025051741573406615,
+     0.00306930285701128
+    ],
+    "d_z": 1.664584012230723,
+    "frac_positive": 0.9609375,
+    "p": 9.999000099990002e-05,
+    "alternative": "two-sided"
+   },
+   "voltage": {
+    "n": 128,
+    "mean": 0.04081824511922605,
+    "ci95": [
+     0.03656039262550621,
+     0.04515593644719047
+    ],
+    "d_z": 1.6210408918476022,
+    "frac_positive": 1.0,
+    "p": 9.999000099990002e-05,
+    "alternative": "two-sided"
+   },
+   "identity": {
+    "n": 128,
+    "mean": 0.0025067475107789505,
+    "ci95": [
+     0.0022294321090612357,
+     0.002774080538392809
+    ],
+    "d_z": 1.56075923633692,
+    "frac_positive": 0.9296875,
+    "p": 9.999000099990002e-05,
+    "alternative": "two-sided"
+   },
+   "hidden": {
+    "n": 128,
+    "mean": 0.0033153874956042273,
+    "ci95": [
+     0.0030216940222999255,
+     0.0036128057322912356
+    ],
+    "d_z": 1.9462368993119596,
+    "frac_positive": 0.9765625,
+    "p": 9.999000099990002e-05,
+    "alternative": "two-sided"
+   },
+   "all_but_voltage": {
+    "n": 128,
+    "mean": 0.0016740115643187892,
+    "ci95": [
+     0.00138260198957596,
+     0.0019835626157373555
+    ],
+    "d_z": 0.9868526548729373,
+    "frac_positive": 0.90625,
+    "p": 9.999000099990002e-05,
+    "alternative": "two-sided"
+   }
+  }
+ },
+ "seconds": 75
+}
