@@ -514,6 +514,95 @@
       }
     },
     {
+      "id": "H4b",
+      "status": "supported",
+      "headline": true,
+      "claim": "With real improvements available, naive self-improvement loops overstate their own progress more than audited loops",
+      "evidence_text": "under-trained rule, 10 seeds × 30 self-edits: naive loops believed {nb} but the auditor measured {nt}; audited loops believed {gb}, measured {gt}; naive minus audited self-deception d_z {dz}, fraction of seeds {pos}, p {p}",
+      "evidence": {
+        "nb": {
+          "file": "results/rsi_early.json",
+          "pointer": "/H4/summary/naive/believed_gain/mean",
+          "value": 0.0009388007223606109,
+          "decimals": "sci"
+        },
+        "nt": {
+          "file": "results/rsi_early.json",
+          "pointer": "/H4/summary/naive/true_gain/mean",
+          "value": 0.0003567013889551163,
+          "decimals": "sci"
+        },
+        "gb": {
+          "file": "results/rsi_early.json",
+          "pointer": "/H4/summary/gated/believed_gain/mean",
+          "value": 7.994429524842417e-05,
+          "decimals": "sci"
+        },
+        "gt": {
+          "file": "results/rsi_early.json",
+          "pointer": "/H4/summary/gated/true_gain/mean",
+          "value": 4.230029881000519e-05,
+          "decimals": "sci"
+        },
+        "dz": {
+          "file": "results/rsi_early.json",
+          "pointer": "/H4/primary/H4_naive_minus_gated_self_deception/d_z",
+          "value": 0.8002512840609106,
+          "decimals": 2
+        },
+        "pos": {
+          "file": "results/rsi_early.json",
+          "pointer": "/H4/primary/H4_naive_minus_gated_self_deception/frac_positive",
+          "value": 0.9,
+          "decimals": 2
+        },
+        "p": {
+          "file": "results/rsi_early.json",
+          "pointer": "/H4/primary/H4_naive_minus_gated_self_deception/p",
+          "value": 0.0048828125,
+          "decimals": 3
+        }
+      }
+    },
+    {
+      "id": "H4b-timid",
+      "status": "descriptive",
+      "claim": "The price of honesty: the audited loop is timid, and the naive loop truly improves more while overstating it",
+      "evidence_text": "edits adopted per loop: naive {na}, audited {ga}; true gain naive {nt} vs audited {gt}; false-adoption fraction naive {nf}",
+      "evidence": {
+        "na": {
+          "file": "results/rsi_early.json",
+          "pointer": "/H4/summary/naive/adopted/mean",
+          "value": 4.2,
+          "decimals": 1
+        },
+        "ga": {
+          "file": "results/rsi_early.json",
+          "pointer": "/H4/summary/gated/adopted/mean",
+          "value": 0.3,
+          "decimals": 1
+        },
+        "nt": {
+          "file": "results/rsi_early.json",
+          "pointer": "/H4/summary/naive/true_gain/mean",
+          "value": 0.0003567013889551163,
+          "decimals": "sci"
+        },
+        "gt": {
+          "file": "results/rsi_early.json",
+          "pointer": "/H4/summary/gated/true_gain/mean",
+          "value": 4.230029881000519e-05,
+          "decimals": "sci"
+        },
+        "nf": {
+          "file": "results/rsi_early.json",
+          "pointer": "/H4/summary/naive/false_adoption_fraction",
+          "value": 0.35714285714285715,
+          "decimals": 2
+        }
+      }
+    },
+    {
       "id": "H4",
       "status": "not supported",
       "claim": "A naive self-improvement loop overstates its own progress more than an audited (online-FDR-gated) loop",
