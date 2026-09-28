@@ -87,7 +87,7 @@ def h1_authorship(theta, physics, n=96, seed=1, log=print) -> dict:
     hook = RidgeR2()
     author = live(theta, wounds, physics, Protocol(comparator="author", record_eps=True), fseed, on_regen_step=hook)
     res["author"], r2["author"] = _summ(author, tgt), hook.r2()
-    donor = np.roll(author["eps"], 1, axis=1)  # tissue i receives tissue i+1's own error stream
+    donor = np.roll(author["eps"], 1, axis=1)  # tissue i receives tissue i-1's own error stream
     for cond in ("transplant", "zero", "delayed", "shuffled"):
         hook = RidgeR2()
         out = live(theta, wounds, physics, Protocol(comparator=cond), fseed,
