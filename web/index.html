@@ -86,7 +86,7 @@ code { font-family: var(--mono); font-size: 12.5px; }
     <div class="row">
       <label>comparator <select id="comp"><option value="author">own error (author)</option><option value="zero">silenced</option><option value="delayed">own, 8 steps late</option></select></label>
       <label><input id="gap" type="checkbox" checked> gap junctions</label>
-      <label>speed <input id="speed" type="range" min="1" max="8" value="2"></label>
+      <label>speed <input id="speed" type="range" min="1" max="5" value="2"></label>
     </div>
     <div class="metrics">
       <div class="metric"><small>step</small><b id="m-t">0</b></div>
@@ -96,7 +96,7 @@ code { font-family: var(--mono); font-size: 12.5px; }
     </div>
     <canvas id="spark" width="520" height="60" aria-label="anatomy error over time"></canvas>
     <div class="legend" id="legend"></div>
-    <p class="hint">Drag on the tissue to use the tool. Voltage brushes clamp the membrane voltage while held, like an optogenetic or ionophore pulse.</p>
+    <p class="hint">Drag on the tissue to use the tool. Voltage brushes clamp the membrane voltage while held, like an optogenetic or ionophore pulse. The rule was trained to hold its shape for a few hundred steps; very old tissues slowly drift, so regrow from one cell to start a fresh life.</p>
   </section>
   <div class="stack">
     <section class="panel">
@@ -145,6 +145,11 @@ code { font-family: var(--mono); font-size: 12.5px; }
   function draw() {
     const d = img.data, s = tissue.s;
     let cells = 0, e = 0;
+    const vs = [];
+    for (let i = 0; i < S * S; i++) if (s[i * C] > 0.1) vs.push(s[i * C + 1]);
+    vs.sort((a, b) => a - b);
+    const q = (f) => vs.length ? vs[Math.min(vs.length - 1, Math.floor(f * vs.length))] : 0;
+    const vlo = q(0.02), vhi = Math.max(vlo + 0.05, q(0.98));
     for (let y = 0; y < S; y++) for (let x = 0; x < S; x++) {
       const i = y * S + x, o = i * 4, a = Math.max(0, Math.min(1, s[i * C]));
       let r = 7, g = 9, b = 12;
@@ -159,8 +164,8 @@ code { font-family: var(--mono); font-size: 12.5px; }
           const mix = (k) => (h * HEADC[k] + tr * TRUNKC[k] + tl * TAILC[k]) / z * lum;
           r = mix(0); g = mix(1); b = mix(2);
         } else if (view === "voltage") {
-          const v = Math.max(-1, Math.min(1, s[i * C + 1]));
-          r = v > 0 ? 40 + 215 * v : 40; b = v < 0 ? 40 - 215 * v : 40; g = 40 + 40 * (1 - Math.abs(v));
+          const v = Math.max(0, Math.min(1, (s[i * C + 1] - vlo) / (vhi - vlo)));
+          [r, g, b] = ramp(v);
         } else {
           let m = 0;
           for (let k = 0; k < VIS; k++) m += tissue.eps[i * VIS + k] ** 2;
@@ -181,6 +186,13 @@ code { font-family: var(--mono); font-size: 12.5px; }
     document.getElementById("m-l").textContent = l.toFixed(4);
     document.getElementById("m-e").textContent = e.toFixed(4);
     spark();
+  }
+
+  // Sequential ramp (deep blue -> teal -> yellow), perceptually ordered like viridis.
+  const STOPS = [[40, 30, 110], [30, 150, 140], [250, 230, 60]];
+  function ramp(t) {
+    const k = t < 0.5 ? 0 : 1, u = t < 0.5 ? t * 2 : (t - 0.5) * 2;
+    return [0, 1, 2].map((j) => STOPS[k][j] + (STOPS[k + 1][j] - STOPS[k][j]) * u);
   }
 
   function spark() {
@@ -206,8 +218,12 @@ code { font-family: var(--mono); font-size: 12.5px; }
     return m;
   }
 
+  let debt = 0;
   function loop() {
-    if (playing) { const n = +document.getElementById("speed").value; for (let k = 0; k < n; k++) tick(); }
+    if (playing) {
+      debt += [0.25, 0.5, 1, 2, 4][+document.getElementById("speed").value - 1];
+      while (debt >= 1) { tick(); debt -= 1; }
+    }
     if (brush && tool === "scalpel") { const m = brushMask(brush); tissue.cut((y, x) => m[y * S + x]); }
     draw();
     requestAnimationFrame(loop);
@@ -237,7 +253,7 @@ code { font-family: var(--mono); font-size: 12.5px; }
   function legend() {
     const L = document.getElementById("legend");
     const sw = (c, t) => `<span><span class="sw" style="background:${c}"></span>${t}</span>`;
-    L.innerHTML = view === "voltage" ? sw("#ff2828", "depolarised (+)") + sw("#2828ff", "hyperpolarised (−)")
+    L.innerHTML = view === "voltage" ? sw("rgb(40,30,110)", "lowest voltage in this tissue") + sw("rgb(30,150,140)", "middle") + sw("rgb(250,230,60)", "highest")
       : view === "error" ? sw("#ffbe64", "large self-model error") + sw("#1e1e28", "predicted")
       : sw(css("--head"), "head") + sw(css("--trunk"), "trunk") + sw(css("--tail"), "tail");
   }
