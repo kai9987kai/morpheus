@@ -1,0 +1,123 @@
+{
+ "weights": "weights/rule_b.json",
+ "weights_meta": {
+  "trainer": "bptt+persistence-pool",
+  "iterations": 3000,
+  "batch": 16,
+  "lr": 0.002,
+  "seed": 1,
+  "final_loss_last50": 0.0022603180496880253,
+  "seconds": 3480
+ },
+ "provenance": {
+  "morpheus": "0.1.0",
+  "python": "3.11.15",
+  "numpy": "2.4.6",
+  "platform": "Linux-6.18.44-fc-v37-x86_64-with-glibc2.39",
+  "git_commit": "a3fabe840f639b4ff5a9a907e633333008966b0c",
+  "weights_sha256": "01f462b42f052b4671dbe235bfb6bcd5514ecef18343ec096f99201936368277",
+  "prereg_sha256": "2f3da11c8d840dcc73e07e556f8a851e9a01c1dc3d7f0e360aa543e8b3c6d47d",
+  "utc": "2026-09-28T20:28:03Z",
+  "prereg_v2_sha256": "448adb5b95305b41cca31e68eaaeaf222c1d5209a903d206daeda526d5d0bbad"
+ },
+ "pattern_file": "results/design_rule_a.json",
+ "H5": {
+  "n_tissues": 128,
+  "steps": 12,
+  "mode": "clamp",
+  "posterior_head_index": {
+   "none": {
+    "mean": -1.0,
+    "ci95": [
+     -1.0,
+     -1.0
+    ],
+    "n": 128
+   },
+   "designed": {
+    "mean": -0.6609933035714286,
+    "ci95": [
+     -0.6731305803571428,
+     -0.6487165178571428
+    ],
+    "n": 128
+   },
+   "shuffled": {
+    "mean": -0.6848493303571428,
+    "ci95": [
+     -0.6976841517857142,
+     -0.6720145089285714
+    ],
+    "n": 128
+   }
+  },
+  "posterior_head_index_after_reamputation": {
+   "none": {
+    "mean": -0.9988839285714286,
+    "ci95": [
+     -0.9995814732142858,
+     -0.9979073660714286
+    ],
+    "n": 128
+   },
+   "designed": {
+    "mean": -0.8042689732142856,
+    "ci95": [
+     -0.8244977678571427,
+     -0.7851562499999999
+    ],
+    "n": 128
+   },
+   "shuffled": {
+    "mean": -0.8318917410714286,
+    "ci95": [
+     -0.8477957589285714,
+     -0.8169642857142857
+    ],
+    "n": 128
+   }
+  },
+  "primary": {
+   "H5_designed_minus_shuffled": {
+    "n": 128,
+    "mean": 0.023856026785714284,
+    "ci95": [
+     0.013253348214285712,
+     0.03445870535714285
+    ],
+    "d_z": 0.3871082778630888,
+    "frac_positive": 0.5546875,
+    "p": 9.999000099990002e-05,
+    "alternative": "greater"
+   },
+   "H6_persistence_designed_minus_none": {
+    "n": 128,
+    "mean": 0.19461495535714288,
+    "ci95": [
+     0.17466517857142858,
+     0.2138671875
+    ],
+    "d_z": 1.694149195980533,
+    "frac_positive": 0.84375,
+    "p": 9.999000099990002e-05,
+    "alternative": "greater"
+   }
+  },
+  "secondary": {
+   "H5_designed_minus_none": {
+    "n": 128,
+    "mean": 0.33900669642857145,
+    "ci95": [
+     0.3267299107142857,
+     0.3515625
+    ],
+    "d_z": 4.732177634331243,
+    "frac_positive": 1.0,
+    "p": 9.999000099990002e-05,
+    "alternative": "greater"
+   }
+  },
+  "frac_tissues_with_posterior_head_majority": 0.0
+ },
+ "seconds": 31
+}

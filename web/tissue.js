@@ -74,7 +74,7 @@
       return out;
     }
 
-    /* opts: {fire, diffusion, epsIn, vclamp: {mask: Uint8Array, value}, vadd: Float32Array (S*S) injected voltage} */
+    /* opts: {fire, diffusion, epsIn, vclamp: {mask: Uint8Array, value}, vadd: Float32Array (S*S) injected voltage, vset: Float32Array (S*S) designed clamp} */
     step(opts) {
       opts = opts || {};
       const S = this.size, n = S * S, s = this.s, nw = this._new, P = this.p;
@@ -131,6 +131,9 @@
       }
       if (opts.vadd) {
         for (let i = 0; i < n; i++) nw[i * C + VOLT] += opts.vadd[i];
+      }
+      if (opts.vset) {
+        for (let i = 0; i < n; i++) nw[i * C + VOLT] = opts.vset[i];
       }
       if (opts.vclamp) {
         for (let i = 0; i < n; i++) if (opts.vclamp.mask[i]) nw[i * C + VOLT] = opts.vclamp.value;

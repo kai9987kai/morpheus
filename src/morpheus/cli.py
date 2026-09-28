@@ -132,8 +132,15 @@ def cmd_export_web(a):
     theta, physics, meta = train.load_weights(a.weights)
     data = {"weights": {"theta": [round(float(v), 6) for v in theta], "physics": physics.__dict__, "meta": meta},
             "target": anatomy.target().tolist(), "results": {}, "claims": None}
+    data["designs"] = {}
     for p in sorted((ROOT / "results").glob("*.json")):
-        data["results"][p.stem] = _slim(json.loads(p.read_text(encoding="utf-8")))
+        doc = json.loads(p.read_text(encoding="utf-8"))
+        if "design" in doc:
+            data["designs"][p.stem] = {"pattern": [[round(v, 3) for v in row] for row in doc["design"]["pattern"]],
+                                       "steps": doc["design"]["steps"], "mode": doc["design"]["mode"],
+                                       "weights": doc["weights"]}
+            continue
+        data["results"][p.stem] = _slim(doc)
     ledger = ROOT / "claims" / "claims.json"
     if ledger.exists():
         from . import claims

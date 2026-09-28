@@ -82,6 +82,7 @@ code { font-family: var(--mono); font-size: 12.5px; }
       <button id="reset">Regrow from one cell</button>
       <button id="cuthead">Amputate head</button>
       <button id="cuttail">Amputate tail</button>
+      <button id="compile" title="Amputate the tail, then clamp every cell's voltage to the pattern designed by gradient descent for 12 steps">Amputate tail + designed clamp</button>
     </div>
     <div class="row">
       <label>comparator <select id="comp"><option value="author">own error (author)</option><option value="zero">silenced</option><option value="delayed">own, 8 steps late</option></select></label>
@@ -106,6 +107,10 @@ code { font-family: var(--mono); font-size: 12.5px; }
     <section class="panel">
       <h2>Regeneration under each comparator condition (H1)</h2>
       <div id="h1" class="note">–</div>
+    </section>
+    <section class="panel">
+      <h2>Anatomical compiler (H5, H6): can a designed voltage code grow a head where the tail was?</h2>
+      <div id="h5" class="note">–</div>
     </section>
     <section class="panel">
       <h2>Voltage clamp after head amputation (H3): is the head still a head?</h2>
@@ -134,7 +139,10 @@ code { font-family: var(--mono); font-size: 12.5px; }
   const tissue = new MorpheusTissue.Tissue(D.weights.theta, D.weights.physics, S);
   tissue.rand = MorpheusTissue.mulberry32(Date.now() & 0xffff);
   const target = D.target;
-  let view = "anatomy", tool = "scalpel", playing = true, brush = null, lossHist = [];
+  let view = "anatomy", tool = "scalpel", playing = true, brush = null, lossHist = [], compiling = 0;
+  // The designed clamp for the embedded rule (morpheus run design), if one was exported.
+  const designEntry = Object.values(D.designs || {}).find((d) => d.weights.endsWith("rule_a.json"));
+  const design = designEntry ? Float32Array.from(designEntry.pattern.flat()) : null;
 
   function lossNow() {
     let l = 0;
@@ -212,6 +220,7 @@ code { font-family: var(--mono); font-size: 12.5px; }
     const mode = document.getElementById("comp").value;
     const opts = { epsIn: tissue.comparatorInput(mode, 8) };
     if (!document.getElementById("gap").checked) opts.diffusion = 0;
+    if (compiling > 0) { opts.vset = design; compiling--; }
     if (brush && tool !== "scalpel") opts.vclamp = { mask: brushMask(brush), value: tool === "vplus" ? 1 : -1 };
     tissue.step(opts);
   }
@@ -253,6 +262,9 @@ code { font-family: var(--mono); font-size: 12.5px; }
   const mid = (S - 1) / 2;
   document.getElementById("cuthead").onclick = () => tissue.cut((y, x) => x < mid - S * 0.17);
   document.getElementById("cuttail").onclick = () => tissue.cut((y, x) => x > mid + S * 0.14);
+  const compileBtn = document.getElementById("compile");
+  if (!design) compileBtn.disabled = true;
+  compileBtn.onclick = () => { tissue.cut((y, x) => x > mid + S * 0.14); compiling = designEntry.steps; };
 
   function legend() {
     const L = document.getElementById("legend");
@@ -291,6 +303,22 @@ code { font-family: var(--mono); font-size: 12.5px; }
     });
     document.getElementById("h3").innerHTML = '<div class="bars">' + rows.join("") +
       '</div><p class="note">Anterior identity: in the region where the head belongs, the fraction of cells that are head minus the fraction that are tail (1 = a perfect head). The clamp holds every cell at the voltage the tissue normally uses in its tail, for 12 steps right after the cut; the second regrowth follows a second amputation with no clamp.</p>';
+  }
+  const h5rules = ["h5_rule_a", "h5_rule_b"].filter((k) => D.results && D.results[k] && D.results[k].H5);
+  if (h5rules.length) {
+    const rows = [];
+    h5rules.forEach((k) => {
+      const r = D.results[k].H5, label = "rule " + k.slice(-1).toUpperCase();
+      [["posterior_head_index", "after the cut"], ["posterior_head_index_after_reamputation", "after a 2nd cut, no clamp"]].forEach(([key, when]) => {
+        ["none", "shuffled", "designed"].forEach((c) => {
+          const v = r[key][c].mean, w = ((v + 1) / 2 * 100).toFixed(1);
+          const col = c === "designed" ? "var(--head)" : c === "shuffled" ? "var(--trunk)" : "var(--tail)";
+          rows.push(`<span>${label}</span><div class="bar" style="width:${w}%;background:${col}"></div><code>${v.toFixed(3)}</code><span></span><span class="note">${c}, ${when}</span><span></span>`);
+        });
+      });
+    });
+    document.getElementById("h5").innerHTML = '<div class="bars">' + rows.join("") +
+      '</div><p class="note">Posterior head index: in the tail region, fraction of cells that are head minus fraction that are tail (−1 = a normal tail, +1 = a head). The designed clamp was found by gradient descent through the whole regeneration; the shuffled control holds the same voltages at scrambled positions. Try it on the living tissue with <b>Amputate tail + designed clamp</b>.</p>';
   }
   const R = D.results && D.results.rsi;
   if (R && R.H4) drawRSI(R.H4);
