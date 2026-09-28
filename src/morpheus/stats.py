@@ -102,6 +102,25 @@ class LordPlusPlus:
         return reject, a
 
 
+def _norm_ppf(p: float) -> float:
+    """Inverse standard normal CDF by bisection on math.erf (no SciPy)."""
+    lo, hi = -40.0, 40.0
+    for _ in range(200):
+        mid = (lo + hi) / 2
+        if 0.5 * (1 + math.erf(mid / math.sqrt(2))) < p:
+            lo = mid
+        else:
+            hi = mid
+    return (lo + hi) / 2
+
+
+def stouffer(pvals) -> tuple[float, float]:
+    """Combine one-sided p-values with equal weights: Z = sum(Phi^-1(1 - p_i)) / sqrt(k)."""
+    zs = [_norm_ppf(1 - min(max(p, 1e-15), 1 - 1e-15)) for p in pvals]
+    z = sum(zs) / math.sqrt(len(zs))
+    return float(z), float(0.5 * math.erfc(z / math.sqrt(2)))
+
+
 def mean_ci(x, seed=0, n_boot=10000):
     x = np.asarray(x, float)
     rng = np.random.default_rng(seed)

@@ -161,7 +161,7 @@ def seed_state(n: int, h: int, w: int, at=None) -> np.ndarray:
     return s
 
 
-def step(s, eps_in, theta, physics: Physics, fire, diffusion=None, v_clamp=None):
+def step(s, eps_in, theta, physics: Physics, fire, diffusion=None, v_clamp=None, v_add=None, v_set=None):
     """One synchronous tick of N tissues.
 
     s        (N,H,W,C) state
@@ -170,6 +170,8 @@ def step(s, eps_in, theta, physics: Physics, fire, diffusion=None, v_clamp=None)
     fire     (N,H,W,1) bool: which cells update this step
     diffusion  overrides physics.diffusion (0 models a gap-junction blocker)
     v_clamp  optional (mask (N,H,W,1) bool, value) holding voltage fixed where mask is set
+    v_add    optional (H,W) voltage injected into every cell this step (a designed intervention)
+    v_set    optional (H,W) voltage every cell is clamped to this step (a designed clamp)
 
     Returns (new_state, eps_out, pred, alive).
     """
@@ -191,6 +193,10 @@ def step(s, eps_in, theta, physics: Physics, fire, diffusion=None, v_clamp=None)
     d = physics.diffusion if diffusion is None else diffusion
     if d:
         new[..., VOLT:VOLT + 1] += d * gap_junction_flux(s[..., VOLT:VOLT + 1], pre)
+    if v_add is not None:
+        new[..., VOLT] += v_add
+    if v_set is not None:
+        new[..., VOLT] = v_set
     if v_clamp is not None:
         mask, value = v_clamp
         new[..., VOLT:VOLT + 1] = np.where(mask, value, new[..., VOLT:VOLT + 1])

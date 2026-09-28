@@ -105,6 +105,7 @@ def h1_authorship(theta, physics, n=96, seed=1, log=print) -> dict:
         "secondary_holm": stats.holm({c: v["p"] for c, v in contrasts.items()}),
         "contrasts": contrasts,
         "comparator_input_predictable_from_own_state_r2": r2,
+        "per_tissue_transplant_minus_author": (res["transplant"]["regen_loss"] - res["author"]["regen_loss"]).tolist(),
     }
 
 
@@ -237,3 +238,46 @@ def to_jsonable(x):
 def write(path: Path, doc: dict):
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(to_jsonable(doc), indent=1), encoding="utf-8")
+
+
+# ------------------------------------------------------------------------------------------
+# v0.2 (prereg/PREREGISTRATION_v2.json)
+
+def h5_compiler(theta, physics, pattern, steps=12, mode="clamp", n=128, seed=5, log=print) -> dict:
+    """H5: a designed voltage pattern makes held-out tail stumps grow head tissue where the tail
+    was, more than the same values spatially shuffled. H6: the change persists through a second
+    tail amputation with no intervention."""
+    from . import compiler
+    rng = np.random.default_rng(seed)
+    wounds = compiler.tail_wounds(n, rng)
+    fseed = int(rng.integers(1 << 31))
+    shuf = compiler.shuffled(pattern, seed)
+    conds = {"none": None, "designed": pattern, "shuffled": shuf}
+    first, second = {}, {}
+    for name, pat in conds.items():
+        proto = Protocol() if pat is None else Protocol(voltage_inject=(pat, steps, mode))
+        out = live(theta, wounds, physics, proto, fseed)
+        again = continue_life(theta, out["state"], out["eps"], wounds, physics, 48, fseed + 13)
+        first[name] = compiler.posterior_head_index(out["state"])
+        second[name] = compiler.posterior_head_index(again["state"])
+        log(f"H5 {name:9s} posterior head index {first[name].mean():+.3f}   after re-amputation {second[name].mean():+.3f}")
+    return {
+        "n_tissues": n, "steps": steps, "mode": mode,
+        "posterior_head_index": {k: stats.mean_ci(v) for k, v in first.items()},
+        "posterior_head_index_after_reamputation": {k: stats.mean_ci(v) for k, v in second.items()},
+        "primary": {
+            "H5_designed_minus_shuffled": stats.paired(first["designed"] - first["shuffled"], seed=seed),
+            "H6_persistence_designed_minus_none": stats.paired(second["designed"] - second["none"], seed=seed),
+        },
+        "secondary": {"H5_designed_minus_none": stats.paired(first["designed"] - first["none"], seed=seed)},
+        "frac_tissues_with_posterior_head_majority": float((first["designed"] > 0).mean()),
+    }
+
+
+def h1_pooled(docs: dict) -> dict:
+    """H1 across independently evolved rules: Stouffer combination of the per-rule one-sided
+    p-values (equal weights), and how many rules are individually significant."""
+    per = {k: d["primary"]["H1_transplant_minus_author"] for k, d in docs.items()}
+    z, p = stats.stouffer([v["p"] for v in per.values()])
+    return {"rules": list(docs), "per_rule": {k: {x: v[x] for x in ("mean", "d_z", "p", "frac_positive")} for k, v in per.items()},
+            "stouffer_z": z, "pooled_p": p, "rules_significant": int(sum(v["p"] < 0.05 for v in per.values()))}

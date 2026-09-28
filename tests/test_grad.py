@@ -51,3 +51,54 @@ def test_gradient_from_initial_state_matches_finite_differences():
         lm, _, _ = grad.loss_and_grad(theta - e, wounds, physics, proto, 5, **kw)
         fd = (lp - lm) / (2 * h)
         assert abs(g[i] - fd) <= 1e-5 * max(1e-3, abs(fd)), (i, g[i], fd)
+
+
+def test_injection_gradient_matches_finite_differences():
+    rng, theta, wounds, _, physics, _ = _setup()
+    proto = Protocol(grow=0, regen=6, tail_window=3)
+    s0 = np.abs(rng.normal(0, 0.5, (3, 12, 12, 13)))
+    tgt2 = np.abs(rng.normal(0, 0.5, (12, 12, 4)))
+    pat = rng.normal(0, 0.3, (12, 12))
+    kw = dict(dtype=np.float64, init_state=s0, regen_target=tgt2, inject_steps=3, self_model_weight=0.0)
+    _, _, ex = grad.loss_and_grad(theta, wounds, physics, proto, 5, v_inject=pat, **kw)
+    h = 1e-5
+    for i in rng.choice(pat.size, 8, replace=False):
+        e = np.zeros_like(pat)
+        e.flat[i] = h
+        lp, _, _ = grad.loss_and_grad(theta, wounds, physics, proto, 5, v_inject=pat + e, **kw)
+        lm, _, _ = grad.loss_and_grad(theta, wounds, physics, proto, 5, v_inject=pat - e, **kw)
+        fd = (lp - lm) / (2 * h)
+        assert abs(ex["g_inject"].flat[i] - fd) <= 1e-5 * max(1e-3, abs(fd)), (i, ex["g_inject"].flat[i], fd)
+
+
+def test_injection_in_simulator_matches_gradient_engine():
+    from morpheus.life import live
+    rng, theta, wounds, _, physics, _ = _setup()
+    pat = rng.normal(0, 0.3, (12, 12)).astype(np.float32)
+    proto = Protocol(grow=8, regen=6, tail_window=3)
+    tgt = anatomy.target(12)
+    L, _, _ = grad.loss_and_grad(theta, wounds, physics, proto, 5, dtype=np.float64, v_inject=pat,
+                                 inject_steps=3, self_model_weight=0.0)
+    out = live(theta.astype(np.float32), wounds, physics, Protocol(grow=8, regen=6, tail_window=3,
+                                                                    voltage_inject=(pat, 3)), 5, tgt=tgt)
+    assert abs(L - (out["grow_loss"] + out["regen_loss"]).mean()) < 1e-6
+
+
+def test_clamp_gradient_matches_finite_differences_and_simulator():
+    from morpheus.life import live
+    rng, theta, wounds, _, physics, _ = _setup()
+    pat = rng.normal(0, 0.5, (12, 12))
+    proto = Protocol(grow=8, regen=6, tail_window=3)
+    kw = dict(dtype=np.float64, inject_steps=3, inject_mode="clamp", self_model_weight=0.0)
+    L, _, ex = grad.loss_and_grad(theta, wounds, physics, proto, 5, v_inject=pat, **kw)
+    out = live(theta.astype(np.float32), wounds, physics,
+               Protocol(grow=8, regen=6, tail_window=3, voltage_inject=(pat.astype(np.float32), 3, "clamp")), 5)
+    assert abs(L - (out["grow_loss"] + out["regen_loss"]).mean()) < 1e-6
+    h = 1e-5
+    for i in rng.choice(pat.size, 8, replace=False):
+        e = np.zeros_like(pat)
+        e.flat[i] = h
+        lp, _, _ = grad.loss_and_grad(theta, wounds, physics, proto, 5, v_inject=pat + e, **kw)
+        lm, _, _ = grad.loss_and_grad(theta, wounds, physics, proto, 5, v_inject=pat - e, **kw)
+        fd = (lp - lm) / (2 * h)
+        assert abs(ex["g_inject"].flat[i] - fd) <= 1e-5 * max(1e-3, abs(fd)), (i, ex["g_inject"].flat[i], fd)

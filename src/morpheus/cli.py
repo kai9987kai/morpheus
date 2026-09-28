@@ -15,6 +15,7 @@ from .life import Protocol, live
 
 ROOT = Path(__file__).resolve().parents[2]
 PREREG = ROOT / "prereg" / "PREREGISTRATION.json"
+PREREG_V2 = ROOT / "prereg" / "PREREGISTRATION_v2.json"
 
 
 def _log(msg):
@@ -62,11 +63,18 @@ def run_rsi(weights, seeds, proposals, workers):
 
 
 def cmd_run(a):
+    if a.experiment == "h1pool":
+        docs = {Path(f).stem: json.loads(Path(f).read_text(encoding="utf-8"))["H1"] for f in a.files}
+        experiments.write(Path(a.out), {"H1_pooled": experiments.h1_pooled(docs),
+                                        "files": a.files, "provenance": experiments.provenance(Path(a.files[0]), PREREG_V2)})
+        _log(f"wrote {a.out}")
+        return
     theta, physics, meta = train.load_weights(a.weights)
     out = Path(a.out)
     which = a.experiment
     doc = {"weights": str(a.weights), "weights_meta": meta,
            "provenance": experiments.provenance(Path(a.weights), PREREG)}
+    doc["provenance"]["prereg_v2_sha256"] = experiments.provenance(Path(a.weights), PREREG_V2)["prereg_sha256"]
     t0 = time.time()
     if which in ("h1", "all"):
         doc["H1"] = experiments.h1_authorship(theta, physics, n=a.n, log=_log)
@@ -74,6 +82,17 @@ def cmd_run(a):
         doc["H2"] = experiments.h2_gap_junctions(theta, physics, n=a.n, log=_log)
     if which in ("h3", "all"):
         doc["H3"] = experiments.h3_voltage_memory(theta, physics, n=a.n, log=_log)
+    if which == "design":
+        from . import compiler
+        r = compiler.design(theta, physics, iterations=a.iterations, seed=a.seed, workers=a.workers, log=_log)
+        doc["design"] = {k: v for k, v in r.items() if k != "history"}
+        doc["design"]["loss_first20"] = float(np.mean(r["history"][:20]))
+        doc["design"]["loss_last20"] = float(np.mean(r["history"][-20:]))
+    if which == "h5":
+        pdoc = json.loads(Path(a.pattern).read_text(encoding="utf-8"))["design"]
+        doc["pattern_file"] = a.pattern
+        doc["H5"] = experiments.h5_compiler(theta, physics, np.asarray(pdoc["pattern"], np.float32),
+                                            steps=pdoc["steps"], mode=pdoc["mode"], n=a.n, log=_log)
     if which == "h3locus":
         doc["H3_locus_exploratory"] = experiments.h3_memory_locus(theta, physics, n=a.n, log=_log)
     if which in ("cal", "all"):
@@ -147,13 +166,18 @@ def main(argv=None):
     t.add_argument("--out", default="weights/rule_a.json")
     t.set_defaults(fn=cmd_train)
     r = sub.add_parser("run", help="run preregistered experiments")
-    r.add_argument("experiment", choices=["h1", "h2", "h3", "cal", "all", "h4", "rsi", "h3locus"])
+    r.add_argument("experiment", choices=["h1", "h2", "h3", "cal", "all", "h4", "rsi", "h3locus", "design", "h5", "h1pool"])
     r.add_argument("--weights", default="weights/rule_a.json")
     r.add_argument("--n", type=int, default=128)
     r.add_argument("--reps", type=int, default=40)
     r.add_argument("--seeds", type=int, default=6)
     r.add_argument("--proposals", type=int, default=40)
     r.add_argument("--workers", type=int, default=4)
+    r.add_argument("--iterations", type=int, default=600, help="design iterations")
+    r.add_argument("--seed", type=int, default=0, help="design seed")
+    r.add_argument("--pattern", help="results file holding a designed pattern (for h5)")
+    r.add_argument("--files", nargs="*", default=["results/rule_a.json", "results/rule_b.json", "results/rule_c.json"],
+                   help="per-rule results files (for h1pool)")
     r.add_argument("--out", required=True)
     r.set_defaults(fn=cmd_run)
     s = sub.add_parser("show", help="print a tissue growing, being wounded and regenerating")

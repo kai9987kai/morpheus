@@ -36,3 +36,10 @@ def test_lord_level_is_positive_and_below_alpha():
     assert 0 < lord.level() < 0.1
     lord.test(0.0)
     assert 0 < lord.level() < 0.1
+
+
+def test_stouffer():
+    z, p = stats.stouffer([0.5, 0.5, 0.5])
+    assert abs(z) < 1e-6 and abs(p - 0.5) < 1e-6
+    z, p = stats.stouffer([0.05])
+    assert abs(z - 1.6449) < 1e-3 and abs(p - 0.05) < 1e-6

@@ -1,0 +1,46 @@
+{
+  "title": "Morpheus v0.2: an anatomical compiler, a three-rule test of authorship, and audited self-improvement with room to improve",
+  "version": "2.0",
+  "date": "2026-09-28",
+  "status": "Committed before any confirmatory v0.2 run. v0.1 (prereg/PREREGISTRATION.json) is unchanged and its results stand.",
+  "disclosed_pilots": [
+    "Compiler feasibility pilots used rules A and B on TRAINING tissues only (tail wounds from design seeds, fire-mask seed 4242, wound seed 999, 16 tissues), never the held-out H5 suite (seed 5). They motivated two protocol choices fixed below: voltage clamp rather than additive injection (rule A's body voltage sits at the +4 clip, so additive injection loses its gradient), and 12 clamp steps rather than 48 (48 optimised worse). Pilot numbers: posterior head index about -1.00 untreated, -0.73 to -0.77 designed, -0.92 to -0.96 shuffled."
+  ],
+  "rules": {
+    "A": "weights/rule_a.json (v0.1)",
+    "B": "weights/rule_b.json (v0.1)",
+    "C": "weights/rule_c.json: new, seed 2, same recipe as A and B (3000 iterations with the persistence phase). Trained after this file is committed.",
+    "early": "weights/rule_early.json: new, seed 3, same recipe but stopped at 300 iterations, so real improvements remain available to a self-improvement loop."
+  },
+  "hypotheses": {
+    "H5": {
+      "claim": "Anatomical compiler: a voltage pattern designed by gradient descent (per-grid-position clamp values, bounded to +-4, held for the first 12 steps after a tail amputation, optimised for 600 iterations of 16 training tissues towards a two-headed body) makes held-out tail stumps grow more head tissue where the tail was than the same clamp values spatially shuffled within the body.",
+      "measure": "posterior head index at the end of regeneration: in the normal body's tail region, fraction of alive cells typed head minus fraction typed tail",
+      "test": "one-sided sign-flip permutation on designed minus shuffled, alpha 0.05, bootstrap CI",
+      "rules": "designed separately for rule A (primary) and rule B (replication), design seed 0",
+      "n": 128, "suite_seed": 5,
+      "support_rule": "p < 0.05 and CI lower bound > 0; 'replicated' if also so for rule B",
+      "secondary": "designed minus untreated (one-sided); fraction of tissues whose posterior head index is > 0 (a majority-head posterior), descriptive"
+    },
+    "H6": {
+      "claim": "Compiled memory: after regeneration under the designed clamp, a second tail amputation with no intervention still regrows more head tissue posteriorly than untreated tissues do.",
+      "measure": "posterior head index after the second regeneration (48 steps)",
+      "test": "one-sided sign-flip on designed-history minus untreated, alpha 0.05",
+      "support_rule": "p < 0.05 and CI lower bound > 0; rule A primary, rule B replication"
+    },
+    "H1C": {
+      "claim": "Authorship across rules (tie-break of v0.1's open H1): combining the one-sided p-values of rules A, B and C (the v0.1 H1 protocol, n 128, suite seed 1 for rule C), transplanted error streams impair regeneration.",
+      "test": "Stouffer combination with equal weights of the three per-rule one-sided p-values, alpha 0.05",
+      "decision": "'supported' if pooled p < 0.05 and at least 2 of 3 rules individually p < 0.05; 'not supported' if pooled p >= 0.05; otherwise 'mixed'",
+      "also": "rule C gets the full v0.1 battery (H1-H3, calibration) as a second replication of H2 and H3"
+    },
+    "H4b": {
+      "claim": "Starting from an under-trained rule (rule early), naive self-improvement loops overstate their progress more than audited loops (the v0.1 H4 hypothesis, now with genuine improvements available and more seeds).",
+      "design": "10 loop seeds x 30 proposals, same proposer and gate as v0.1",
+      "test": "one-sided exact sign-flip on naive minus gated self-deception, alpha 0.05",
+      "secondary": "gated true gain > 0 (one-sided sign-flip over seeds): does the audited loop still improve?; false-adoption fractions, descriptive"
+    }
+  },
+  "exploratory": ["cross-rule transfer: rule A's designed pattern applied to rule B and vice versa (does a bioelectric code transfer between rules that evolved opposite voltage signs?)"],
+  "deviations": "Listed in docs/DEVIATIONS.md under 'v0.2'."
+}

@@ -74,7 +74,7 @@
       return out;
     }
 
-    /* opts: {fire: Uint8Array|undefined, diffusion, epsIn: Float32Array|undefined, vclamp: {mask: Uint8Array, value}} */
+    /* opts: {fire, diffusion, epsIn, vclamp: {mask: Uint8Array, value}, vadd: Float32Array (S*S) injected voltage} */
     step(opts) {
       opts = opts || {};
       const S = this.size, n = S * S, s = this.s, nw = this._new, P = this.p;
@@ -128,6 +128,9 @@
           }
           nw[i * C + VOLT] += D * flux;
         }
+      }
+      if (opts.vadd) {
+        for (let i = 0; i < n; i++) nw[i * C + VOLT] += opts.vadd[i];
       }
       if (opts.vclamp) {
         for (let i = 0; i < n; i++) if (opts.vclamp.mask[i]) nw[i * C + VOLT] = opts.vclamp.value;

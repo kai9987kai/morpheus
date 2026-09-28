@@ -36,6 +36,7 @@ class Protocol:
     delay: int = 8
     gap_block: bool = False              # diffusion = 0 during regeneration
     voltage_pulse: tuple | None = None   # (value, steps): clamp V of every cell for the first steps after the wound
+    voltage_inject: tuple | None = None  # (pattern (H,W), steps[, "add"|"clamp"]): designed V for the first steps after the wound
     second_wound_after: int = 0          # >0: re-wound (same masks) and regrow this many more steps
     record_eps: bool = False
     snapshots: tuple = ()                # absolute step indices at which to keep full states
@@ -73,11 +74,11 @@ def live(theta, wounds: np.ndarray, physics: Physics, proto: Protocol, seed: int
     trace, eps_rec, snaps = [], [], {}
     sm_err = np.zeros(n)
 
-    def tick(t, eps_in, diffusion=None, v_clamp=None):
+    def tick(t, eps_in, diffusion=None, v_clamp=None, v_add=None, v_set=None):
         nonlocal s, eps, sm_err
         if cmask is not None:
             eps_in = eps_in * cmask
-        s, eps, _, _ = step(s, eps_in, theta, physics, next(fires), diffusion=diffusion, v_clamp=v_clamp)
+        s, eps, _, _ = step(s, eps_in, theta, physics, next(fires), diffusion=diffusion, v_clamp=v_clamp, v_add=v_add, v_set=v_set)
         trace.append(anatomy.loss(s, tgt))
         sm_err += np.einsum("nhwc,nhwc->n", eps, eps) / eps[0].size
         if t in proto.snapshots:
@@ -91,7 +92,7 @@ def live(theta, wounds: np.ndarray, physics: Physics, proto: Protocol, seed: int
     grow_loss = np.mean(trace[-proto.tail_window:], axis=0)
     grown = s.copy()
 
-    def regenerate(steps, phase_offset, pulse=None):
+    def regenerate(steps, phase_offset, pulse=None, inject=None):
         nonlocal t
         for k in range(steps):
             own = eps
@@ -115,11 +116,17 @@ def live(theta, wounds: np.ndarray, physics: Physics, proto: Protocol, seed: int
             clamp = None
             if pulse is not None and k < pulse[1]:
                 clamp = (np.ones(s[..., :1].shape, bool), pulse[0])
-            tick(t, eps_in, diffusion=0.0 if proto.gap_block else None, v_clamp=clamp)
+            add = vset = None
+            if inject is not None and k < inject[1]:
+                if len(inject) > 2 and inject[2] == "clamp":
+                    vset = inject[0]
+                else:
+                    add = inject[0]
+            tick(t, eps_in, diffusion=0.0 if proto.gap_block else None, v_clamp=clamp, v_add=add, v_set=vset)
             t += 1
 
     s = s * ~wounds[..., None]
-    regenerate(proto.regen, 0, proto.voltage_pulse)
+    regenerate(proto.regen, 0, proto.voltage_pulse, proto.voltage_inject)
     regen_loss = np.mean(trace[-proto.tail_window:], axis=0)
     out = {"state": s, "eps": eps, "grown": grown, "self_model_error": sm_err / len(trace), "grow_loss": grow_loss, "regen_loss": regen_loss,
            "trace": np.stack(trace, axis=1)}
