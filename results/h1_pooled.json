@@ -1,0 +1,47 @@
+{
+ "H1_pooled": {
+  "rules": [
+   "rule_a",
+   "rule_b",
+   "rule_c"
+  ],
+  "per_rule": {
+   "rule_a": {
+    "mean": 1.0550254955887794e-05,
+    "d_z": 0.04899404069300109,
+    "p": 0.291970802919708,
+    "frac_positive": 0.5546875
+   },
+   "rule_b": {
+    "mean": 6.129229745965858e-05,
+    "d_z": 0.303839976272024,
+    "p": 0.00039996000399960006,
+    "frac_positive": 0.6640625
+   },
+   "rule_c": {
+    "mean": 0.00014536520211549941,
+    "d_z": 0.353630054455415,
+    "p": 0.00019998000199980003,
+    "frac_positive": 0.6640625
+   }
+  },
+  "stouffer_z": 4.295814529089021,
+  "pooled_p": 8.702653077068841e-06,
+  "rules_significant": 2
+ },
+ "files": [
+  "results/rule_a.json",
+  "results/rule_b.json",
+  "results/rule_c.json"
+ ],
+ "provenance": {
+  "morpheus": "0.1.0",
+  "python": "3.11.15",
+  "numpy": "2.4.6",
+  "platform": "Linux-6.18.44-fc-v37-x86_64-with-glibc2.39",
+  "git_commit": "ceb2878f730f470161b98c4f4f04083de513bce3",
+  "weights_sha256": "09da7e100b8aec6c55a34e921c6493c36267ad902f28025acee2e8a05d06d1fb",
+  "prereg_sha256": "448adb5b95305b41cca31e68eaaeaf222c1d5209a903d206daeda526d5d0bbad",
+  "utc": "2026-09-28T21:20:00Z"
+ }
+}
