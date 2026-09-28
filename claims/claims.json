@@ -3,18 +3,129 @@
   "note": "Edit this file, then run: morpheus claims render. CI runs: morpheus claims check. Statuses follow prereg/PREREGISTRATION.json: rule A is primary, rule B is the replication. 'descriptive' and 'exploratory' rows were not preregistered as tests.",
   "claims": [
     {
+      "id": "H5",
+      "status": "replicated",
+      "headline": true,
+      "claim": "Anatomical compiler: a voltage code designed by gradient descent makes tail stumps grow head tissue where the tail was",
+      "evidence_text": "posterior head index on 128 held-out tissues (−1 = normal tail, +1 = head), untreated → shuffled clamp → designed clamp: rule A {a_n} → {a_s} → {a_d} (designed − shuffled d_z {a_dz}, p {a_p}); rule B {b_n} → {b_s} → {b_d} (d_z {b_dz}, p {b_p}). Partial: no tissue ended with a majority-head posterior ({a_maj}, {b_maj})",
+      "evidence": {
+        "a_n": {
+          "file": "results/h5_rule_a.json",
+          "pointer": "/H5/posterior_head_index/none/mean",
+          "value": -0.9912109375,
+          "decimals": 2
+        },
+        "a_s": {
+          "file": "results/h5_rule_a.json",
+          "pointer": "/H5/posterior_head_index/shuffled/mean",
+          "value": -0.8869977678571428,
+          "decimals": 2
+        },
+        "a_d": {
+          "file": "results/h5_rule_a.json",
+          "pointer": "/H5/posterior_head_index/designed/mean",
+          "value": -0.7225167410714285,
+          "decimals": 2
+        },
+        "a_dz": {
+          "file": "results/h5_rule_a.json",
+          "pointer": "/H5/primary/H5_designed_minus_shuffled/d_z",
+          "value": 0.9001686543860002,
+          "decimals": 2
+        },
+        "a_p": {
+          "file": "results/h5_rule_a.json",
+          "pointer": "/H5/primary/H5_designed_minus_shuffled/p",
+          "value": 9.999000099990002e-05,
+          "decimals": "sci"
+        },
+        "b_n": {
+          "file": "results/h5_rule_b.json",
+          "pointer": "/H5/posterior_head_index/none/mean",
+          "value": -1.0,
+          "decimals": 2
+        },
+        "b_s": {
+          "file": "results/h5_rule_b.json",
+          "pointer": "/H5/posterior_head_index/shuffled/mean",
+          "value": -0.96484375,
+          "decimals": 2
+        },
+        "b_d": {
+          "file": "results/h5_rule_b.json",
+          "pointer": "/H5/posterior_head_index/designed/mean",
+          "value": -0.7679966517857143,
+          "decimals": 2
+        },
+        "b_dz": {
+          "file": "results/h5_rule_b.json",
+          "pointer": "/H5/primary/H5_designed_minus_shuffled/d_z",
+          "value": 3.3600505929074242,
+          "decimals": 2
+        },
+        "b_p": {
+          "file": "results/h5_rule_b.json",
+          "pointer": "/H5/primary/H5_designed_minus_shuffled/p",
+          "value": 9.999000099990002e-05,
+          "decimals": "sci"
+        },
+        "a_maj": {
+          "file": "results/h5_rule_a.json",
+          "pointer": "/H5/frac_tissues_with_posterior_head_majority",
+          "value": 0.0,
+          "decimals": 2
+        },
+        "b_maj": {
+          "file": "results/h5_rule_b.json",
+          "pointer": "/H5/frac_tissues_with_posterior_head_majority",
+          "value": 0.0,
+          "decimals": 2
+        }
+      }
+    },
+    {
       "id": "H3a",
       "status": "replicated",
       "headline": true,
       "claim": "A brief voltage clamp right after head amputation changes what regrows",
       "evidence_text": "12 steps with every cell held at the tissue's own tail voltage. Regeneration error, clamp minus control: rule A d_z {a_dz}, fraction of 128 tissues worse {a_pos}, p {a_p}; rule B d_z {b_dz}, fraction worse {b_pos}, p {b_p}",
       "evidence": {
-        "a_dz": {"file": "results/rule_a.json", "pointer": "/H3/primary/H3a_pulse_minus_control_first_regen/d_z", "value": 2.196243294927381, "decimals": 2},
-        "a_pos": {"file": "results/rule_a.json", "pointer": "/H3/primary/H3a_pulse_minus_control_first_regen/frac_positive", "value": 1.0, "decimals": 2},
-        "a_p": {"file": "results/rule_a.json", "pointer": "/H3/primary/H3a_pulse_minus_control_first_regen/p", "value": 9.999000099990002e-05, "decimals": "sci"},
-        "b_dz": {"file": "results/rule_b.json", "pointer": "/H3/primary/H3a_pulse_minus_control_first_regen/d_z", "value": 2.841312032140436, "decimals": 2},
-        "b_pos": {"file": "results/rule_b.json", "pointer": "/H3/primary/H3a_pulse_minus_control_first_regen/frac_positive", "value": 1.0, "decimals": 2},
-        "b_p": {"file": "results/rule_b.json", "pointer": "/H3/primary/H3a_pulse_minus_control_first_regen/p", "value": 9.999000099990002e-05, "decimals": "sci"}
+        "a_dz": {
+          "file": "results/rule_a.json",
+          "pointer": "/H3/primary/H3a_pulse_minus_control_first_regen/d_z",
+          "value": 2.196243294927381,
+          "decimals": 2
+        },
+        "a_pos": {
+          "file": "results/rule_a.json",
+          "pointer": "/H3/primary/H3a_pulse_minus_control_first_regen/frac_positive",
+          "value": 1.0,
+          "decimals": 2
+        },
+        "a_p": {
+          "file": "results/rule_a.json",
+          "pointer": "/H3/primary/H3a_pulse_minus_control_first_regen/p",
+          "value": 9.999000099990002e-05,
+          "decimals": "sci"
+        },
+        "b_dz": {
+          "file": "results/rule_b.json",
+          "pointer": "/H3/primary/H3a_pulse_minus_control_first_regen/d_z",
+          "value": 2.841312032140436,
+          "decimals": 2
+        },
+        "b_pos": {
+          "file": "results/rule_b.json",
+          "pointer": "/H3/primary/H3a_pulse_minus_control_first_regen/frac_positive",
+          "value": 1.0,
+          "decimals": 2
+        },
+        "b_p": {
+          "file": "results/rule_b.json",
+          "pointer": "/H3/primary/H3a_pulse_minus_control_first_regen/p",
+          "value": 9.999000099990002e-05,
+          "decimals": "sci"
+        }
       }
     },
     {
@@ -24,16 +135,66 @@
       "claim": "Regeneration uses the bioelectric channel: blocking gap junctions impairs it",
       "evidence_text": "regeneration error normal → blocked: rule A {a_n} → {a_b} (d_z {a_dz}, fraction of tissues worse {a_pos}, p {a_p}); rule B {b_n} → {b_b} (d_z {b_dz}, fraction worse {b_pos}, p {b_p})",
       "evidence": {
-        "a_n": {"file": "results/rule_a.json", "pointer": "/H2/conditions/normal/regen_loss/mean", "value": 0.0026301505367882783, "decimals": 5},
-        "a_b": {"file": "results/rule_a.json", "pointer": "/H2/conditions/gap_block/regen_loss/mean", "value": 0.004150765732447326, "decimals": 5},
-        "a_dz": {"file": "results/rule_a.json", "pointer": "/H2/primary/H2_block_minus_normal/d_z", "value": 1.4353519684861076, "decimals": 2},
-        "a_pos": {"file": "results/rule_a.json", "pointer": "/H2/primary/H2_block_minus_normal/frac_positive", "value": 0.9609375, "decimals": 2},
-        "a_p": {"file": "results/rule_a.json", "pointer": "/H2/primary/H2_block_minus_normal/p", "value": 9.999000099990002e-05, "decimals": "sci"},
-        "b_n": {"file": "results/rule_b.json", "pointer": "/H2/conditions/normal/regen_loss/mean", "value": 0.0012726506772651192, "decimals": 5},
-        "b_b": {"file": "results/rule_b.json", "pointer": "/H2/conditions/gap_block/regen_loss/mean", "value": 0.0029383562346083636, "decimals": 5},
-        "b_dz": {"file": "results/rule_b.json", "pointer": "/H2/primary/H2_block_minus_normal/d_z", "value": 1.282796356492688, "decimals": 2},
-        "b_pos": {"file": "results/rule_b.json", "pointer": "/H2/primary/H2_block_minus_normal/frac_positive", "value": 1.0, "decimals": 2},
-        "b_p": {"file": "results/rule_b.json", "pointer": "/H2/primary/H2_block_minus_normal/p", "value": 9.999000099990002e-05, "decimals": "sci"}
+        "a_n": {
+          "file": "results/rule_a.json",
+          "pointer": "/H2/conditions/normal/regen_loss/mean",
+          "value": 0.0026301505367882783,
+          "decimals": 5
+        },
+        "a_b": {
+          "file": "results/rule_a.json",
+          "pointer": "/H2/conditions/gap_block/regen_loss/mean",
+          "value": 0.004150765732447326,
+          "decimals": 5
+        },
+        "a_dz": {
+          "file": "results/rule_a.json",
+          "pointer": "/H2/primary/H2_block_minus_normal/d_z",
+          "value": 1.4353519684861076,
+          "decimals": 2
+        },
+        "a_pos": {
+          "file": "results/rule_a.json",
+          "pointer": "/H2/primary/H2_block_minus_normal/frac_positive",
+          "value": 0.9609375,
+          "decimals": 2
+        },
+        "a_p": {
+          "file": "results/rule_a.json",
+          "pointer": "/H2/primary/H2_block_minus_normal/p",
+          "value": 9.999000099990002e-05,
+          "decimals": "sci"
+        },
+        "b_n": {
+          "file": "results/rule_b.json",
+          "pointer": "/H2/conditions/normal/regen_loss/mean",
+          "value": 0.0012726506772651192,
+          "decimals": 5
+        },
+        "b_b": {
+          "file": "results/rule_b.json",
+          "pointer": "/H2/conditions/gap_block/regen_loss/mean",
+          "value": 0.0029383562346083636,
+          "decimals": 5
+        },
+        "b_dz": {
+          "file": "results/rule_b.json",
+          "pointer": "/H2/primary/H2_block_minus_normal/d_z",
+          "value": 1.282796356492688,
+          "decimals": 2
+        },
+        "b_pos": {
+          "file": "results/rule_b.json",
+          "pointer": "/H2/primary/H2_block_minus_normal/frac_positive",
+          "value": 1.0,
+          "decimals": 2
+        },
+        "b_p": {
+          "file": "results/rule_b.json",
+          "pointer": "/H2/primary/H2_block_minus_normal/p",
+          "value": 9.999000099990002e-05,
+          "decimals": "sci"
+        }
       }
     },
     {
@@ -43,15 +204,60 @@
       "claim": "Authorship: a regenerating tissue does better with its own self-model error than with a transplanted one",
       "evidence_text": "primary rule A: no effect, regeneration error author {a_au} vs transplant {a_tr}, d_z {a_dz}, p {a_p}; replication rule B: small consistent effect, {b_au} vs {b_tr}, d_z {b_dz}, fraction of tissues worse with a transplant {b_pos}, p {b_p}, and zero, delayed and shuffled streams all also worse after Holm correction. The two rules disagree, so the question stays open",
       "evidence": {
-        "a_au": {"file": "results/rule_a.json", "pointer": "/H1/conditions/author/regen_loss/mean", "value": 0.0028690063663816545, "decimals": 5},
-        "a_tr": {"file": "results/rule_a.json", "pointer": "/H1/conditions/transplant/regen_loss/mean", "value": 0.0028795566213375423, "decimals": 5},
-        "a_dz": {"file": "results/rule_a.json", "pointer": "/H1/primary/H1_transplant_minus_author/d_z", "value": 0.04899404069300109, "decimals": 2},
-        "a_p": {"file": "results/rule_a.json", "pointer": "/H1/primary/H1_transplant_minus_author/p", "value": 0.291970802919708, "decimals": 2},
-        "b_au": {"file": "results/rule_b.json", "pointer": "/H1/conditions/author/regen_loss/mean", "value": 0.00144383199517506, "decimals": 5},
-        "b_tr": {"file": "results/rule_b.json", "pointer": "/H1/conditions/transplant/regen_loss/mean", "value": 0.0015051242926347186, "decimals": 5},
-        "b_dz": {"file": "results/rule_b.json", "pointer": "/H1/primary/H1_transplant_minus_author/d_z", "value": 0.303839976272024, "decimals": 2},
-        "b_pos": {"file": "results/rule_b.json", "pointer": "/H1/primary/H1_transplant_minus_author/frac_positive", "value": 0.6640625, "decimals": 2},
-        "b_p": {"file": "results/rule_b.json", "pointer": "/H1/primary/H1_transplant_minus_author/p", "value": 0.00039996000399960006, "decimals": "sci"}
+        "a_au": {
+          "file": "results/rule_a.json",
+          "pointer": "/H1/conditions/author/regen_loss/mean",
+          "value": 0.0028690063663816545,
+          "decimals": 5
+        },
+        "a_tr": {
+          "file": "results/rule_a.json",
+          "pointer": "/H1/conditions/transplant/regen_loss/mean",
+          "value": 0.0028795566213375423,
+          "decimals": 5
+        },
+        "a_dz": {
+          "file": "results/rule_a.json",
+          "pointer": "/H1/primary/H1_transplant_minus_author/d_z",
+          "value": 0.04899404069300109,
+          "decimals": 2
+        },
+        "a_p": {
+          "file": "results/rule_a.json",
+          "pointer": "/H1/primary/H1_transplant_minus_author/p",
+          "value": 0.291970802919708,
+          "decimals": 2
+        },
+        "b_au": {
+          "file": "results/rule_b.json",
+          "pointer": "/H1/conditions/author/regen_loss/mean",
+          "value": 0.00144383199517506,
+          "decimals": 5
+        },
+        "b_tr": {
+          "file": "results/rule_b.json",
+          "pointer": "/H1/conditions/transplant/regen_loss/mean",
+          "value": 0.0015051242926347186,
+          "decimals": 5
+        },
+        "b_dz": {
+          "file": "results/rule_b.json",
+          "pointer": "/H1/primary/H1_transplant_minus_author/d_z",
+          "value": 0.303839976272024,
+          "decimals": 2
+        },
+        "b_pos": {
+          "file": "results/rule_b.json",
+          "pointer": "/H1/primary/H1_transplant_minus_author/frac_positive",
+          "value": 0.6640625,
+          "decimals": 2
+        },
+        "b_p": {
+          "file": "results/rule_b.json",
+          "pointer": "/H1/primary/H1_transplant_minus_author/p",
+          "value": 0.00039996000399960006,
+          "decimals": "sci"
+        }
       }
     },
     {
@@ -60,10 +266,30 @@
       "claim": "An author's comparator input is about twice as predictable from its own state as a transplanted one (the GhostInTheMachine v7 pattern, now in a body)",
       "evidence_text": "R² of the comparator input from the receiving cell's 13-channel state: rule A author {a_au} vs transplant {a_tr}; rule B {b_au} vs {b_tr}",
       "evidence": {
-        "a_au": {"file": "results/rule_a.json", "pointer": "/H1/comparator_input_predictable_from_own_state_r2/author", "value": 0.09623120596122037, "decimals": 3},
-        "a_tr": {"file": "results/rule_a.json", "pointer": "/H1/comparator_input_predictable_from_own_state_r2/transplant", "value": 0.04464770222482983, "decimals": 3},
-        "b_au": {"file": "results/rule_b.json", "pointer": "/H1/comparator_input_predictable_from_own_state_r2/author", "value": 0.09717279924972477, "decimals": 3},
-        "b_tr": {"file": "results/rule_b.json", "pointer": "/H1/comparator_input_predictable_from_own_state_r2/transplant", "value": 0.04851239529926721, "decimals": 3}
+        "a_au": {
+          "file": "results/rule_a.json",
+          "pointer": "/H1/comparator_input_predictable_from_own_state_r2/author",
+          "value": 0.09623120596122037,
+          "decimals": 3
+        },
+        "a_tr": {
+          "file": "results/rule_a.json",
+          "pointer": "/H1/comparator_input_predictable_from_own_state_r2/transplant",
+          "value": 0.04464770222482983,
+          "decimals": 3
+        },
+        "b_au": {
+          "file": "results/rule_b.json",
+          "pointer": "/H1/comparator_input_predictable_from_own_state_r2/author",
+          "value": 0.09717279924972477,
+          "decimals": 3
+        },
+        "b_tr": {
+          "file": "results/rule_b.json",
+          "pointer": "/H1/comparator_input_predictable_from_own_state_r2/transplant",
+          "value": 0.04851239529926721,
+          "decimals": 3
+        }
       }
     },
     {
@@ -72,12 +298,42 @@
       "claim": "What the clamp rewrites differs between rules: in rule A the regrown head turns into trunk and tail; in rule B head identity survives",
       "evidence_text": "anterior identity (1 = a perfect head) without → with clamp: rule A {a_c} → {a_p}; rule B {b_c} → {b_p}. The two rules evolved opposite voltage codes: tail voltage {a_v} in rule A, {b_v} in rule B",
       "evidence": {
-        "a_c": {"file": "results/rule_a.json", "pointer": "/H3/anterior_identity/control_first/mean", "value": 0.9994255514705882, "decimals": 3},
-        "a_p": {"file": "results/rule_a.json", "pointer": "/H3/anterior_identity/pulse_first/mean", "value": 0.68359375, "decimals": 3},
-        "b_c": {"file": "results/rule_b.json", "pointer": "/H3/anterior_identity/control_first/mean", "value": 0.9995404411764706, "decimals": 3},
-        "b_p": {"file": "results/rule_b.json", "pointer": "/H3/anterior_identity/pulse_first/mean", "value": 0.9940257352941178, "decimals": 3},
-        "a_v": {"file": "results/rule_a.json", "pointer": "/H3/clamp_voltage", "value": 3.9198405742645264, "decimals": 2},
-        "b_v": {"file": "results/rule_b.json", "pointer": "/H3/clamp_voltage", "value": -3.073279619216919, "decimals": 2}
+        "a_c": {
+          "file": "results/rule_a.json",
+          "pointer": "/H3/anterior_identity/control_first/mean",
+          "value": 0.9994255514705882,
+          "decimals": 3
+        },
+        "a_p": {
+          "file": "results/rule_a.json",
+          "pointer": "/H3/anterior_identity/pulse_first/mean",
+          "value": 0.68359375,
+          "decimals": 3
+        },
+        "b_c": {
+          "file": "results/rule_b.json",
+          "pointer": "/H3/anterior_identity/control_first/mean",
+          "value": 0.9995404411764706,
+          "decimals": 3
+        },
+        "b_p": {
+          "file": "results/rule_b.json",
+          "pointer": "/H3/anterior_identity/pulse_first/mean",
+          "value": 0.9940257352941178,
+          "decimals": 3
+        },
+        "a_v": {
+          "file": "results/rule_a.json",
+          "pointer": "/H3/clamp_voltage",
+          "value": 3.9198405742645264,
+          "decimals": 2
+        },
+        "b_v": {
+          "file": "results/rule_b.json",
+          "pointer": "/H3/clamp_voltage",
+          "value": -3.073279619216919,
+          "decimals": 2
+        }
       }
     },
     {
@@ -86,11 +342,36 @@
       "claim": "The clamp's effect persists through a second amputation with no clamp (anatomical memory rewritten)",
       "evidence_text": "second-regeneration error, previously clamped minus control: rule A d_z {a_dz}, fraction worse {a_pos}, p {a_p}; rule B d_z {b_dz}, p {b_p}",
       "evidence": {
-        "a_dz": {"file": "results/rule_a.json", "pointer": "/H3/primary/H3b_pulse_minus_control_second_regen/d_z", "value": 1.5720581016207864, "decimals": 2},
-        "a_pos": {"file": "results/rule_a.json", "pointer": "/H3/primary/H3b_pulse_minus_control_second_regen/frac_positive", "value": 0.96875, "decimals": 2},
-        "a_p": {"file": "results/rule_a.json", "pointer": "/H3/primary/H3b_pulse_minus_control_second_regen/p", "value": 9.999000099990002e-05, "decimals": "sci"},
-        "b_dz": {"file": "results/rule_b.json", "pointer": "/H3/primary/H3b_pulse_minus_control_second_regen/d_z", "value": 0.11333760797307683, "decimals": 2},
-        "b_p": {"file": "results/rule_b.json", "pointer": "/H3/primary/H3b_pulse_minus_control_second_regen/p", "value": 0.20267973202679732, "decimals": 2}
+        "a_dz": {
+          "file": "results/rule_a.json",
+          "pointer": "/H3/primary/H3b_pulse_minus_control_second_regen/d_z",
+          "value": 1.5720581016207864,
+          "decimals": 2
+        },
+        "a_pos": {
+          "file": "results/rule_a.json",
+          "pointer": "/H3/primary/H3b_pulse_minus_control_second_regen/frac_positive",
+          "value": 0.96875,
+          "decimals": 2
+        },
+        "a_p": {
+          "file": "results/rule_a.json",
+          "pointer": "/H3/primary/H3b_pulse_minus_control_second_regen/p",
+          "value": 9.999000099990002e-05,
+          "decimals": "sci"
+        },
+        "b_dz": {
+          "file": "results/rule_b.json",
+          "pointer": "/H3/primary/H3b_pulse_minus_control_second_regen/d_z",
+          "value": 0.11333760797307683,
+          "decimals": 2
+        },
+        "b_p": {
+          "file": "results/rule_b.json",
+          "pointer": "/H3/primary/H3b_pulse_minus_control_second_regen/p",
+          "value": 0.20267973202679732,
+          "decimals": 2
+        }
       }
     },
     {
@@ -99,11 +380,137 @@
       "claim": "In rule A, the persisting change is not held by any single channel group; voltage carries most of it",
       "evidence_text": "second-regeneration deficit after copying control channels into the clamped tissue: none restored {none}; identity {ident}; hidden {hid}; everything except voltage {abv} (so ~60% remains with voltage); voltage alone {volt}, much worse, because a control voltage map no longer fits the altered body",
       "evidence": {
-        "none": {"file": "results/h3_locus_rule_a.json", "pointer": "/H3_locus_exploratory/restored_group_deficit_vs_control/none/mean", "value": 0.002791216442346922, "decimals": 5},
-        "ident": {"file": "results/h3_locus_rule_a.json", "pointer": "/H3_locus_exploratory/restored_group_deficit_vs_control/identity/mean", "value": 0.0025067475107789505, "decimals": 5},
-        "hid": {"file": "results/h3_locus_rule_a.json", "pointer": "/H3_locus_exploratory/restored_group_deficit_vs_control/hidden/mean", "value": 0.0033153874956042273, "decimals": 5},
-        "abv": {"file": "results/h3_locus_rule_a.json", "pointer": "/H3_locus_exploratory/restored_group_deficit_vs_control/all_but_voltage/mean", "value": 0.0016740115643187892, "decimals": 5},
-        "volt": {"file": "results/h3_locus_rule_a.json", "pointer": "/H3_locus_exploratory/restored_group_deficit_vs_control/voltage/mean", "value": 0.04081824511922605, "decimals": 4}
+        "none": {
+          "file": "results/h3_locus_rule_a.json",
+          "pointer": "/H3_locus_exploratory/restored_group_deficit_vs_control/none/mean",
+          "value": 0.002791216442346922,
+          "decimals": 5
+        },
+        "ident": {
+          "file": "results/h3_locus_rule_a.json",
+          "pointer": "/H3_locus_exploratory/restored_group_deficit_vs_control/identity/mean",
+          "value": 0.0025067475107789505,
+          "decimals": 5
+        },
+        "hid": {
+          "file": "results/h3_locus_rule_a.json",
+          "pointer": "/H3_locus_exploratory/restored_group_deficit_vs_control/hidden/mean",
+          "value": 0.0033153874956042273,
+          "decimals": 5
+        },
+        "abv": {
+          "file": "results/h3_locus_rule_a.json",
+          "pointer": "/H3_locus_exploratory/restored_group_deficit_vs_control/all_but_voltage/mean",
+          "value": 0.0016740115643187892,
+          "decimals": 5
+        },
+        "volt": {
+          "file": "results/h3_locus_rule_a.json",
+          "pointer": "/H3_locus_exploratory/restored_group_deficit_vs_control/voltage/mean",
+          "value": 0.04081824511922605,
+          "decimals": 4
+        }
+      }
+    },
+    {
+      "id": "H6",
+      "status": "replicated",
+      "headline": false,
+      "claim": "The compiled change is remembered: after a second tail amputation with no intervention, previously clamped tissues still regrow more head posteriorly",
+      "evidence_text": "posterior head index after the second regeneration, untreated → designed history: rule A {a_n} → {a_d} (d_z {a_dz}, p {a_p}); rule B {b_n} → {b_d} (d_z {b_dz}, p {b_p}). Caveat: in rule A a shuffled clamp leaves as much memory ({a_s}), so what persists there is not specific to the code",
+      "evidence": {
+        "a_n": {
+          "file": "results/h5_rule_a.json",
+          "pointer": "/H5/posterior_head_index_after_reamputation/none/mean",
+          "value": -0.9612165178571429,
+          "decimals": 2
+        },
+        "a_d": {
+          "file": "results/h5_rule_a.json",
+          "pointer": "/H5/posterior_head_index_after_reamputation/designed/mean",
+          "value": -0.8606305803571428,
+          "decimals": 2
+        },
+        "a_s": {
+          "file": "results/h5_rule_a.json",
+          "pointer": "/H5/posterior_head_index_after_reamputation/shuffled/mean",
+          "value": -0.837890625,
+          "decimals": 2
+        },
+        "a_dz": {
+          "file": "results/h5_rule_a.json",
+          "pointer": "/H5/primary/H6_persistence_designed_minus_none/d_z",
+          "value": 2.9414018838209515,
+          "decimals": 2
+        },
+        "a_p": {
+          "file": "results/h5_rule_a.json",
+          "pointer": "/H5/primary/H6_persistence_designed_minus_none/p",
+          "value": 9.999000099990002e-05,
+          "decimals": "sci"
+        },
+        "b_n": {
+          "file": "results/h5_rule_b.json",
+          "pointer": "/H5/posterior_head_index_after_reamputation/none/mean",
+          "value": -0.9988839285714286,
+          "decimals": 2
+        },
+        "b_d": {
+          "file": "results/h5_rule_b.json",
+          "pointer": "/H5/posterior_head_index_after_reamputation/designed/mean",
+          "value": -0.884486607142857,
+          "decimals": 2
+        },
+        "b_dz": {
+          "file": "results/h5_rule_b.json",
+          "pointer": "/H5/primary/H6_persistence_designed_minus_none/d_z",
+          "value": 1.5595788040537684,
+          "decimals": 2
+        },
+        "b_p": {
+          "file": "results/h5_rule_b.json",
+          "pointer": "/H5/primary/H6_persistence_designed_minus_none/p",
+          "value": 9.999000099990002e-05,
+          "decimals": "sci"
+        }
+      }
+    },
+    {
+      "id": "H5-transfer",
+      "status": "exploratory",
+      "claim": "Bioelectric codes do not transfer as codes: across rules, voltage dose matters more than arrangement, and the compiler found only a local optimum",
+      "evidence_text": "rule B's pattern on rule A: designed {ba_d}, shuffled {ba_s} (shuffled works better; both far beyond rule A's own design, {a_d}); rule A's pattern on rule B: designed {ab_d} vs shuffled {ab_s}",
+      "evidence": {
+        "ba_d": {
+          "file": "results/h5x_b_on_a.json",
+          "pointer": "/H5/posterior_head_index/designed/mean",
+          "value": -0.17689732142857142,
+          "decimals": 2
+        },
+        "ba_s": {
+          "file": "results/h5x_b_on_a.json",
+          "pointer": "/H5/posterior_head_index/shuffled/mean",
+          "value": -0.05915178571428571,
+          "decimals": 2
+        },
+        "a_d": {
+          "file": "results/h5_rule_a.json",
+          "pointer": "/H5/posterior_head_index/designed/mean",
+          "value": -0.7225167410714285,
+          "decimals": 2
+        },
+        "ab_d": {
+          "file": "results/h5x_a_on_b.json",
+          "pointer": "/H5/posterior_head_index/designed/mean",
+          "value": -0.6609933035714286,
+          "decimals": 2
+        },
+        "ab_s": {
+          "file": "results/h5x_a_on_b.json",
+          "pointer": "/H5/posterior_head_index/shuffled/mean",
+          "value": -0.6848493303571428,
+          "decimals": 2
+        }
       }
     },
     {
@@ -112,10 +519,30 @@
       "claim": "A naive self-improvement loop overstates its own progress more than an audited (online-FDR-gated) loop",
       "evidence_text": "rule A, 6 seeds × 40 proposed self-edits per loop: naive loops believed they gained {nb} but the auditor measured {nt}; the gated loops adopted {ga} edits per loop, so their self-deception is exactly zero; naive minus gated self-deception p {p} (not significant with 6 seeds)",
       "evidence": {
-        "nb": {"file": "results/rsi.json", "pointer": "/H4/summary/naive/believed_gain/mean", "value": 5.366906407289207e-05, "decimals": "sci"},
-        "nt": {"file": "results/rsi.json", "pointer": "/H4/summary/naive/true_gain/mean", "value": 2.5946957369645435e-05, "decimals": "sci"},
-        "ga": {"file": "results/rsi.json", "pointer": "/H4/summary/gated/adopted/mean", "value": 0.0, "decimals": 1},
-        "p": {"file": "results/rsi.json", "pointer": "/H4/primary/H4_naive_minus_gated_self_deception/p", "value": 0.1875, "decimals": 2}
+        "nb": {
+          "file": "results/rsi.json",
+          "pointer": "/H4/summary/naive/believed_gain/mean",
+          "value": 5.366906407289207e-05,
+          "decimals": "sci"
+        },
+        "nt": {
+          "file": "results/rsi.json",
+          "pointer": "/H4/summary/naive/true_gain/mean",
+          "value": 2.5946957369645435e-05,
+          "decimals": "sci"
+        },
+        "ga": {
+          "file": "results/rsi.json",
+          "pointer": "/H4/summary/gated/adopted/mean",
+          "value": 0.0,
+          "decimals": 1
+        },
+        "p": {
+          "file": "results/rsi.json",
+          "pointer": "/H4/primary/H4_naive_minus_gated_self_deception/p",
+          "value": 0.1875,
+          "decimals": 2
+        }
       }
     },
     {
@@ -124,9 +551,24 @@
       "claim": "The naive loops adopted only physics edits, and a third of them made held-out tissues worse",
       "evidence_text": "naive: {na} adoptions per loop (all comparator-gain or gap-junction edits; no weight edit ever beat the benchmark), false-adoption fraction {nf}; gated: {ga}",
       "evidence": {
-        "na": {"file": "results/rsi.json", "pointer": "/H4/summary/naive/adopted/mean", "value": 2.0, "decimals": 1},
-        "nf": {"file": "results/rsi.json", "pointer": "/H4/summary/naive/false_adoption_fraction", "value": 0.3333333333333333, "decimals": 2},
-        "ga": {"file": "results/rsi.json", "pointer": "/H4/summary/gated/adopted/mean", "value": 0.0, "decimals": 1}
+        "na": {
+          "file": "results/rsi.json",
+          "pointer": "/H4/summary/naive/adopted/mean",
+          "value": 2.0,
+          "decimals": 1
+        },
+        "nf": {
+          "file": "results/rsi.json",
+          "pointer": "/H4/summary/naive/false_adoption_fraction",
+          "value": 0.3333333333333333,
+          "decimals": 2
+        },
+        "ga": {
+          "file": "results/rsi.json",
+          "pointer": "/H4/summary/gated/adopted/mean",
+          "value": 0.0,
+          "decimals": 1
+        }
       }
     },
     {
@@ -135,8 +577,18 @@
       "claim": "The test pipeline is calibrated: A/A comparisons do not produce false positives above the nominal rate",
       "evidence_text": "false-positive rate at α = 0.05 over 40 A/A tests of 128 tissues: rule A {a}, rule B {b}",
       "evidence": {
-        "a": {"file": "results/rule_a.json", "pointer": "/CAL/false_positive_rate_05", "value": 0.0, "decimals": 3},
-        "b": {"file": "results/rule_b.json", "pointer": "/CAL/false_positive_rate_05", "value": 0.025, "decimals": 3}
+        "a": {
+          "file": "results/rule_a.json",
+          "pointer": "/CAL/false_positive_rate_05",
+          "value": 0.0,
+          "decimals": 3
+        },
+        "b": {
+          "file": "results/rule_b.json",
+          "pointer": "/CAL/false_positive_rate_05",
+          "value": 0.025,
+          "decimals": 3
+        }
       }
     },
     {
@@ -145,10 +597,30 @@
       "claim": "Both evolved rules grow the target body from one founder cell",
       "evidence_text": "after 64 steps, body IoU with the target: rule A {a_iou}, rule B {b_iou}; region accuracy inside the body: rule A {a_ra}, rule B {b_ra}",
       "evidence": {
-        "a_iou": {"file": "results/rule_a.json", "pointer": "/H1/grown_fidelity/iou", "value": 0.9358975784322324, "decimals": 3},
-        "b_iou": {"file": "results/rule_b.json", "pointer": "/H1/grown_fidelity/iou", "value": 0.977008947726758, "decimals": 3},
-        "a_ra": {"file": "results/rule_a.json", "pointer": "/H1/grown_fidelity/region_accuracy", "value": 0.9998972039473684, "decimals": 3},
-        "b_ra": {"file": "results/rule_b.json", "pointer": "/H1/grown_fidelity/region_accuracy", "value": 0.9997258771929824, "decimals": 3}
+        "a_iou": {
+          "file": "results/rule_a.json",
+          "pointer": "/H1/grown_fidelity/iou",
+          "value": 0.9358975784322324,
+          "decimals": 3
+        },
+        "b_iou": {
+          "file": "results/rule_b.json",
+          "pointer": "/H1/grown_fidelity/iou",
+          "value": 0.977008947726758,
+          "decimals": 3
+        },
+        "a_ra": {
+          "file": "results/rule_a.json",
+          "pointer": "/H1/grown_fidelity/region_accuracy",
+          "value": 0.9998972039473684,
+          "decimals": 3
+        },
+        "b_ra": {
+          "file": "results/rule_b.json",
+          "pointer": "/H1/grown_fidelity/region_accuracy",
+          "value": 0.9997258771929824,
+          "decimals": 3
+        }
       }
     }
   ]
