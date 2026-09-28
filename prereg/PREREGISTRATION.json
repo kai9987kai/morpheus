@@ -1,0 +1,53 @@
+{
+  "title": "Morpheus v1: authorship, bioelectric coupling and audited self-improvement in regenerating synthetic tissues",
+  "version": "1.0",
+  "date": "2026-09-28",
+  "status": "Committed to the repository before any confirmatory run. Pilot runs used only an early 120-iteration rule that is not analysed, to debug the pipeline.",
+  "scope": "Synthetic computational experiments on a neural cellular automaton. Nothing here measures or implies sentience, consciousness or biological validity. 'Self-model' names a trained forward model inside each cell, and nothing more.",
+  "units": "One unit is a tissue: a founder cell grown under a frozen evolved rule, one wound drawn from the preregistered wound suite, and one stream of asynchronous-update noise. Every condition within an experiment reuses the same founders, wounds and noise (paired design, common random numbers).",
+  "rules": {
+    "A": "weights/rule_a.json: trained by backpropagation through time, seed 0, 2000 iterations, batch 16 (see weights meta). Primary.",
+    "B": "weights/rule_b.json: identical recipe, seed 1. Replication. The analysis of rule B is identical and was fixed before rule B was trained."
+  },
+  "training_is_not_a_test": "Training uses only random wounds from generator seeds drawn inside train_bptt; confirmatory suites use fixed seeds 1-4 and 10000+/20000+/30000+ that the trainer never draws from.",
+  "hypotheses": {
+    "H1": {
+      "claim": "Authorship: a regenerating tissue whose comparator receives its own self-model error regenerates better than when its comparator receives another tissue's error stream (transplant).",
+      "measure": "regeneration loss (mean over the last 8 of 48 regeneration steps of the anatomical MSE); per-tissue difference transplant minus author",
+      "test": "one-sided sign-flip permutation test on the mean paired difference, alpha 0.05, plus bootstrap 95% CI",
+      "n": 128, "suite_seed": 1,
+      "support_rule": "p < 0.05 and the CI lower bound > 0",
+      "secondary": "zero, delayed (8 steps) and shuffled (own error, permuted across the tissue's cells) versus author; Holm correction across the four contrasts including transplant",
+      "descriptive": "R^2 of the comparator input from the receiving cell's own 13-channel state, per condition (the Ghost-in-the-Machine v7 analogue: is an author's error its own?)"
+    },
+    "H2": {
+      "claim": "Gap junctions: blocking voltage coupling (diffusion = 0) during regeneration increases regeneration loss.",
+      "measure": "regeneration loss; per-tissue difference blocked minus normal",
+      "test": "one-sided sign-flip permutation, alpha 0.05, bootstrap CI",
+      "n": 128, "suite_seed": 2,
+      "support_rule": "p < 0.05 and CI lower bound > 0"
+    },
+    "H3": {
+      "claim": "Bioelectric memory: after a head amputation, clamping every cell's voltage for 12 steps to the value grown tissues show in their tail region (v*, measured on a separate calibration suite, seed 99) changes the regenerated anatomy (H3a), and the change persists through a second head amputation with no clamp (H3b).",
+      "measure": "regeneration loss after the first and after the second regeneration (48 steps each); per-tissue difference pulse minus control",
+      "test": "two-sided sign-flip permutation, alpha 0.05 each; H3b is interpreted only if H3a is supported",
+      "n": 128, "suite_seed": 3,
+      "support_rule": "p < 0.05 and CI excludes 0",
+      "descriptive": "anterior identity index: in the target head region, fraction of cells typed head minus fraction typed tail"
+    },
+    "CAL": {
+      "claim": "Null calibration of the H1 pipeline: A/A comparisons (author vs author with different update noise) reject at about the nominal rate.",
+      "reps": 40, "n": 128, "seed": 4,
+      "expectation": "false-positive rate at 0.05 not significantly above 0.05 (binomial)"
+    },
+    "H4": {
+      "claim": "Audited self-improvement: with the same proposer, a naive loop (adopt when a reused 8-tissue benchmark improves) overstates its own progress more than a gated loop (fresh 24 tissues per decision, sign-flip p against a LORD++ online-FDR level at alpha 0.1, plus a frozen 16-tissue anchor with 2% tolerance).",
+      "measure": "self-deception = believed cumulative gain (sum of estimates at adoption) minus true gain (test-suite loss before minus after, 128 held-out tissues never used for decisions)",
+      "test": "paired by loop seed (6 seeds, 40 proposals each), one-sided exact sign-flip on naive minus gated self-deception, alpha 0.05",
+      "support_rule": "p < 0.05",
+      "secondary": "false adoptions (adopted edits whose true test gain <= 0), true gain, number adopted; descriptive only"
+    }
+  },
+  "status_vocabulary": ["supported", "not supported", "replicated", "not replicated", "open", "retracted"],
+  "deviations": "Any deviation from this file is listed in docs/DEVIATIONS.md with its reason. Results files record the SHA-256 of this file."
+}

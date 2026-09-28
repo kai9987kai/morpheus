@@ -1,0 +1,137 @@
+"""Recursive self-improvement under statistical audit.
+
+The organism repeatedly proposes edits to its own developmental rule (its network
+weights) and to its own physics (comparator gain, gap-junction coupling), and decides
+whether to adopt each edit. Two ways of deciding are compared on the *same* proposer:
+
+    naive  adopt when the edit lowers mean loss on a small evaluation suite that is
+           reused for every decision (the usual "benchmark hill-climb")
+    gated  test every edit on fresh tissues never used before (paired, common random
+           numbers), adopt only when the one-sided sign-flip p-value clears the current
+           LORD++ online-FDR level, and never regress on a frozen anchor suite by more
+           than a tolerance (anti-forgetting)
+
+Each loop keeps a ledger of what it *believes* it gained (the estimate at the moment
+of adoption) and an auditor, which the loop never sees, measures what it *actually*
+gained on a large held-out test suite. Their difference is the loop's
+self-deception: how much a self-improving system overstates its own progress.
+"""
+
+from __future__ import annotations
+
+import dataclasses
+import math
+
+import numpy as np
+
+from . import anatomy, stats, train
+from .life import Protocol, live
+from .tissue import Physics
+
+
+@dataclasses.dataclass(frozen=True)
+class Config:
+    proposals: int = 40
+    alpha: float = 0.1               # LORD++ target FDR for adopted edits
+    gated_eval: int = 24             # fresh tissues per gated decision
+    naive_eval: int = 8              # reused tissues for every naive decision
+    anchor: int = 16                 # frozen anchor suite (gated only)
+    anchor_tolerance: float = 0.02   # relative anchor regression allowed
+    test: int = 128                  # auditor's held-out suite
+    es_pairs: int = 8
+    es_step: float = 0.004
+    mutation_sd: float = 0.01
+    physics_sd: float = 0.3
+    p_es: float = 0.45
+    p_mutation: float = 0.4          # remainder: physics edits
+
+
+def suite(n: int, seed: int):
+    rng = np.random.default_rng(seed)
+    kinds, wounds = anatomy.random_wounds(n, rng)
+    return {"kinds": kinds, "wounds": wounds, "seed": int(rng.integers(1 << 31))}
+
+
+def losses(theta, physics, s) -> np.ndarray:
+    out = live(theta, s["wounds"], physics, Protocol(), s["seed"])
+    return out["grow_loss"] + out["regen_loss"]
+
+
+def propose(theta, physics: Physics, rng, cfg: Config):
+    u = rng.random()
+    if u < cfg.p_es:
+        g, _ = train.es_gradient(theta, rng, cfg.es_pairs, 0.02, 2, physics, Protocol(),
+                                 int(rng.integers(1 << 31)), anatomy.target())
+        step = cfg.es_step * g / (np.sqrt((g ** 2).mean()) + 1e-12)
+        return "es", (theta - step).astype(np.float32), physics
+    if u < cfg.p_es + cfg.p_mutation:
+        return "mutation", (theta + cfg.mutation_sd * rng.standard_normal(theta.size)).astype(np.float32), physics
+    field = "gain" if rng.random() < 0.5 else "diffusion"
+    new = dataclasses.replace(physics, **{field: float(getattr(physics, field) * math.exp(cfg.physics_sd * rng.standard_normal()))})
+    return f"physics:{field}", theta, new
+
+
+def run_loop(theta0, physics0: Physics, mode: str, seed: int, cfg: Config = Config(), log=None) -> dict:
+    """Run one self-improvement loop. ``seed`` fixes the proposer; suites are derived from it."""
+    assert mode in ("naive", "gated")
+    prop_rng = np.random.default_rng([seed, 1])        # same proposer stream for both modes
+    fresh_seeds = np.random.default_rng([seed, 2])
+    naive_suite = suite(cfg.naive_eval, 10_000 + seed)
+    anchor_suite = suite(cfg.anchor, 20_000 + seed)
+    test_suite = suite(cfg.test, 30_000 + seed)        # the auditor's, never used for decisions
+    lord = stats.LordPlusPlus(cfg.alpha)
+
+    theta, physics = theta0.copy(), physics0
+    test_now = losses(theta, physics, test_suite)
+    test_start = float(test_now.mean())
+    naive_now = losses(theta, physics, naive_suite) if mode == "naive" else None
+    anchor_now = losses(theta, physics, anchor_suite) if mode == "gated" else None
+    believed, ledger = 0.0, []
+
+    for t in range(cfg.proposals):
+        kind, cand_theta, cand_phys = propose(theta, physics, prop_rng, cfg)
+        row = {"t": t, "kind": kind}
+        if mode == "naive":
+            cand = losses(cand_theta, cand_phys, naive_suite)
+            est = float((naive_now - cand).mean())
+            accept = est > 0
+            row.update(estimate=est, accepted=bool(accept))
+        else:
+            fresh = suite(cfg.gated_eval, int(fresh_seeds.integers(1 << 31)))
+            d = losses(theta, physics, fresh) - losses(cand_theta, cand_phys, fresh)
+            p = stats.sign_flip_p(d, rng=np.random.default_rng(t), alternative="greater")
+            passed, level = lord.test(p)
+            est = float(d.mean())
+            anchor_cand = losses(cand_theta, cand_phys, anchor_suite)
+            anchor_ok = anchor_cand.mean() <= anchor_now.mean() * (1 + cfg.anchor_tolerance)
+            accept = passed and anchor_ok
+            row.update(estimate=est, p=p, level=level, anchor_ok=bool(anchor_ok), accepted=bool(accept))
+        if accept:
+            test_cand = losses(cand_theta, cand_phys, test_suite)
+            row["true_gain"] = float((test_now - test_cand).mean())
+            believed += est
+            theta, physics, test_now = cand_theta, cand_phys, test_cand
+            if mode == "naive":
+                naive_now = cand
+            else:
+                anchor_now = anchor_cand
+        row["believed_total"] = believed
+        row["true_total"] = test_start - float(test_now.mean())
+        ledger.append(row)
+        if log:
+            log(f"[{mode} seed {seed}] {t:3d} {kind:18s} est {row['estimate']:+.5f} "
+                f"{'ADOPT' if accept else 'reject'}  believed {believed:+.4f}  true {row['true_total']:+.4f}")
+
+    adopted = [r for r in ledger if r["accepted"]]
+    return {
+        "mode": mode, "seed": seed,
+        "adopted": len(adopted),
+        "false_adoptions": sum(r["true_gain"] <= 0 for r in adopted),
+        "believed_gain": believed,
+        "true_gain": test_start - float(test_now.mean()),
+        "self_deception": believed - (test_start - float(test_now.mean())),
+        "test_loss_start": test_start, "test_loss_end": float(test_now.mean()),
+        "final_physics": dataclasses.asdict(physics),
+        "ledger": ledger,
+        "theta": theta,
+    }

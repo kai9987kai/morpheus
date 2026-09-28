@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Morpheus Lab</title>
+<style>
+:root {
+  --bg: #0d1014; --panel: #151a21; --line: #252c36; --ink: #e6e9ee; --dim: #8b95a3;
+  --head: #f2b544; --trunk: #37b3a4; --tail: #9173f2; --accent: #ff6b5a; --ok: #58c27d;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) { --bg: #f5f3ef; --panel: #ffffff; --line: #e1ddd5; --ink: #1b1f24; --dim: #616a75; }
+}
+:root[data-theme="light"] { --bg: #f5f3ef; --panel: #ffffff; --line: #e1ddd5; --ink: #1b1f24; --dim: #616a75; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+header { padding: 22px 20px 6px; max-width: 1180px; margin: 0 auto; }
+h1 { margin: 0; font-size: 26px; letter-spacing: .5px; }
+h1 span { color: var(--dim); font-weight: 400; font-size: 16px; margin-left: 8px; }
+header p { margin: 6px 0 0; color: var(--dim); max-width: 820px; }
+main { max-width: 1180px; margin: 0 auto; padding: 12px 16px 40px; display: grid; grid-template-columns: minmax(0, 560px) minmax(0, 1fr); gap: 16px; }
+@media (max-width: 900px) { main { grid-template-columns: minmax(0, 1fr); } }
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px; }
+.panel h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 1.2px; color: var(--dim); margin: 0 0 10px; font-weight: 600; }
+#stage { position: relative; width: 100%; aspect-ratio: 1; background: #07090c; border-radius: 8px; overflow: hidden; cursor: crosshair; touch-action: none; }
+#stage canvas { width: 100%; height: 100%; image-rendering: pixelated; display: block; }
+.row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 10px; }
+button, select { font: inherit; font-size: 13px; color: var(--ink); background: transparent; border: 1px solid var(--line); border-radius: 6px; padding: 5px 10px; cursor: pointer; }
+button:hover, select:hover { border-color: var(--dim); }
+button.on { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+label { font-size: 13px; color: var(--dim); display: inline-flex; align-items: center; gap: 6px; }
+input[type=range] { width: 110px; }
+.metrics { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin-top: 12px; }
+.metric { border: 1px solid var(--line); border-radius: 8px; padding: 6px 8px; }
+.metric b { display: block; font: 600 18px var(--mono); }
+.metric small { color: var(--dim); font-size: 11px; text-transform: uppercase; letter-spacing: .8px; }
+#spark { width: 100%; height: 60px; display: block; margin-top: 8px; }
+.legend { display: flex; gap: 12px; font-size: 12px; color: var(--dim); margin-top: 8px; flex-wrap: wrap; }
+.sw { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 4px; vertical-align: -1px; }
+.hint { font-size: 12.5px; color: var(--dim); margin-top: 8px; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+td, th { text-align: left; vertical-align: top; padding: 6px 6px; border-top: 1px solid var(--line); }
+th { color: var(--dim); font-weight: 600; font-size: 11.5px; text-transform: uppercase; letter-spacing: .8px; }
+.status { font: 600 11px var(--mono); padding: 2px 6px; border-radius: 4px; white-space: nowrap; border: 1px solid currentColor; }
+.s-supported, .s-replicated { color: var(--ok); }
+.s-not-supported, .s-not-replicated, .s-retracted { color: var(--accent); }
+.s-open { color: var(--dim); }
+.stack { display: grid; gap: 16px; align-content: start; min-width: 0; }
+#rsi { width: 100%; height: 220px; display: block; }
+.note { color: var(--dim); font-size: 12.5px; }
+code { font-family: var(--mono); font-size: 12.5px; }
+.bars { display: grid; grid-template-columns: 90px 1fr 70px; gap: 4px 8px; align-items: center; font-size: 12.5px; }
+.bar { height: 10px; background: var(--trunk); border-radius: 2px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Morpheus <span>anatomical self-model lab</span></h1>
+  <p>A tissue grown from one cell by an evolved rule. Every cell carries a small forward model of itself and a membrane voltage that flows through gap junctions. Cut it, rewrite its voltage, silence its self-model, and watch whether it remembers what body it is.</p>
+</header>
+<main>
+  <section class="panel">
+    <h2>Living tissue</h2>
+    <div id="stage"><canvas id="cv" width="32" height="32"></canvas></div>
+    <div class="row" role="toolbar" aria-label="View">
+      <button data-view="anatomy" class="on">Anatomy</button>
+      <button data-view="voltage">Voltage</button>
+      <button data-view="error">Self-model error</button>
+      <button data-view="target">Target</button>
+    </div>
+    <div class="row" role="toolbar" aria-label="Tool">
+      <button data-tool="scalpel" class="on">Scalpel</button>
+      <button data-tool="vplus">Voltage +</button>
+      <button data-tool="vminus">Voltage −</button>
+      <label>radius <input id="radius" type="range" min="1" max="6" value="3"></label>
+    </div>
+    <div class="row">
+      <button id="play">Pause</button>
+      <button id="stepb">Step</button>
+      <button id="reset">Regrow from one cell</button>
+      <button id="cuthead">Amputate head</button>
+      <button id="cuttail">Amputate tail</button>
+    </div>
+    <div class="row">
+      <label>comparator <select id="comp"><option value="author">own error (author)</option><option value="zero">silenced</option><option value="delayed">own, 8 steps late</option></select></label>
+      <label><input id="gap" type="checkbox" checked> gap junctions</label>
+      <label>speed <input id="speed" type="range" min="1" max="8" value="2"></label>
+    </div>
+    <div class="metrics">
+      <div class="metric"><small>step</small><b id="m-t">0</b></div>
+      <div class="metric"><small>cells</small><b id="m-n">0</b></div>
+      <div class="metric"><small>anatomy error</small><b id="m-l">–</b></div>
+      <div class="metric"><small>|self error|</small><b id="m-e">–</b></div>
+    </div>
+    <canvas id="spark" width="520" height="60" aria-label="anatomy error over time"></canvas>
+    <div class="legend" id="legend"></div>
+    <p class="hint">Drag on the tissue to use the tool. Voltage brushes clamp the membrane voltage while held, like an optogenetic or ionophore pulse.</p>
+  </section>
+  <div class="stack">
+    <section class="panel">
+      <h2>What the experiments found</h2>
+      <div id="claims" class="note">No results embedded yet. Run <code>morpheus run all</code> then <code>morpheus export-web</code>.</div>
+    </section>
+    <section class="panel">
+      <h2>Regeneration under each comparator condition (H1)</h2>
+      <div id="h1" class="note">–</div>
+    </section>
+    <section class="panel">
+      <h2>Audited self-improvement (H4): what each loop believed vs what was true</h2>
+      <canvas id="rsi" width="640" height="220"></canvas>
+      <div id="rsi-note" class="note"></div>
+    </section>
+  </div>
+</main>
+<script src="tissue.js"></script>
+<script src="data.js"></script>
+<script>
+(function () {
+  "use strict";
+  const D = window.MORPHEUS_DATA;
+  const S = 32, C = MorpheusTissue.C, VIS = MorpheusTissue.VIS;
+  const cv = document.getElementById("cv"), ctx = cv.getContext("2d");
+  const img = ctx.createImageData(S, S);
+  const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+  const hex = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+  let HEADC = hex(css("--head")), TRUNKC = hex(css("--trunk")), TAILC = hex(css("--tail"));
+  if (!D) { document.querySelector("header p").textContent = "web/data.js is missing: run `morpheus export-web` to embed a trained rule."; return; }
+  const tissue = new MorpheusTissue.Tissue(D.weights.theta, D.weights.physics, S);
+  tissue.rand = MorpheusTissue.mulberry32(Date.now() & 0xffff);
+  const target = D.target;
+  let view = "anatomy", tool = "scalpel", playing = true, brush = null, lossHist = [];
+
+  function lossNow() {
+    let l = 0;
+    for (let y = 0; y < S; y++) for (let x = 0; x < S; x++) {
+      const i = (y * S + x) * C, t = target[y][x];
+      const v = [tissue.s[i], tissue.s[i + 2], tissue.s[i + 3], tissue.s[i + 4]];
+      for (let k = 0; k < 4; k++) l += (v[k] - t[k]) ** 2;
+    }
+    return l / (S * S * 4);
+  }
+
+  function draw() {
+    const d = img.data, s = tissue.s;
+    let cells = 0, e = 0;
+    for (let y = 0; y < S; y++) for (let x = 0; x < S; x++) {
+      const i = y * S + x, o = i * 4, a = Math.max(0, Math.min(1, s[i * C]));
+      let r = 7, g = 9, b = 12;
+      if (view === "target") {
+        const t = target[y][x];
+        if (t[0] > 0.5) [r, g, b] = t[1] ? HEADC : t[2] ? TRUNKC : TAILC;
+      } else if (s[i * C] > 0.1) {
+        cells++;
+        if (view === "anatomy") {
+          const h = Math.max(0, s[i * C + 2]), tr = Math.max(0, s[i * C + 3]), tl = Math.max(0, s[i * C + 4]);
+          const z = h + tr + tl + 1e-6, lum = 0.35 + 0.65 * a;
+          const mix = (k) => (h * HEADC[k] + tr * TRUNKC[k] + tl * TAILC[k]) / z * lum;
+          r = mix(0); g = mix(1); b = mix(2);
+        } else if (view === "voltage") {
+          const v = Math.max(-1, Math.min(1, s[i * C + 1]));
+          r = v > 0 ? 40 + 215 * v : 40; b = v < 0 ? 40 - 215 * v : 40; g = 40 + 40 * (1 - Math.abs(v));
+        } else {
+          let m = 0;
+          for (let k = 0; k < VIS; k++) m += tissue.eps[i * VIS + k] ** 2;
+          m = Math.sqrt(m); e += m;
+          const q = Math.min(1, m * 12);
+          r = 30 + 225 * q; g = 30 + 160 * q; b = 40 + 60 * q;
+        }
+      }
+      d[o] = r; d[o + 1] = g; d[o + 2] = b; d[o + 3] = 255;
+    }
+    ctx.putImageData(img, 0, 0);
+    if (view !== "error") { e = 0; for (let k = 0; k < tissue.eps.length; k++) e += Math.abs(tissue.eps[k]); e /= Math.max(1, cells * VIS); }
+    else e /= Math.max(1, cells);
+    const l = lossNow();
+    lossHist.push(l); if (lossHist.length > 260) lossHist.shift();
+    document.getElementById("m-t").textContent = tissue.t;
+    document.getElementById("m-n").textContent = cells;
+    document.getElementById("m-l").textContent = l.toFixed(4);
+    document.getElementById("m-e").textContent = e.toFixed(4);
+    spark();
+  }
+
+  function spark() {
+    const c = document.getElementById("spark"), g = c.getContext("2d");
+    g.clearRect(0, 0, c.width, c.height);
+    const mx = Math.max(0.12, ...lossHist);
+    g.strokeStyle = css("--accent"); g.lineWidth = 2; g.beginPath();
+    lossHist.forEach((v, i) => { const x = i / 259 * c.width, y = c.height - 4 - v / mx * (c.height - 8); i ? g.lineTo(x, y) : g.moveTo(x, y); });
+    g.stroke();
+  }
+
+  function tick() {
+    const mode = document.getElementById("comp").value;
+    const opts = { epsIn: tissue.comparatorInput(mode, 8) };
+    if (!document.getElementById("gap").checked) opts.diffusion = 0;
+    if (brush && tool !== "scalpel") opts.vclamp = { mask: brushMask(brush), value: tool === "vplus" ? 1 : -1 };
+    tissue.step(opts);
+  }
+
+  function brushMask(p) {
+    const r = +document.getElementById("radius").value, m = new Uint8Array(S * S);
+    for (let y = 0; y < S; y++) for (let x = 0; x < S; x++) if ((y - p.y) ** 2 + (x - p.x) ** 2 <= r * r) m[y * S + x] = 1;
+    return m;
+  }
+
+  function loop() {
+    if (playing) { const n = +document.getElementById("speed").value; for (let k = 0; k < n; k++) tick(); }
+    if (brush && tool === "scalpel") { const m = brushMask(brush); tissue.cut((y, x) => m[y * S + x]); }
+    draw();
+    requestAnimationFrame(loop);
+  }
+
+  const stage = document.getElementById("stage");
+  function cell(ev) { const r = stage.getBoundingClientRect(); return { x: Math.floor((ev.clientX - r.left) / r.width * S), y: Math.floor((ev.clientY - r.top) / r.height * S) }; }
+  stage.addEventListener("pointerdown", (ev) => { stage.setPointerCapture(ev.pointerId); brush = cell(ev); });
+  stage.addEventListener("pointermove", (ev) => { if (brush) brush = cell(ev); });
+  ["pointerup", "pointercancel"].forEach((t) => stage.addEventListener(t, () => { brush = null; }));
+
+  function group(attr, set) {
+    document.querySelectorAll(`[data-${attr}]`).forEach((b) => b.addEventListener("click", () => {
+      document.querySelectorAll(`[data-${attr}]`).forEach((o) => o.classList.toggle("on", o === b));
+      set(b.dataset[attr]); legend();
+    }));
+  }
+  group("view", (v) => { view = v; });
+  group("tool", (v) => { tool = v; });
+  document.getElementById("play").onclick = (e) => { playing = !playing; e.target.textContent = playing ? "Pause" : "Play"; };
+  document.getElementById("stepb").onclick = () => { tick(); };
+  document.getElementById("reset").onclick = () => { tissue.seed(); lossHist = []; };
+  const mid = (S - 1) / 2;
+  document.getElementById("cuthead").onclick = () => tissue.cut((y, x) => x < mid - S * 0.17);
+  document.getElementById("cuttail").onclick = () => tissue.cut((y, x) => x > mid + S * 0.14);
+
+  function legend() {
+    const L = document.getElementById("legend");
+    const sw = (c, t) => `<span><span class="sw" style="background:${c}"></span>${t}</span>`;
+    L.innerHTML = view === "voltage" ? sw("#ff2828", "depolarised (+)") + sw("#2828ff", "hyperpolarised (−)")
+      : view === "error" ? sw("#ffbe64", "large self-model error") + sw("#1e1e28", "predicted")
+      : sw(css("--head"), "head") + sw(css("--trunk"), "trunk") + sw(css("--tail"), "tail");
+  }
+  legend();
+
+  // ---------------- evidence panels ----------------
+  const esc = (t) => String(t).replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
+  if (D.claims) {
+    document.getElementById("claims").innerHTML = "<table><tr><th>claim</th><th>status</th></tr>" + D.claims.map((c) =>
+      `<tr><td>${c.headline ? "<b>" + esc(c.claim) + "</b>" : esc(c.claim)}<div class="note">${esc(c.evidence)}</div></td>` +
+      `<td><span class="status s-${c.status.replace(/ /g, "-")}">${esc(c.status)}</span></td></tr>`).join("") + "</table>";
+  }
+  const A = D.results && (D.results.rule_a || Object.values(D.results)[0]);
+  if (A && A.H1) {
+    const conds = A.H1.conditions, names = Object.keys(conds);
+    const vals = names.map((n) => conds[n].regen_loss.mean), mx = Math.max(...vals);
+    document.getElementById("h1").innerHTML = '<div class="bars">' + names.map((n, i) =>
+      `<span>${n}</span><div class="bar" style="width:${(vals[i] / mx * 100).toFixed(1)}%;${n === "author" ? "background:var(--head)" : ""}"></div><code>${vals[i].toFixed(4)}</code>`).join("") +
+      '</div><p class="note">Mean regeneration error (lower is better) for the same tissues and wounds, differing only in what their comparator is fed.</p>';
+  }
+  const R = D.results && D.results.rsi;
+  if (R && R.H4) drawRSI(R.H4);
+
+  function drawRSI(h4) {
+    const c = document.getElementById("rsi"), g = c.getContext("2d"), W = c.width, H = c.height, pad = 34;
+    const loops = h4.loops;
+    let lo = 0, hi = 0;
+    loops.forEach((l) => l.ledger.forEach((r) => { lo = Math.min(lo, r.believed_total, r.true_total); hi = Math.max(hi, r.believed_total, r.true_total); }));
+    const X = (t) => pad + t / (h4.proposals - 1) * (W - pad - 8), Y = (v) => H - pad + 8 - (v - lo) / (hi - lo || 1) * (H - pad - 8);
+    g.clearRect(0, 0, W, H);
+    g.strokeStyle = css("--line"); g.beginPath(); g.moveTo(pad, Y(0)); g.lineTo(W - 8, Y(0)); g.stroke();
+    g.fillStyle = css("--dim"); g.font = "11px system-ui";
+    g.fillText("proposals considered →", W - 150, H - 8); g.fillText("cumulative gain", 4, 12);
+    const col = { naive: css("--accent"), gated: css("--ok") };
+    loops.forEach((l) => {
+      for (const [key, dash] of [["believed_total", []], ["true_total", [4, 3]]]) {
+        g.strokeStyle = col[l.mode]; g.setLineDash(dash); g.lineWidth = 1.5; g.beginPath();
+        l.ledger.forEach((r, i) => { i ? g.lineTo(X(r.t), Y(r[key])) : g.moveTo(X(r.t), Y(r[key])); });
+        g.stroke();
+      }
+    });
+    g.setLineDash([]);
+    const s = h4.summary;
+    document.getElementById("rsi-note").innerHTML =
+      `<span style="color:${col.naive}">naive</span> vs <span style="color:${col.gated}">gated</span>; solid = what the loop believes it gained, dashed = what the auditor measured on held-out tissues. ` +
+      `Mean self-deception: naive ${s.naive.self_deception.mean.toFixed(4)}, gated ${s.gated.self_deception.mean.toFixed(4)}; ` +
+      `false adoptions: naive ${(100 * s.naive.false_adoption_fraction).toFixed(0)}%, gated ${(100 * s.gated.false_adoption_fraction).toFixed(0)}%.`;
+  }
+
+  requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>
