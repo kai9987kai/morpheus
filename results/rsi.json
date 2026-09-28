@@ -1,0 +1,4926 @@
+{
+ "weights": "weights/rule_a.json",
+ "weights_meta": {
+  "trainer": "bptt+persistence-pool",
+  "iterations": 3000,
+  "batch": 16,
+  "lr": 0.002,
+  "seed": 0,
+  "final_loss_last50": 0.004809590385274911,
+  "seconds": 2256
+ },
+ "provenance": {
+  "morpheus": "0.1.0",
+  "python": "3.11.15",
+  "numpy": "2.4.6",
+  "platform": "Linux-6.18.44-fc-v37-x86_64-with-glibc2.39",
+  "git_commit": "b092c887a6bfa736ded63fbd8886176902feb9f7",
+  "weights_sha256": "42a89dadb116d190d63d2024460dbfc52fd46ff35971701a56c21c9e6402d474",
+  "prereg_sha256": "2f3da11c8d840dcc73e07e556f8a851e9a01c1dc3d7f0e360aa543e8b3c6d47d",
+  "utc": "2026-09-28T10:31:10Z"
+ },
+ "H4": {
+  "seeds": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5
+  ],
+  "proposals": 40,
+  "summary": {
+   "naive": {
+    "adopted": {
+     "mean": 2.0,
+     "ci95": [
+      1.5,
+      2.5
+     ],
+     "n": 6
+    },
+    "false_adoptions": {
+     "mean": 0.6666666666666666,
+     "ci95": [
+      0.3333333333333333,
+      1.0
+     ],
+     "n": 6
+    },
+    "believed_gain": {
+     "mean": 5.366906407289207e-05,
+     "ci95": [
+      2.691344222209106e-05,
+      7.968294570067276e-05
+     ],
+     "n": 6
+    },
+    "true_gain": {
+     "mean": 2.5946957369645435e-05,
+     "ci95": [
+      -1.5766747916738193e-05,
+      6.918283179402351e-05
+     ],
+     "n": 6
+    },
+    "self_deception": {
+     "mean": 2.7722106703246634e-05,
+     "ci95": [
+      -1.4038358737404147e-05,
+      7.881274602065484e-05
+     ],
+     "n": 6
+    },
+    "false_adoption_fraction": 0.3333333333333333
+   },
+   "gated": {
+    "adopted": {
+     "mean": 0.0,
+     "ci95": [
+      0.0,
+      0.0
+     ],
+     "n": 6
+    },
+    "false_adoptions": {
+     "mean": 0.0,
+     "ci95": [
+      0.0,
+      0.0
+     ],
+     "n": 6
+    },
+    "believed_gain": {
+     "mean": 0.0,
+     "ci95": [
+      0.0,
+      0.0
+     ],
+     "n": 6
+    },
+    "true_gain": {
+     "mean": 0.0,
+     "ci95": [
+      0.0,
+      0.0
+     ],
+     "n": 6
+    },
+    "self_deception": {
+     "mean": 0.0,
+     "ci95": [
+      0.0,
+      0.0
+     ],
+     "n": 6
+    },
+    "false_adoption_fraction": 0.0
+   }
+  },
+  "primary": {
+   "H4_naive_minus_gated_self_deception": {
+    "n": 6,
+    "mean": 2.7722106703246634e-05,
+    "ci95": [
+     -1.4038358737404147e-05,
+     7.881274602065484e-05
+    ],
+    "d_z": 0.4375731993241933,
+    "frac_positive": 0.5,
+    "p": 0.1875,
+    "alternative": "greater"
+   }
+  },
+  "loops": [
+   {
+    "mode": "naive",
+    "seed": 0,
+    "adopted": 2,
+    "false_adoptions": 1,
+    "believed_gain": 6.762758130207658e-05,
+    "true_gain": 8.8568776845932e-06,
+    "self_deception": 5.877070361748338e-05,
+    "test_loss_start": 0.004395396448671818,
+    "test_loss_end": 0.004386539570987225,
+    "final_physics": {
+     "diffusion": 0.1,
+     "fire_rate": 0.5,
+     "gain": 0.774773890301056
+    },
+    "ledger": [
+     {
+      "t": 0,
+      "kind": "physics:diffusion",
+      "estimate": -0.00041378731839358807,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 1,
+      "kind": "physics:gain",
+      "estimate": -0.0003710172313731164,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 2,
+      "kind": "mutation",
+      "estimate": -0.0017976535018533468,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 3,
+      "kind": "practice",
+      "estimate": -0.0012241697404533625,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 4,
+      "kind": "practice",
+      "estimate": -0.0013060371857136488,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 5,
+      "kind": "practice",
+      "estimate": -0.001455632271245122,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 6,
+      "kind": "practice",
+      "estimate": -0.0011662710458040237,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 7,
+      "kind": "practice",
+      "estimate": -0.0013056345051154494,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 8,
+      "kind": "physics:diffusion",
+      "estimate": -4.8430083552375436e-05,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 9,
+      "kind": "practice",
+      "estimate": -0.0016782113816589117,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 10,
+      "kind": "mutation",
+      "estimate": -0.0006966713699512184,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 11,
+      "kind": "mutation",
+      "estimate": -0.0004911996074952185,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 12,
+      "kind": "practice",
+      "estimate": -0.0015087195206433535,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 13,
+      "kind": "mutation",
+      "estimate": -0.0024247602559626102,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 14,
+      "kind": "mutation",
+      "estimate": -0.0011464215349406004,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 15,
+      "kind": "mutation",
+      "estimate": -0.005961237009614706,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 16,
+      "kind": "practice",
+      "estimate": -0.001128514064475894,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 17,
+      "kind": "mutation",
+      "estimate": -0.0029207984916865826,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 18,
+      "kind": "physics:gain",
+      "estimate": 6.475322879850864e-05,
+      "accepted": true,
+      "true_gain": -2.282575769640971e-05,
+      "believed_total": 6.475322879850864e-05,
+      "true_total": -2.2825784981250763e-05
+     },
+     {
+      "t": 19,
+      "kind": "practice",
+      "estimate": -0.0013480959460139275,
+      "accepted": false,
+      "believed_total": 6.475322879850864e-05,
+      "true_total": -2.2825784981250763e-05
+     },
+     {
+      "t": 20,
+      "kind": "practice",
+      "estimate": -0.0014029924059286714,
+      "accepted": false,
+      "believed_total": 6.475322879850864e-05,
+      "true_total": -2.2825784981250763e-05
+     },
+     {
+      "t": 21,
+      "kind": "physics:gain",
+      "estimate": -2.2975174942985177e-05,
+      "accepted": false,
+      "believed_total": 6.475322879850864e-05,
+      "true_total": -2.2825784981250763e-05
+     },
+     {
+      "t": 22,
+      "kind": "mutation",
+      "estimate": -0.004243690986186266,
+      "accepted": false,
+      "believed_total": 6.475322879850864e-05,
+      "true_total": -2.2825784981250763e-05
+     },
+     {
+      "t": 23,
+      "kind": "practice",
+      "estimate": -0.0014502537669613957,
+      "accepted": false,
+      "believed_total": 6.475322879850864e-05,
+      "true_total": -2.2825784981250763e-05
+     },
+     {
+      "t": 24,
+      "kind": "mutation",
+      "estimate": -0.0005908465245738626,
+      "accepted": false,
+      "believed_total": 6.475322879850864e-05,
+      "true_total": -2.2825784981250763e-05
+     },
+     {
+      "t": 25,
+      "kind": "practice",
+      "estimate": -0.001339548616670072,
+      "accepted": false,
+      "believed_total": 6.475322879850864e-05,
+      "true_total": -2.2825784981250763e-05
+     },
+     {
+      "t": 26,
+      "kind": "practice",
+      "estimate": -0.0010487769031897187,
+      "accepted": false,
+      "believed_total": 6.475322879850864e-05,
+      "true_total": -2.2825784981250763e-05
+     },
+     {
+      "t": 27,
+      "kind": "practice",
+      "estimate": -0.001444862224161625,
+      "accepted": false,
+      "believed_total": 6.475322879850864e-05,
+      "true_total": -2.2825784981250763e-05
+     },
+     {
+      "t": 28,
+      "kind": "practice",
+      "estimate": -0.0007830086397007108,
+      "accepted": false,
+      "believed_total": 6.475322879850864e-05,
+      "true_total": -2.2825784981250763e-05
+     },
+     {
+      "t": 29,
+      "kind": "mutation",
+      "estimate": -0.002977984957396984,
+      "accepted": false,
+      "believed_total": 6.475322879850864e-05,
+      "true_total": -2.2825784981250763e-05
+     },
+     {
+      "t": 30,
+      "kind": "physics:gain",
+      "estimate": 2.874352503567934e-06,
+      "accepted": true,
+      "true_gain": 3.168262628605589e-05,
+      "believed_total": 6.762758130207658e-05,
+      "true_total": 8.8568776845932e-06
+     },
+     {
+      "t": 31,
+      "kind": "mutation",
+      "estimate": -0.0023394268937408924,
+      "accepted": false,
+      "believed_total": 6.762758130207658e-05,
+      "true_total": 8.8568776845932e-06
+     },
+     {
+      "t": 32,
+      "kind": "practice",
+      "estimate": -0.0008033341146074235,
+      "accepted": false,
+      "believed_total": 6.762758130207658e-05,
+      "true_total": 8.8568776845932e-06
+     },
+     {
+      "t": 33,
+      "kind": "mutation",
+      "estimate": -0.0013571499148383737,
+      "accepted": false,
+      "believed_total": 6.762758130207658e-05,
+      "true_total": 8.8568776845932e-06
+     },
+     {
+      "t": 34,
+      "kind": "mutation",
+      "estimate": -0.0018501653103157878,
+      "accepted": false,
+      "believed_total": 6.762758130207658e-05,
+      "true_total": 8.8568776845932e-06
+     },
+     {
+      "t": 35,
+      "kind": "mutation",
+      "estimate": -0.0028037014417350292,
+      "accepted": false,
+      "believed_total": 6.762758130207658e-05,
+      "true_total": 8.8568776845932e-06
+     },
+     {
+      "t": 36,
+      "kind": "mutation",
+      "estimate": -0.002875934587791562,
+      "accepted": false,
+      "believed_total": 6.762758130207658e-05,
+      "true_total": 8.8568776845932e-06
+     },
+     {
+      "t": 37,
+      "kind": "mutation",
+      "estimate": -0.00048293976578861475,
+      "accepted": false,
+      "believed_total": 6.762758130207658e-05,
+      "true_total": 8.8568776845932e-06
+     },
+     {
+      "t": 38,
+      "kind": "mutation",
+      "estimate": -0.0004345989436842501,
+      "accepted": false,
+      "believed_total": 6.762758130207658e-05,
+      "true_total": 8.8568776845932e-06
+     },
+     {
+      "t": 39,
+      "kind": "practice",
+      "estimate": -0.0015683474484831095,
+      "accepted": false,
+      "believed_total": 6.762758130207658e-05,
+      "true_total": 8.8568776845932e-06
+     }
+    ]
+   },
+   {
+    "mode": "gated",
+    "seed": 0,
+    "adopted": 0,
+    "false_adoptions": 0,
+    "believed_gain": 0.0,
+    "true_gain": 0.0,
+    "self_deception": 0.0,
+    "test_loss_start": 0.004395396448671818,
+    "test_loss_end": 0.004395396448671818,
+    "final_physics": {
+     "diffusion": 0.1,
+     "fire_rate": 0.5,
+     "gain": 1.0
+    },
+    "ledger": [
+     {
+      "t": 0,
+      "kind": "physics:diffusion",
+      "estimate": -0.0005651076207868755,
+      "p": 0.9959004099590041,
+      "level": 0.005847726537947628,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 1,
+      "kind": "physics:gain",
+      "estimate": -0.00023968979076016694,
+      "p": 0.993000699930007,
+      "level": 0.0012716956507362724,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 2,
+      "kind": "mutation",
+      "estimate": -0.001695802086032927,
+      "p": 1.0,
+      "level": 0.0010831292932902538,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 3,
+      "kind": "practice",
+      "estimate": -0.001526093459688127,
+      "p": 1.0,
+      "level": 0.0009007709751049019,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 4,
+      "kind": "practice",
+      "estimate": -0.0017772124847397208,
+      "p": 1.0,
+      "level": 0.0007636671303722039,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 5,
+      "kind": "practice",
+      "estimate": -0.002560696331784129,
+      "p": 1.0,
+      "level": 0.0006606297665357777,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 6,
+      "kind": "practice",
+      "estimate": -0.0017033861950039864,
+      "p": 1.0,
+      "level": 0.0005812505985267993,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 7,
+      "kind": "practice",
+      "estimate": -0.0017206218326464295,
+      "p": 0.9999000099990001,
+      "level": 0.0005185062590675968,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 8,
+      "kind": "physics:diffusion",
+      "estimate": -6.59088182146661e-05,
+      "p": 1.0,
+      "level": 0.0004677751738596854,
+      "anchor_ok": true,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 9,
+      "kind": "practice",
+      "estimate": -0.002079984173178673,
+      "p": 1.0,
+      "level": 0.0004259582693291594,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 10,
+      "kind": "mutation",
+      "estimate": -0.0009190998389385641,
+      "p": 1.0,
+      "level": 0.0003909201728775095,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 11,
+      "kind": "mutation",
+      "estimate": -0.0005372613668441772,
+      "p": 1.0,
+      "level": 0.0003611491153589082,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 12,
+      "kind": "practice",
+      "estimate": -0.002337072044610977,
+      "p": 1.0,
+      "level": 0.0003355478634249676,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 13,
+      "kind": "mutation",
+      "estimate": -0.0021085364278405905,
+      "p": 1.0,
+      "level": 0.0003133021444568061,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 14,
+      "kind": "mutation",
+      "estimate": -0.0013167220167815685,
+      "p": 1.0,
+      "level": 0.0002937956341276524,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 15,
+      "kind": "mutation",
+      "estimate": -0.005563648417592049,
+      "p": 1.0,
+      "level": 0.00027655360037905297,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 16,
+      "kind": "practice",
+      "estimate": -0.0016997369239106774,
+      "p": 1.0,
+      "level": 0.00026120463948624376,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 17,
+      "kind": "mutation",
+      "estimate": -0.002768143778666854,
+      "p": 1.0,
+      "level": 0.00024745412075656423,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 18,
+      "kind": "physics:gain",
+      "estimate": -9.944342309609056e-06,
+      "p": 0.5915408459154085,
+      "level": 0.00023506538636893838,
+      "anchor_ok": true,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 19,
+      "kind": "practice",
+      "estimate": -0.0019034352153539658,
+      "p": 1.0,
+      "level": 0.00022384619879127124,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 20,
+      "kind": "practice",
+      "estimate": -0.00222348072566092,
+      "p": 1.0,
+      "level": 0.00021363880931078496,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 21,
+      "kind": "physics:gain",
+      "estimate": -1.3032016568104154e-06,
+      "p": 0.5397460253974603,
+      "level": 0.00020431257056580319,
+      "anchor_ok": true,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 22,
+      "kind": "mutation",
+      "estimate": -0.004059806931763887,
+      "p": 1.0,
+      "level": 0.00019575836595833374,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 23,
+      "kind": "practice",
+      "estimate": -0.0014415787300094962,
+      "p": 0.999000099990001,
+      "level": 0.0001878843563408348,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 24,
+      "kind": "mutation",
+      "estimate": -0.0006793827633373439,
+      "p": 1.0,
+      "level": 0.00018061269505909136,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 25,
+      "kind": "practice",
+      "estimate": -0.0009434716193936765,
+      "p": 0.9941005899410059,
+      "level": 0.00017387696398272773,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 26,
+      "kind": "practice",
+      "estimate": -0.0009382222197018564,
+      "p": 0.9948005199480052,
+      "level": 0.0001676201526973959,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 27,
+      "kind": "practice",
+      "estimate": -0.0018521393649280071,
+      "p": 1.0,
+      "level": 0.00016179305137088503,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 28,
+      "kind": "practice",
+      "estimate": -0.0009222129010595381,
+      "p": 0.9998000199980002,
+      "level": 0.0001563529618726674,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 29,
+      "kind": "mutation",
+      "estimate": -0.002948354696854949,
+      "p": 1.0,
+      "level": 0.00015126265604681612,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 30,
+      "kind": "physics:gain",
+      "estimate": -0.00011110542254755273,
+      "p": 0.997000299970003,
+      "level": 0.0001464895276098243,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 31,
+      "kind": "mutation",
+      "estimate": -0.0023184511810541153,
+      "p": 1.0,
+      "level": 0.0001420048969832606,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 32,
+      "kind": "practice",
+      "estimate": -0.0008258623420260847,
+      "p": 0.9894010598940106,
+      "level": 0.00013778343785006436,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 33,
+      "kind": "mutation",
+      "estimate": -0.001157917664386332,
+      "p": 1.0,
+      "level": 0.00013380270129069636,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 34,
+      "kind": "mutation",
+      "estimate": -0.0016430332325398922,
+      "p": 1.0,
+      "level": 0.00013004271867353193,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 35,
+      "kind": "mutation",
+      "estimate": -0.0025387033820152283,
+      "p": 1.0,
+      "level": 0.0001264856685105399,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 36,
+      "kind": "mutation",
+      "estimate": -0.002234375337138772,
+      "p": 1.0,
+      "level": 0.0001231155955783195,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 37,
+      "kind": "mutation",
+      "estimate": -0.0007572846370749176,
+      "p": 1.0,
+      "level": 0.00011991817298667286,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 38,
+      "kind": "mutation",
+      "estimate": -0.00035598454996943474,
+      "p": 0.9778022197780222,
+      "level": 0.00011688049972724277,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 39,
+      "kind": "practice",
+      "estimate": -0.0018850670894607902,
+      "p": 1.0,
+      "level": 0.00011399092768196088,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     }
+    ]
+   },
+   {
+    "mode": "naive",
+    "seed": 1,
+    "adopted": 2,
+    "false_adoptions": 1,
+    "believed_gain": 5.767797119915485e-06,
+    "true_gain": 1.2805219739675522e-05,
+    "self_deception": -7.0374226197600365e-06,
+    "test_loss_start": 0.004617702215909958,
+    "test_loss_end": 0.004604896996170282,
+    "final_physics": {
+     "diffusion": 0.1,
+     "fire_rate": 0.5,
+     "gain": 0.8390303066128119
+    },
+    "ledger": [
+     {
+      "t": 0,
+      "kind": "practice",
+      "estimate": -0.001002840232104063,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 1,
+      "kind": "practice",
+      "estimate": -0.0015040843281894922,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 2,
+      "kind": "mutation",
+      "estimate": -0.001025753328576684,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 3,
+      "kind": "mutation",
+      "estimate": -0.0008975890232250094,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 4,
+      "kind": "physics:gain",
+      "estimate": -2.414017217233777e-06,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 5,
+      "kind": "physics:gain",
+      "estimate": -8.850125595927238e-06,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 6,
+      "kind": "mutation",
+      "estimate": -0.001373582286760211,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 7,
+      "kind": "physics:gain",
+      "estimate": -2.645570202730596e-05,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 8,
+      "kind": "practice",
+      "estimate": -0.0018184876535087824,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 9,
+      "kind": "mutation",
+      "estimate": -0.0006902256282046437,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 10,
+      "kind": "physics:gain",
+      "estimate": -4.7279056161642075e-05,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 11,
+      "kind": "mutation",
+      "estimate": -0.00039565152837894857,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 12,
+      "kind": "practice",
+      "estimate": -0.0021521123126149178,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 13,
+      "kind": "physics:diffusion",
+      "estimate": -0.00437098927795887,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 14,
+      "kind": "practice",
+      "estimate": -0.002008233219385147,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 15,
+      "kind": "physics:gain",
+      "estimate": 5.654175765812397e-06,
+      "accepted": true,
+      "true_gain": 1.5506770068896003e-05,
+      "believed_total": 5.654175765812397e-06,
+      "true_total": 1.5506520867347717e-05
+     },
+     {
+      "t": 16,
+      "kind": "practice",
+      "estimate": -0.0012561286566779017,
+      "accepted": false,
+      "believed_total": 5.654175765812397e-06,
+      "true_total": 1.5506520867347717e-05
+     },
+     {
+      "t": 17,
+      "kind": "physics:gain",
+      "estimate": 1.1362135410308838e-07,
+      "accepted": true,
+      "true_gain": -2.7012174541596323e-06,
+      "believed_total": 5.767797119915485e-06,
+      "true_total": 1.2805219739675522e-05
+     },
+     {
+      "t": 18,
+      "kind": "practice",
+      "estimate": -0.0011512467171996832,
+      "accepted": false,
+      "believed_total": 5.767797119915485e-06,
+      "true_total": 1.2805219739675522e-05
+     },
+     {
+      "t": 19,
+      "kind": "physics:diffusion",
+      "estimate": -0.0029207286424934864,
+      "accepted": false,
+      "believed_total": 5.767797119915485e-06,
+      "true_total": 1.2805219739675522e-05
+     },
+     {
+      "t": 20,
+      "kind": "mutation",
+      "estimate": -0.0010526824044063687,
+      "accepted": false,
+      "believed_total": 5.767797119915485e-06,
+      "true_total": 1.2805219739675522e-05
+     },
+     {
+      "t": 21,
+      "kind": "mutation",
+      "estimate": -0.001061084563843906,
+      "accepted": false,
+      "believed_total": 5.767797119915485e-06,
+      "true_total": 1.2805219739675522e-05
+     },
+     {
+      "t": 22,
+      "kind": "mutation",
+      "estimate": -0.0016746441833674908,
+      "accepted": false,
+      "believed_total": 5.767797119915485e-06,
+      "true_total": 1.2805219739675522e-05
+     },
+     {
+      "t": 23,
+      "kind": "physics:gain",
+      "estimate": -6.193577428348362e-05,
+      "accepted": false,
+      "believed_total": 5.767797119915485e-06,
+      "true_total": 1.2805219739675522e-05
+     },
+     {
+      "t": 24,
+      "kind": "practice",
+      "estimate": -0.001971941441297531,
+      "accepted": false,
+      "believed_total": 5.767797119915485e-06,
+      "true_total": 1.2805219739675522e-05
+     },
+     {
+      "t": 25,
+      "kind": "mutation",
+      "estimate": -0.0008658516453579068,
+      "accepted": false,
+      "believed_total": 5.767797119915485e-06,
+      "true_total": 1.2805219739675522e-05
+     },
+     {
+      "t": 26,
+      "kind": "mutation",
+      "estimate": -0.0004045116656925529,
+      "accepted": false,
+      "believed_total": 5.767797119915485e-06,
+      "true_total": 1.2805219739675522e-05
+     },
+     {
+      "t": 27,
+      "kind": "physics:gain",
+      "estimate": -0.00012949336087331176,
+      "accepted": false,
+      "believed_total": 5.767797119915485e-06,
+      "true_total": 1.2805219739675522e-05
+     },
+     {
+      "t": 28,
+      "kind": "practice",
+      "estimate": -0.0022342405281960964,
+      "accepted": false,
+      "believed_total": 5.767797119915485e-06,
+      "true_total": 1.2805219739675522e-05
+     },
+     {
+      "t": 29,
+      "kind": "practice",
+      "estimate": -0.000976828159764409,
+      "accepted": false,
+      "believed_total": 5.767797119915485e-06,
+      "true_total": 1.2805219739675522e-05
+     },
+     {
+      "t": 30,
+      "kind": "mutation",
+      "estimate": -0.00307678384706378,
+      "accepted": false,
+      "believed_total": 5.767797119915485e-06,
+      "true_total": 1.2805219739675522e-05
+     },
+     {
+      "t": 31,
+      "kind": "mutation",
+      "estimate": -0.000510665588080883,
+      "accepted": false,
+      "believed_total": 5.767797119915485e-06,
+      "true_total": 1.2805219739675522e-05
+     },
+     {
+      "t": 32,
+      "kind": "practice",
+      "estimate": -0.0009923451580107212,
+      "accepted": false,
+      "believed_total": 5.767797119915485e-06,
+      "true_total": 1.2805219739675522e-05
+     },
+     {
+      "t": 33,
+      "kind": "physics:gain",
+      "estimate": -2.9698305297642946e-05,
+      "accepted": false,
+      "believed_total": 5.767797119915485e-06,
+      "true_total": 1.2805219739675522e-05
+     },
+     {
+      "t": 34,
+      "kind": "practice",
+      "estimate": -0.0017361122881993651,
+      "accepted": false,
+      "believed_total": 5.767797119915485e-06,
+      "true_total": 1.2805219739675522e-05
+     },
+     {
+      "t": 35,
+      "kind": "practice",
+      "estimate": -0.0014623940223827958,
+      "accepted": false,
+      "believed_total": 5.767797119915485e-06,
+      "true_total": 1.2805219739675522e-05
+     },
+     {
+      "t": 36,
+      "kind": "physics:diffusion",
+      "estimate": -0.0014044943964108825,
+      "accepted": false,
+      "believed_total": 5.767797119915485e-06,
+      "true_total": 1.2805219739675522e-05
+     },
+     {
+      "t": 37,
+      "kind": "practice",
+      "estimate": -0.000998083152808249,
+      "accepted": false,
+      "believed_total": 5.767797119915485e-06,
+      "true_total": 1.2805219739675522e-05
+     },
+     {
+      "t": 38,
+      "kind": "mutation",
+      "estimate": -0.0012647579424083233,
+      "accepted": false,
+      "believed_total": 5.767797119915485e-06,
+      "true_total": 1.2805219739675522e-05
+     },
+     {
+      "t": 39,
+      "kind": "practice",
+      "estimate": -0.001879210234619677,
+      "accepted": false,
+      "believed_total": 5.767797119915485e-06,
+      "true_total": 1.2805219739675522e-05
+     }
+    ]
+   },
+   {
+    "mode": "gated",
+    "seed": 1,
+    "adopted": 0,
+    "false_adoptions": 0,
+    "believed_gain": 0.0,
+    "true_gain": 0.0,
+    "self_deception": 0.0,
+    "test_loss_start": 0.004617702215909958,
+    "test_loss_end": 0.004617702215909958,
+    "final_physics": {
+     "diffusion": 0.1,
+     "fire_rate": 0.5,
+     "gain": 1.0
+    },
+    "ledger": [
+     {
+      "t": 0,
+      "kind": "practice",
+      "estimate": -0.0017547319876030087,
+      "p": 1.0,
+      "level": 0.005847726537947628,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 1,
+      "kind": "practice",
+      "estimate": -0.002513645915314555,
+      "p": 1.0,
+      "level": 0.0012716956507362724,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 2,
+      "kind": "mutation",
+      "estimate": -0.000757640169467777,
+      "p": 1.0,
+      "level": 0.0010831292932902538,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 3,
+      "kind": "mutation",
+      "estimate": -0.0008750025299377739,
+      "p": 1.0,
+      "level": 0.0009007709751049019,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 4,
+      "kind": "physics:gain",
+      "estimate": 1.1434700581958168e-06,
+      "p": 0.35936406359364065,
+      "level": 0.0007636671303722039,
+      "anchor_ok": true,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 5,
+      "kind": "physics:gain",
+      "estimate": -1.1389241080905776e-05,
+      "p": 0.9051094890510949,
+      "level": 0.0006606297665357777,
+      "anchor_ok": true,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 6,
+      "kind": "mutation",
+      "estimate": -0.0011325780069455504,
+      "p": 1.0,
+      "level": 0.0005812505985267993,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 7,
+      "kind": "physics:gain",
+      "estimate": -3.406901305424981e-05,
+      "p": 0.9531046895310469,
+      "level": 0.0005185062590675968,
+      "anchor_ok": true,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 8,
+      "kind": "practice",
+      "estimate": -0.002475890563800931,
+      "p": 1.0,
+      "level": 0.0004677751738596854,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 9,
+      "kind": "mutation",
+      "estimate": -0.0010514879832044244,
+      "p": 1.0,
+      "level": 0.0004259582693291594,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 10,
+      "kind": "physics:gain",
+      "estimate": -3.33423085976392e-05,
+      "p": 0.907009299070093,
+      "level": 0.0003909201728775095,
+      "anchor_ok": true,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 11,
+      "kind": "mutation",
+      "estimate": -0.000540637003723532,
+      "p": 1.0,
+      "level": 0.0003611491153589082,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 12,
+      "kind": "practice",
+      "estimate": -0.0024484095629304647,
+      "p": 1.0,
+      "level": 0.0003355478634249676,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 13,
+      "kind": "physics:diffusion",
+      "estimate": -0.004247040953487158,
+      "p": 1.0,
+      "level": 0.0003133021444568061,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 14,
+      "kind": "practice",
+      "estimate": -0.0025335780810564756,
+      "p": 1.0,
+      "level": 0.0002937956341276524,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 15,
+      "kind": "physics:gain",
+      "estimate": 5.539549238164909e-05,
+      "p": 0.0108989101089891,
+      "level": 0.00027655360037905297,
+      "anchor_ok": true,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 16,
+      "kind": "practice",
+      "estimate": -0.0014141186838969588,
+      "p": 0.9999000099990001,
+      "level": 0.00026120463948624376,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 17,
+      "kind": "physics:gain",
+      "estimate": -9.98573796096025e-06,
+      "p": 0.7792220777922207,
+      "level": 0.00024745412075656423,
+      "anchor_ok": true,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 18,
+      "kind": "practice",
+      "estimate": -0.002088816137984395,
+      "p": 1.0,
+      "level": 0.00023506538636893838,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 19,
+      "kind": "physics:diffusion",
+      "estimate": -0.002545776078477502,
+      "p": 1.0,
+      "level": 0.00022384619879127124,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 20,
+      "kind": "mutation",
+      "estimate": -0.0010682534193620086,
+      "p": 1.0,
+      "level": 0.00021363880931078496,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 21,
+      "kind": "mutation",
+      "estimate": -0.0011664907215163112,
+      "p": 1.0,
+      "level": 0.00020431257056580319,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 22,
+      "kind": "mutation",
+      "estimate": -0.0015461217844858766,
+      "p": 1.0,
+      "level": 0.00019575836595833374,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 23,
+      "kind": "physics:gain",
+      "estimate": 2.1061510778963566e-05,
+      "p": 0.3106689331066893,
+      "level": 0.0001878843563408348,
+      "anchor_ok": true,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 24,
+      "kind": "practice",
+      "estimate": -0.002569483360275626,
+      "p": 1.0,
+      "level": 0.00018061269505909136,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 25,
+      "kind": "mutation",
+      "estimate": -0.000928425055462867,
+      "p": 1.0,
+      "level": 0.00017387696398272773,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 26,
+      "kind": "mutation",
+      "estimate": -0.00017321000632364303,
+      "p": 0.8672132786721328,
+      "level": 0.0001676201526973959,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 27,
+      "kind": "physics:gain",
+      "estimate": -7.671792263863608e-05,
+      "p": 0.9688031196880312,
+      "level": 0.00016179305137088503,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 28,
+      "kind": "practice",
+      "estimate": -0.002731502987444401,
+      "p": 1.0,
+      "level": 0.0001563529618726674,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 29,
+      "kind": "practice",
+      "estimate": -0.0015238352352753282,
+      "p": 0.9997000299970003,
+      "level": 0.00015126265604681612,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 30,
+      "kind": "mutation",
+      "estimate": -0.003350171959027648,
+      "p": 1.0,
+      "level": 0.0001464895276098243,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 31,
+      "kind": "mutation",
+      "estimate": -0.0005297354655340314,
+      "p": 0.9998000199980002,
+      "level": 0.0001420048969832606,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 32,
+      "kind": "practice",
+      "estimate": -0.001243696315214038,
+      "p": 1.0,
+      "level": 0.00013778343785006436,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 33,
+      "kind": "physics:gain",
+      "estimate": 4.629478553397348e-06,
+      "p": 0.38136186381361864,
+      "level": 0.00013380270129069636,
+      "anchor_ok": true,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 34,
+      "kind": "practice",
+      "estimate": -0.002119112992659211,
+      "p": 1.0,
+      "level": 0.00013004271867353193,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 35,
+      "kind": "practice",
+      "estimate": -0.0011881889076903462,
+      "p": 0.9976002399760024,
+      "level": 0.0001264856685105399,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 36,
+      "kind": "physics:diffusion",
+      "estimate": -0.0011949833715334535,
+      "p": 1.0,
+      "level": 0.0001231155955783195,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 37,
+      "kind": "practice",
+      "estimate": -0.0012417733669281006,
+      "p": 1.0,
+      "level": 0.00011991817298667286,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 38,
+      "kind": "mutation",
+      "estimate": -0.0013387476792559028,
+      "p": 1.0,
+      "level": 0.00011688049972724277,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 39,
+      "kind": "practice",
+      "estimate": -0.0024478223640471697,
+      "p": 1.0,
+      "level": 0.00011399092768196088,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     }
+    ]
+   },
+   {
+    "mode": "naive",
+    "seed": 2,
+    "adopted": 2,
+    "false_adoptions": 0,
+    "believed_gain": 7.180869579315186e-05,
+    "true_gain": 0.00010093720629811287,
+    "self_deception": -2.9128510504961014e-05,
+    "test_loss_start": 0.0045006852596998215,
+    "test_loss_end": 0.004399748053401709,
+    "final_physics": {
+     "diffusion": 0.09352241705009642,
+     "fire_rate": 0.5,
+     "gain": 0.9312441641248701
+    },
+    "ledger": [
+     {
+      "t": 0,
+      "kind": "physics:diffusion",
+      "estimate": -0.0023450739681720734,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 1,
+      "kind": "physics:gain",
+      "estimate": -8.187611820176244e-05,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 2,
+      "kind": "practice",
+      "estimate": -0.001966459210962057,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 3,
+      "kind": "mutation",
+      "estimate": -0.0010159718804061413,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 4,
+      "kind": "practice",
+      "estimate": -0.0012883363524451852,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 5,
+      "kind": "practice",
+      "estimate": -0.0022196664940565825,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 6,
+      "kind": "practice",
+      "estimate": -0.001201984821818769,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 7,
+      "kind": "practice",
+      "estimate": -0.0016947771655395627,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 8,
+      "kind": "mutation",
+      "estimate": -0.0016586498823016882,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 9,
+      "kind": "mutation",
+      "estimate": -0.0015607605455443263,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 10,
+      "kind": "physics:gain",
+      "estimate": -3.4167314879596233e-06,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 11,
+      "kind": "mutation",
+      "estimate": -0.00038263649912551045,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 12,
+      "kind": "physics:diffusion",
+      "estimate": 6.472368841059506e-05,
+      "accepted": true,
+      "true_gain": 9.487538773100823e-05,
+      "believed_total": 6.472368841059506e-05,
+      "true_total": 9.487569332122803e-05
+     },
+     {
+      "t": 13,
+      "kind": "mutation",
+      "estimate": -0.0003784366708714515,
+      "accepted": false,
+      "believed_total": 6.472368841059506e-05,
+      "true_total": 9.487569332122803e-05
+     },
+     {
+      "t": 14,
+      "kind": "mutation",
+      "estimate": -0.0006441082805395126,
+      "accepted": false,
+      "believed_total": 6.472368841059506e-05,
+      "true_total": 9.487569332122803e-05
+     },
+     {
+      "t": 15,
+      "kind": "physics:gain",
+      "estimate": 7.085007382556796e-06,
+      "accepted": true,
+      "true_gain": 6.06140929448884e-06,
+      "believed_total": 7.180869579315186e-05,
+      "true_total": 0.00010093720629811287
+     },
+     {
+      "t": 16,
+      "kind": "mutation",
+      "estimate": -0.003086309414356947,
+      "accepted": false,
+      "believed_total": 7.180869579315186e-05,
+      "true_total": 0.00010093720629811287
+     },
+     {
+      "t": 17,
+      "kind": "physics:gain",
+      "estimate": -4.578926018439233e-05,
+      "accepted": false,
+      "believed_total": 7.180869579315186e-05,
+      "true_total": 0.00010093720629811287
+     },
+     {
+      "t": 18,
+      "kind": "practice",
+      "estimate": -0.002632273593917489,
+      "accepted": false,
+      "believed_total": 7.180869579315186e-05,
+      "true_total": 0.00010093720629811287
+     },
+     {
+      "t": 19,
+      "kind": "practice",
+      "estimate": -0.001233810093253851,
+      "accepted": false,
+      "believed_total": 7.180869579315186e-05,
+      "true_total": 0.00010093720629811287
+     },
+     {
+      "t": 20,
+      "kind": "mutation",
+      "estimate": -0.001799365971237421,
+      "accepted": false,
+      "believed_total": 7.180869579315186e-05,
+      "true_total": 0.00010093720629811287
+     },
+     {
+      "t": 21,
+      "kind": "practice",
+      "estimate": -0.0012725195847451687,
+      "accepted": false,
+      "believed_total": 7.180869579315186e-05,
+      "true_total": 0.00010093720629811287
+     },
+     {
+      "t": 22,
+      "kind": "practice",
+      "estimate": -0.0016754426760599017,
+      "accepted": false,
+      "believed_total": 7.180869579315186e-05,
+      "true_total": 0.00010093720629811287
+     },
+     {
+      "t": 23,
+      "kind": "physics:gain",
+      "estimate": -4.4984713895246387e-05,
+      "accepted": false,
+      "believed_total": 7.180869579315186e-05,
+      "true_total": 0.00010093720629811287
+     },
+     {
+      "t": 24,
+      "kind": "practice",
+      "estimate": -0.002658454468473792,
+      "accepted": false,
+      "believed_total": 7.180869579315186e-05,
+      "true_total": 0.00010093720629811287
+     },
+     {
+      "t": 25,
+      "kind": "physics:gain",
+      "estimate": -6.678164936602116e-06,
+      "accepted": false,
+      "believed_total": 7.180869579315186e-05,
+      "true_total": 0.00010093720629811287
+     },
+     {
+      "t": 26,
+      "kind": "practice",
+      "estimate": -0.0013889954425394535,
+      "accepted": false,
+      "believed_total": 7.180869579315186e-05,
+      "true_total": 0.00010093720629811287
+     },
+     {
+      "t": 27,
+      "kind": "mutation",
+      "estimate": -0.0024879807606339455,
+      "accepted": false,
+      "believed_total": 7.180869579315186e-05,
+      "true_total": 0.00010093720629811287
+     },
+     {
+      "t": 28,
+      "kind": "practice",
+      "estimate": -0.0022297098767012358,
+      "accepted": false,
+      "believed_total": 7.180869579315186e-05,
+      "true_total": 0.00010093720629811287
+     },
+     {
+      "t": 29,
+      "kind": "practice",
+      "estimate": -0.0014083480928093195,
+      "accepted": false,
+      "believed_total": 7.180869579315186e-05,
+      "true_total": 0.00010093720629811287
+     },
+     {
+      "t": 30,
+      "kind": "physics:diffusion",
+      "estimate": -0.00018022078438661993,
+      "accepted": false,
+      "believed_total": 7.180869579315186e-05,
+      "true_total": 0.00010093720629811287
+     },
+     {
+      "t": 31,
+      "kind": "physics:diffusion",
+      "estimate": -0.0034826169721782207,
+      "accepted": false,
+      "believed_total": 7.180869579315186e-05,
+      "true_total": 0.00010093720629811287
+     },
+     {
+      "t": 32,
+      "kind": "mutation",
+      "estimate": -0.0010907428804785013,
+      "accepted": false,
+      "believed_total": 7.180869579315186e-05,
+      "true_total": 0.00010093720629811287
+     },
+     {
+      "t": 33,
+      "kind": "mutation",
+      "estimate": -0.0012284456752240658,
+      "accepted": false,
+      "believed_total": 7.180869579315186e-05,
+      "true_total": 0.00010093720629811287
+     },
+     {
+      "t": 34,
+      "kind": "mutation",
+      "estimate": -0.00033179562888108194,
+      "accepted": false,
+      "believed_total": 7.180869579315186e-05,
+      "true_total": 0.00010093720629811287
+     },
+     {
+      "t": 35,
+      "kind": "mutation",
+      "estimate": -0.0007933766464702785,
+      "accepted": false,
+      "believed_total": 7.180869579315186e-05,
+      "true_total": 0.00010093720629811287
+     },
+     {
+      "t": 36,
+      "kind": "practice",
+      "estimate": -0.002173937391489744,
+      "accepted": false,
+      "believed_total": 7.180869579315186e-05,
+      "true_total": 0.00010093720629811287
+     },
+     {
+      "t": 37,
+      "kind": "mutation",
+      "estimate": -0.0007409229874610901,
+      "accepted": false,
+      "believed_total": 7.180869579315186e-05,
+      "true_total": 0.00010093720629811287
+     },
+     {
+      "t": 38,
+      "kind": "practice",
+      "estimate": -0.0010903006186708808,
+      "accepted": false,
+      "believed_total": 7.180869579315186e-05,
+      "true_total": 0.00010093720629811287
+     },
+     {
+      "t": 39,
+      "kind": "practice",
+      "estimate": -0.0017253246624022722,
+      "accepted": false,
+      "believed_total": 7.180869579315186e-05,
+      "true_total": 0.00010093720629811287
+     }
+    ]
+   },
+   {
+    "mode": "gated",
+    "seed": 2,
+    "adopted": 0,
+    "false_adoptions": 0,
+    "believed_gain": 0.0,
+    "true_gain": 0.0,
+    "self_deception": 0.0,
+    "test_loss_start": 0.0045006852596998215,
+    "test_loss_end": 0.0045006852596998215,
+    "final_physics": {
+     "diffusion": 0.1,
+     "fire_rate": 0.5,
+     "gain": 1.0
+    },
+    "ledger": [
+     {
+      "t": 0,
+      "kind": "physics:diffusion",
+      "estimate": -0.002456830581650138,
+      "p": 1.0,
+      "level": 0.005847726537947628,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 1,
+      "kind": "physics:gain",
+      "estimate": -8.380477811442688e-05,
+      "p": 0.9928007199280072,
+      "level": 0.0012716956507362724,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 2,
+      "kind": "practice",
+      "estimate": -0.0025113404262810946,
+      "p": 1.0,
+      "level": 0.0010831292932902538,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 3,
+      "kind": "mutation",
+      "estimate": -0.0010965062538161874,
+      "p": 1.0,
+      "level": 0.0009007709751049019,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 4,
+      "kind": "practice",
+      "estimate": -0.0007883934304118156,
+      "p": 0.973002699730027,
+      "level": 0.0007636671303722039,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 5,
+      "kind": "practice",
+      "estimate": -0.0022109821438789368,
+      "p": 1.0,
+      "level": 0.0006606297665357777,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 6,
+      "kind": "practice",
+      "estimate": -0.0012195361778140068,
+      "p": 0.9997000299970003,
+      "level": 0.0005812505985267993,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 7,
+      "kind": "practice",
+      "estimate": -0.0014511976623907685,
+      "p": 1.0,
+      "level": 0.0005185062590675968,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 8,
+      "kind": "mutation",
+      "estimate": -0.0015503898030146956,
+      "p": 1.0,
+      "level": 0.0004677751738596854,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 9,
+      "kind": "mutation",
+      "estimate": -0.0016332179075106978,
+      "p": 1.0,
+      "level": 0.0004259582693291594,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 10,
+      "kind": "physics:gain",
+      "estimate": 8.588656783103943e-06,
+      "p": 0.12758724127587243,
+      "level": 0.0003909201728775095,
+      "anchor_ok": true,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 11,
+      "kind": "mutation",
+      "estimate": -0.00042577061685733497,
+      "p": 1.0,
+      "level": 0.0003611491153589082,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 12,
+      "kind": "physics:diffusion",
+      "estimate": 0.0001122203902923502,
+      "p": 0.015398460153984602,
+      "level": 0.0003355478634249676,
+      "anchor_ok": true,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 13,
+      "kind": "mutation",
+      "estimate": -0.000308333634166047,
+      "p": 0.9921007899210079,
+      "level": 0.0003133021444568061,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 14,
+      "kind": "mutation",
+      "estimate": -0.0005985905881971121,
+      "p": 0.9998000199980002,
+      "level": 0.0002937956341276524,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 15,
+      "kind": "physics:gain",
+      "estimate": 1.0757376912806649e-05,
+      "p": 0.23877612238776122,
+      "level": 0.00027655360037905297,
+      "anchor_ok": true,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 16,
+      "kind": "mutation",
+      "estimate": -0.0034940738696604967,
+      "p": 1.0,
+      "level": 0.00026120463948624376,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 17,
+      "kind": "physics:gain",
+      "estimate": -1.107021398638608e-05,
+      "p": 0.8707129287071292,
+      "level": 0.00024745412075656423,
+      "anchor_ok": true,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 18,
+      "kind": "practice",
+      "estimate": -0.002542121335864067,
+      "p": 1.0,
+      "level": 0.00023506538636893838,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 19,
+      "kind": "practice",
+      "estimate": -0.0009486423805356026,
+      "p": 0.9988001199880012,
+      "level": 0.00022384619879127124,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 20,
+      "kind": "mutation",
+      "estimate": -0.0007650637999176979,
+      "p": 0.9896010398960104,
+      "level": 0.00021363880931078496,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 21,
+      "kind": "practice",
+      "estimate": -0.0018188419053331017,
+      "p": 1.0,
+      "level": 0.00020431257056580319,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 22,
+      "kind": "practice",
+      "estimate": -0.00219316896982491,
+      "p": 1.0,
+      "level": 0.00019575836595833374,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 23,
+      "kind": "physics:gain",
+      "estimate": -4.564693426800659e-06,
+      "p": 0.7241275872412759,
+      "level": 0.0001878843563408348,
+      "anchor_ok": true,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 24,
+      "kind": "practice",
+      "estimate": -0.001941653317771852,
+      "p": 1.0,
+      "level": 0.00018061269505909136,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 25,
+      "kind": "physics:gain",
+      "estimate": -1.1580753380258102e-05,
+      "p": 0.8481151884811519,
+      "level": 0.00017387696398272773,
+      "anchor_ok": true,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 26,
+      "kind": "practice",
+      "estimate": -0.000888848036993295,
+      "p": 0.9823017698230176,
+      "level": 0.0001676201526973959,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 27,
+      "kind": "mutation",
+      "estimate": -0.002751857740804553,
+      "p": 1.0,
+      "level": 0.00016179305137088503,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 28,
+      "kind": "practice",
+      "estimate": -0.0018448974005877972,
+      "p": 0.9999000099990001,
+      "level": 0.0001563529618726674,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 29,
+      "kind": "practice",
+      "estimate": -0.0019777044653892517,
+      "p": 1.0,
+      "level": 0.00015126265604681612,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 30,
+      "kind": "physics:diffusion",
+      "estimate": 2.9228045605123043e-05,
+      "p": 0.33926607339266074,
+      "level": 0.0001464895276098243,
+      "anchor_ok": true,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 31,
+      "kind": "physics:diffusion",
+      "estimate": -0.004262952134013176,
+      "p": 1.0,
+      "level": 0.0001420048969832606,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 32,
+      "kind": "mutation",
+      "estimate": -0.0010672180214896798,
+      "p": 1.0,
+      "level": 0.00013778343785006436,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 33,
+      "kind": "mutation",
+      "estimate": -0.0011181883746758103,
+      "p": 1.0,
+      "level": 0.00013380270129069636,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 34,
+      "kind": "mutation",
+      "estimate": -0.0003596079768612981,
+      "p": 1.0,
+      "level": 0.00013004271867353193,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 35,
+      "kind": "mutation",
+      "estimate": -0.0007770177908241749,
+      "p": 1.0,
+      "level": 0.0001264856685105399,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 36,
+      "kind": "practice",
+      "estimate": -0.001972438534721732,
+      "p": 1.0,
+      "level": 0.0001231155955783195,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 37,
+      "kind": "mutation",
+      "estimate": -0.0006961038452573121,
+      "p": 1.0,
+      "level": 0.00011991817298667286,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 38,
+      "kind": "practice",
+      "estimate": -0.0021591021213680506,
+      "p": 1.0,
+      "level": 0.00011688049972724277,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 39,
+      "kind": "practice",
+      "estimate": -0.002256223000586033,
+      "p": 1.0,
+      "level": 0.00011399092768196088,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     }
+    ]
+   },
+   {
+    "mode": "naive",
+    "seed": 3,
+    "adopted": 2,
+    "false_adoptions": 1,
+    "believed_gain": 1.0218238458037376e-05,
+    "true_gain": -2.5795307010412216e-05,
+    "self_deception": 3.601354546844959e-05,
+    "test_loss_start": 0.0042974818497896194,
+    "test_loss_end": 0.004323277156800032,
+    "final_physics": {
+     "diffusion": 0.1,
+     "fire_rate": 0.5,
+     "gain": 1.1425918267073019
+    },
+    "ledger": [
+     {
+      "t": 0,
+      "kind": "practice",
+      "estimate": -0.002403178485110402,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 1,
+      "kind": "practice",
+      "estimate": -0.0026141908019781113,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 2,
+      "kind": "practice",
+      "estimate": -0.001991534372791648,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 3,
+      "kind": "mutation",
+      "estimate": -0.00367645057849586,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 4,
+      "kind": "practice",
+      "estimate": -0.00235745869576931,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 5,
+      "kind": "practice",
+      "estimate": -0.0023364583030343056,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 6,
+      "kind": "physics:diffusion",
+      "estimate": -0.00032637963886372745,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 7,
+      "kind": "practice",
+      "estimate": -0.0021508922800421715,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 8,
+      "kind": "practice",
+      "estimate": -0.0016776069533079863,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 9,
+      "kind": "mutation",
+      "estimate": -0.0006388217443600297,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 10,
+      "kind": "practice",
+      "estimate": -0.0029664686881005764,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 11,
+      "kind": "practice",
+      "estimate": -0.0014409414725378156,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 12,
+      "kind": "practice",
+      "estimate": -0.0021087750792503357,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 13,
+      "kind": "mutation",
+      "estimate": -0.001312912441790104,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 14,
+      "kind": "mutation",
+      "estimate": -0.0010649985633790493,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 15,
+      "kind": "mutation",
+      "estimate": -0.0012344098649919033,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 16,
+      "kind": "mutation",
+      "estimate": -0.0027804034762084484,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 17,
+      "kind": "mutation",
+      "estimate": -0.0018541464814916253,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 18,
+      "kind": "mutation",
+      "estimate": -0.000722823606338352,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 19,
+      "kind": "practice",
+      "estimate": -0.0021606329828500748,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 20,
+      "kind": "practice",
+      "estimate": -0.002336369128897786,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 21,
+      "kind": "physics:diffusion",
+      "estimate": -0.0012747126165777445,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 22,
+      "kind": "mutation",
+      "estimate": -0.0008131341310217977,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 23,
+      "kind": "practice",
+      "estimate": -0.002195329638198018,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 24,
+      "kind": "practice",
+      "estimate": -0.0017168878111988306,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 25,
+      "kind": "practice",
+      "estimate": -0.0021206142846494913,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 26,
+      "kind": "physics:gain",
+      "estimate": 7.0873647928237915e-06,
+      "accepted": true,
+      "true_gain": -4.071099101565778e-05,
+      "believed_total": 7.0873647928237915e-06,
+      "true_total": -4.071090370416641e-05
+     },
+     {
+      "t": 27,
+      "kind": "practice",
+      "estimate": -0.0019785596523433924,
+      "accepted": false,
+      "believed_total": 7.0873647928237915e-06,
+      "true_total": -4.071090370416641e-05
+     },
+     {
+      "t": 28,
+      "kind": "mutation",
+      "estimate": -0.001186820911243558,
+      "accepted": false,
+      "believed_total": 7.0873647928237915e-06,
+      "true_total": -4.071090370416641e-05
+     },
+     {
+      "t": 29,
+      "kind": "practice",
+      "estimate": -0.0017852718010544777,
+      "accepted": false,
+      "believed_total": 7.0873647928237915e-06,
+      "true_total": -4.071090370416641e-05
+     },
+     {
+      "t": 30,
+      "kind": "practice",
+      "estimate": -0.0022882830817252398,
+      "accepted": false,
+      "believed_total": 7.0873647928237915e-06,
+      "true_total": -4.071090370416641e-05
+     },
+     {
+      "t": 31,
+      "kind": "practice",
+      "estimate": -0.0025760370772331953,
+      "accepted": false,
+      "believed_total": 7.0873647928237915e-06,
+      "true_total": -4.071090370416641e-05
+     },
+     {
+      "t": 32,
+      "kind": "physics:gain",
+      "estimate": 3.130873665213585e-06,
+      "accepted": true,
+      "true_gain": 1.49152911035344e-05,
+      "believed_total": 1.0218238458037376e-05,
+      "true_total": -2.5795307010412216e-05
+     },
+     {
+      "t": 33,
+      "kind": "mutation",
+      "estimate": -0.0019154506735503674,
+      "accepted": false,
+      "believed_total": 1.0218238458037376e-05,
+      "true_total": -2.5795307010412216e-05
+     },
+     {
+      "t": 34,
+      "kind": "practice",
+      "estimate": -0.002682951744645834,
+      "accepted": false,
+      "believed_total": 1.0218238458037376e-05,
+      "true_total": -2.5795307010412216e-05
+     },
+     {
+      "t": 35,
+      "kind": "practice",
+      "estimate": -0.002536222105845809,
+      "accepted": false,
+      "believed_total": 1.0218238458037376e-05,
+      "true_total": -2.5795307010412216e-05
+     },
+     {
+      "t": 36,
+      "kind": "mutation",
+      "estimate": -0.0006131124682724476,
+      "accepted": false,
+      "believed_total": 1.0218238458037376e-05,
+      "true_total": -2.5795307010412216e-05
+     },
+     {
+      "t": 37,
+      "kind": "physics:diffusion",
+      "estimate": -0.00230807950720191,
+      "accepted": false,
+      "believed_total": 1.0218238458037376e-05,
+      "true_total": -2.5795307010412216e-05
+     },
+     {
+      "t": 38,
+      "kind": "practice",
+      "estimate": -0.0022250039037317038,
+      "accepted": false,
+      "believed_total": 1.0218238458037376e-05,
+      "true_total": -2.5795307010412216e-05
+     },
+     {
+      "t": 39,
+      "kind": "mutation",
+      "estimate": -0.001935324864462018,
+      "accepted": false,
+      "believed_total": 1.0218238458037376e-05,
+      "true_total": -2.5795307010412216e-05
+     }
+    ]
+   },
+   {
+    "mode": "gated",
+    "seed": 3,
+    "adopted": 0,
+    "false_adoptions": 0,
+    "believed_gain": 0.0,
+    "true_gain": 0.0,
+    "self_deception": 0.0,
+    "test_loss_start": 0.0042974818497896194,
+    "test_loss_end": 0.0042974818497896194,
+    "final_physics": {
+     "diffusion": 0.1,
+     "fire_rate": 0.5,
+     "gain": 1.0
+    },
+    "ledger": [
+     {
+      "t": 0,
+      "kind": "practice",
+      "estimate": -0.002219298155978322,
+      "p": 1.0,
+      "level": 0.005847726537947628,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 1,
+      "kind": "practice",
+      "estimate": -0.0019169669831171632,
+      "p": 1.0,
+      "level": 0.0012716956507362724,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 2,
+      "kind": "practice",
+      "estimate": -0.001966979121789336,
+      "p": 1.0,
+      "level": 0.0010831292932902538,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 3,
+      "kind": "mutation",
+      "estimate": -0.004282625857740641,
+      "p": 1.0,
+      "level": 0.0009007709751049019,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 4,
+      "kind": "practice",
+      "estimate": -0.001699749962426722,
+      "p": 0.9999000099990001,
+      "level": 0.0007636671303722039,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 5,
+      "kind": "practice",
+      "estimate": -0.0014815180329605937,
+      "p": 1.0,
+      "level": 0.0006606297665357777,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 6,
+      "kind": "physics:diffusion",
+      "estimate": -0.0003532189002726227,
+      "p": 0.9998000199980002,
+      "level": 0.0005812505985267993,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 7,
+      "kind": "practice",
+      "estimate": -0.0009202971705235541,
+      "p": 0.9788021197880212,
+      "level": 0.0005185062590675968,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 8,
+      "kind": "practice",
+      "estimate": -0.0017852914752438664,
+      "p": 1.0,
+      "level": 0.0004677751738596854,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 9,
+      "kind": "mutation",
+      "estimate": -0.0007689902558922768,
+      "p": 1.0,
+      "level": 0.0004259582693291594,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 10,
+      "kind": "practice",
+      "estimate": -0.002328692702576518,
+      "p": 1.0,
+      "level": 0.0003909201728775095,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 11,
+      "kind": "practice",
+      "estimate": -0.0013013355201110244,
+      "p": 0.999000099990001,
+      "level": 0.0003611491153589082,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 12,
+      "kind": "practice",
+      "estimate": -0.0014368565753102303,
+      "p": 1.0,
+      "level": 0.0003355478634249676,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 13,
+      "kind": "mutation",
+      "estimate": -0.0012235624017193913,
+      "p": 1.0,
+      "level": 0.0003133021444568061,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 14,
+      "kind": "mutation",
+      "estimate": -0.0010558062931522727,
+      "p": 1.0,
+      "level": 0.0002937956341276524,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 15,
+      "kind": "mutation",
+      "estimate": -0.0012662789085879922,
+      "p": 1.0,
+      "level": 0.00027655360037905297,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 16,
+      "kind": "mutation",
+      "estimate": -0.0028290317859500647,
+      "p": 1.0,
+      "level": 0.00026120463948624376,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 17,
+      "kind": "mutation",
+      "estimate": -0.0021584394853562117,
+      "p": 1.0,
+      "level": 0.00024745412075656423,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 18,
+      "kind": "mutation",
+      "estimate": -0.000725163787137717,
+      "p": 1.0,
+      "level": 0.00023506538636893838,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 19,
+      "kind": "practice",
+      "estimate": -0.0015100939199328423,
+      "p": 0.9999000099990001,
+      "level": 0.00022384619879127124,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 20,
+      "kind": "practice",
+      "estimate": -0.002171729924157262,
+      "p": 1.0,
+      "level": 0.00021363880931078496,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 21,
+      "kind": "physics:diffusion",
+      "estimate": -0.0017077872762456536,
+      "p": 1.0,
+      "level": 0.00020431257056580319,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 22,
+      "kind": "mutation",
+      "estimate": -0.0010792259126901627,
+      "p": 1.0,
+      "level": 0.00019575836595833374,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 23,
+      "kind": "practice",
+      "estimate": -0.0016851936234161258,
+      "p": 1.0,
+      "level": 0.0001878843563408348,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 24,
+      "kind": "practice",
+      "estimate": -0.001231533009558916,
+      "p": 1.0,
+      "level": 0.00018061269505909136,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 25,
+      "kind": "practice",
+      "estimate": -0.0016986835980787873,
+      "p": 1.0,
+      "level": 0.00017387696398272773,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 26,
+      "kind": "physics:gain",
+      "estimate": -5.140027496963739e-07,
+      "p": 0.5143485651434857,
+      "level": 0.0001676201526973959,
+      "anchor_ok": true,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 27,
+      "kind": "practice",
+      "estimate": -0.001447949092835188,
+      "p": 0.9999000099990001,
+      "level": 0.00016179305137088503,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 28,
+      "kind": "mutation",
+      "estimate": -0.0011398611823096871,
+      "p": 1.0,
+      "level": 0.0001563529618726674,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 29,
+      "kind": "practice",
+      "estimate": -0.002411093795672059,
+      "p": 1.0,
+      "level": 0.00015126265604681612,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 30,
+      "kind": "practice",
+      "estimate": -0.001531677320599556,
+      "p": 0.9992000799920008,
+      "level": 0.0001464895276098243,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 31,
+      "kind": "practice",
+      "estimate": -0.0022655001375824213,
+      "p": 1.0,
+      "level": 0.0001420048969832606,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 32,
+      "kind": "physics:gain",
+      "estimate": 1.2879890164185781e-05,
+      "p": 0.0110988901109889,
+      "level": 0.00013778343785006436,
+      "anchor_ok": true,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 33,
+      "kind": "mutation",
+      "estimate": -0.0019523253431543708,
+      "p": 1.0,
+      "level": 0.00013380270129069636,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 34,
+      "kind": "practice",
+      "estimate": -0.001946231466718018,
+      "p": 1.0,
+      "level": 0.00013004271867353193,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 35,
+      "kind": "practice",
+      "estimate": -0.0026254605036228895,
+      "p": 1.0,
+      "level": 0.0001264856685105399,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 36,
+      "kind": "mutation",
+      "estimate": -0.0006204445962794125,
+      "p": 1.0,
+      "level": 0.0001231155955783195,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 37,
+      "kind": "physics:diffusion",
+      "estimate": -0.0025621040258556604,
+      "p": 1.0,
+      "level": 0.00011991817298667286,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 38,
+      "kind": "practice",
+      "estimate": -0.0012295289197936654,
+      "p": 0.9998000199980002,
+      "level": 0.00011688049972724277,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 39,
+      "kind": "mutation",
+      "estimate": -0.0018916967092081904,
+      "p": 1.0,
+      "level": 0.00011399092768196088,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     }
+    ]
+   },
+   {
+    "mode": "naive",
+    "seed": 4,
+    "adopted": 3,
+    "false_adoptions": 0,
+    "believed_gain": 6.633144221268594e-05,
+    "true_gain": 9.380606934428215e-05,
+    "self_deception": -2.7474627131596208e-05,
+    "test_loss_start": 0.004254211205989122,
+    "test_loss_end": 0.00416040513664484,
+    "final_physics": {
+     "diffusion": 0.09172532669852361,
+     "fire_rate": 0.5,
+     "gain": 0.6021515844734554
+    },
+    "ledger": [
+     {
+      "t": 0,
+      "kind": "physics:gain",
+      "estimate": 2.2162770619615912e-05,
+      "accepted": true,
+      "true_gain": 1.1362686564098112e-05,
+      "believed_total": 2.2162770619615912e-05,
+      "true_total": 1.1363066732883453e-05
+     },
+     {
+      "t": 1,
+      "kind": "practice",
+      "estimate": -0.002057786099612713,
+      "accepted": false,
+      "believed_total": 2.2162770619615912e-05,
+      "true_total": 1.1363066732883453e-05
+     },
+     {
+      "t": 2,
+      "kind": "practice",
+      "estimate": -0.0017501369584351778,
+      "accepted": false,
+      "believed_total": 2.2162770619615912e-05,
+      "true_total": 1.1363066732883453e-05
+     },
+     {
+      "t": 3,
+      "kind": "practice",
+      "estimate": -0.001520394696854055,
+      "accepted": false,
+      "believed_total": 2.2162770619615912e-05,
+      "true_total": 1.1363066732883453e-05
+     },
+     {
+      "t": 4,
+      "kind": "mutation",
+      "estimate": -0.0006828926270827651,
+      "accepted": false,
+      "believed_total": 2.2162770619615912e-05,
+      "true_total": 1.1363066732883453e-05
+     },
+     {
+      "t": 5,
+      "kind": "physics:gain",
+      "estimate": -0.0003086696960963309,
+      "accepted": false,
+      "believed_total": 2.2162770619615912e-05,
+      "true_total": 1.1363066732883453e-05
+     },
+     {
+      "t": 6,
+      "kind": "practice",
+      "estimate": -0.0020929628517478704,
+      "accepted": false,
+      "believed_total": 2.2162770619615912e-05,
+      "true_total": 1.1363066732883453e-05
+     },
+     {
+      "t": 7,
+      "kind": "practice",
+      "estimate": -0.001957372995093465,
+      "accepted": false,
+      "believed_total": 2.2162770619615912e-05,
+      "true_total": 1.1363066732883453e-05
+     },
+     {
+      "t": 8,
+      "kind": "mutation",
+      "estimate": -0.002288165735080838,
+      "accepted": false,
+      "believed_total": 2.2162770619615912e-05,
+      "true_total": 1.1363066732883453e-05
+     },
+     {
+      "t": 9,
+      "kind": "practice",
+      "estimate": -0.0018633503932505846,
+      "accepted": false,
+      "believed_total": 2.2162770619615912e-05,
+      "true_total": 1.1363066732883453e-05
+     },
+     {
+      "t": 10,
+      "kind": "practice",
+      "estimate": -0.0014749134425073862,
+      "accepted": false,
+      "believed_total": 2.2162770619615912e-05,
+      "true_total": 1.1363066732883453e-05
+     },
+     {
+      "t": 11,
+      "kind": "physics:gain",
+      "estimate": -9.68985550571233e-05,
+      "accepted": false,
+      "believed_total": 2.2162770619615912e-05,
+      "true_total": 1.1363066732883453e-05
+     },
+     {
+      "t": 12,
+      "kind": "mutation",
+      "estimate": -0.0016886757221072912,
+      "accepted": false,
+      "believed_total": 2.2162770619615912e-05,
+      "true_total": 1.1363066732883453e-05
+     },
+     {
+      "t": 13,
+      "kind": "mutation",
+      "estimate": -0.0009679679060354829,
+      "accepted": false,
+      "believed_total": 2.2162770619615912e-05,
+      "true_total": 1.1363066732883453e-05
+     },
+     {
+      "t": 14,
+      "kind": "practice",
+      "estimate": -0.0012898794375360012,
+      "accepted": false,
+      "believed_total": 2.2162770619615912e-05,
+      "true_total": 1.1363066732883453e-05
+     },
+     {
+      "t": 15,
+      "kind": "practice",
+      "estimate": -0.0014606122858822346,
+      "accepted": false,
+      "believed_total": 2.2162770619615912e-05,
+      "true_total": 1.1363066732883453e-05
+     },
+     {
+      "t": 16,
+      "kind": "mutation",
+      "estimate": -0.0015500984154641628,
+      "accepted": false,
+      "believed_total": 2.2162770619615912e-05,
+      "true_total": 1.1363066732883453e-05
+     },
+     {
+      "t": 17,
+      "kind": "mutation",
+      "estimate": -0.0007368539227172732,
+      "accepted": false,
+      "believed_total": 2.2162770619615912e-05,
+      "true_total": 1.1363066732883453e-05
+     },
+     {
+      "t": 18,
+      "kind": "practice",
+      "estimate": -0.0005825331900268793,
+      "accepted": false,
+      "believed_total": 2.2162770619615912e-05,
+      "true_total": 1.1363066732883453e-05
+     },
+     {
+      "t": 19,
+      "kind": "practice",
+      "estimate": -0.002197189722210169,
+      "accepted": false,
+      "believed_total": 2.2162770619615912e-05,
+      "true_total": 1.1363066732883453e-05
+     },
+     {
+      "t": 20,
+      "kind": "mutation",
+      "estimate": -0.0016007645754143596,
+      "accepted": false,
+      "believed_total": 2.2162770619615912e-05,
+      "true_total": 1.1363066732883453e-05
+     },
+     {
+      "t": 21,
+      "kind": "practice",
+      "estimate": -0.0016304103191941977,
+      "accepted": false,
+      "believed_total": 2.2162770619615912e-05,
+      "true_total": 1.1363066732883453e-05
+     },
+     {
+      "t": 22,
+      "kind": "mutation",
+      "estimate": -0.0015297381905838847,
+      "accepted": false,
+      "believed_total": 2.2162770619615912e-05,
+      "true_total": 1.1363066732883453e-05
+     },
+     {
+      "t": 23,
+      "kind": "practice",
+      "estimate": -0.0019838984590023756,
+      "accepted": false,
+      "believed_total": 2.2162770619615912e-05,
+      "true_total": 1.1363066732883453e-05
+     },
+     {
+      "t": 24,
+      "kind": "physics:gain",
+      "estimate": 1.5213387086987495e-05,
+      "accepted": true,
+      "true_gain": 1.0276489774696529e-06,
+      "believed_total": 3.737615770660341e-05,
+      "true_total": 1.2390781193971634e-05
+     },
+     {
+      "t": 25,
+      "kind": "mutation",
+      "estimate": -0.00332570169121027,
+      "accepted": false,
+      "believed_total": 3.737615770660341e-05,
+      "true_total": 1.2390781193971634e-05
+     },
+     {
+      "t": 26,
+      "kind": "mutation",
+      "estimate": -0.002382686361670494,
+      "accepted": false,
+      "believed_total": 3.737615770660341e-05,
+      "true_total": 1.2390781193971634e-05
+     },
+     {
+      "t": 27,
+      "kind": "mutation",
+      "estimate": -0.0007408492965623736,
+      "accepted": false,
+      "believed_total": 3.737615770660341e-05,
+      "true_total": 1.2390781193971634e-05
+     },
+     {
+      "t": 28,
+      "kind": "practice",
+      "estimate": -0.0020894918125122786,
+      "accepted": false,
+      "believed_total": 3.737615770660341e-05,
+      "true_total": 1.2390781193971634e-05
+     },
+     {
+      "t": 29,
+      "kind": "practice",
+      "estimate": -0.0019075064919888973,
+      "accepted": false,
+      "believed_total": 3.737615770660341e-05,
+      "true_total": 1.2390781193971634e-05
+     },
+     {
+      "t": 30,
+      "kind": "physics:diffusion",
+      "estimate": -0.015542860142886639,
+      "accepted": false,
+      "believed_total": 3.737615770660341e-05,
+      "true_total": 1.2390781193971634e-05
+     },
+     {
+      "t": 31,
+      "kind": "mutation",
+      "estimate": -0.001607929589226842,
+      "accepted": false,
+      "believed_total": 3.737615770660341e-05,
+      "true_total": 1.2390781193971634e-05
+     },
+     {
+      "t": 32,
+      "kind": "practice",
+      "estimate": -0.00198013661429286,
+      "accepted": false,
+      "believed_total": 3.737615770660341e-05,
+      "true_total": 1.2390781193971634e-05
+     },
+     {
+      "t": 33,
+      "kind": "mutation",
+      "estimate": -0.0007764254696667194,
+      "accepted": false,
+      "believed_total": 3.737615770660341e-05,
+      "true_total": 1.2390781193971634e-05
+     },
+     {
+      "t": 34,
+      "kind": "physics:diffusion",
+      "estimate": 2.8955284506082535e-05,
+      "accepted": true,
+      "true_gain": 8.141544822137803e-05,
+      "believed_total": 6.633144221268594e-05,
+      "true_total": 9.380606934428215e-05
+     },
+     {
+      "t": 35,
+      "kind": "mutation",
+      "estimate": -0.0007908594561740756,
+      "accepted": false,
+      "believed_total": 6.633144221268594e-05,
+      "true_total": 9.380606934428215e-05
+     },
+     {
+      "t": 36,
+      "kind": "mutation",
+      "estimate": -0.0013563414104282856,
+      "accepted": false,
+      "believed_total": 6.633144221268594e-05,
+      "true_total": 9.380606934428215e-05
+     },
+     {
+      "t": 37,
+      "kind": "practice",
+      "estimate": -0.0015708408318459988,
+      "accepted": false,
+      "believed_total": 6.633144221268594e-05,
+      "true_total": 9.380606934428215e-05
+     },
+     {
+      "t": 38,
+      "kind": "practice",
+      "estimate": -0.0016850316897034645,
+      "accepted": false,
+      "believed_total": 6.633144221268594e-05,
+      "true_total": 9.380606934428215e-05
+     },
+     {
+      "t": 39,
+      "kind": "practice",
+      "estimate": -0.000982904341071844,
+      "accepted": false,
+      "believed_total": 6.633144221268594e-05,
+      "true_total": 9.380606934428215e-05
+     }
+    ]
+   },
+   {
+    "mode": "gated",
+    "seed": 4,
+    "adopted": 0,
+    "false_adoptions": 0,
+    "believed_gain": 0.0,
+    "true_gain": 0.0,
+    "self_deception": 0.0,
+    "test_loss_start": 0.004254211205989122,
+    "test_loss_end": 0.004254211205989122,
+    "final_physics": {
+     "diffusion": 0.1,
+     "fire_rate": 0.5,
+     "gain": 1.0
+    },
+    "ledger": [
+     {
+      "t": 0,
+      "kind": "physics:gain",
+      "estimate": 1.099406858884322e-06,
+      "p": 0.46655334466553344,
+      "level": 0.005847726537947628,
+      "anchor_ok": true,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 1,
+      "kind": "practice",
+      "estimate": -0.0012390868505463004,
+      "p": 0.9959004099590041,
+      "level": 0.0012716956507362724,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 2,
+      "kind": "practice",
+      "estimate": -0.0017155251698568463,
+      "p": 1.0,
+      "level": 0.0010831292932902538,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 3,
+      "kind": "practice",
+      "estimate": -0.0019626019056886435,
+      "p": 1.0,
+      "level": 0.0009007709751049019,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 4,
+      "kind": "mutation",
+      "estimate": -0.0009353450150229037,
+      "p": 1.0,
+      "level": 0.0007636671303722039,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 5,
+      "kind": "physics:gain",
+      "estimate": -0.0002806345873977989,
+      "p": 0.9999000099990001,
+      "level": 0.0006606297665357777,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 6,
+      "kind": "practice",
+      "estimate": -0.0023844477254897356,
+      "p": 1.0,
+      "level": 0.0005812505985267993,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 7,
+      "kind": "practice",
+      "estimate": -0.0025054514408111572,
+      "p": 1.0,
+      "level": 0.0005185062590675968,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 8,
+      "kind": "mutation",
+      "estimate": -0.0022134946193546057,
+      "p": 1.0,
+      "level": 0.0004677751738596854,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 9,
+      "kind": "practice",
+      "estimate": -0.0018303015967831016,
+      "p": 1.0,
+      "level": 0.0004259582693291594,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 10,
+      "kind": "practice",
+      "estimate": -0.001734997727908194,
+      "p": 1.0,
+      "level": 0.0003909201728775095,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 11,
+      "kind": "physics:gain",
+      "estimate": -2.2994703613221645e-05,
+      "p": 0.8520147985201479,
+      "level": 0.0003611491153589082,
+      "anchor_ok": true,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 12,
+      "kind": "mutation",
+      "estimate": -0.0017383865779265761,
+      "p": 1.0,
+      "level": 0.0003355478634249676,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 13,
+      "kind": "mutation",
+      "estimate": -0.000789024168625474,
+      "p": 1.0,
+      "level": 0.0003133021444568061,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 14,
+      "kind": "practice",
+      "estimate": -0.0013207915471866727,
+      "p": 0.9999000099990001,
+      "level": 0.0002937956341276524,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 15,
+      "kind": "practice",
+      "estimate": -0.0011118656257167459,
+      "p": 0.9981001899810019,
+      "level": 0.00027655360037905297,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 16,
+      "kind": "mutation",
+      "estimate": -0.0015213132137432694,
+      "p": 1.0,
+      "level": 0.00026120463948624376,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 17,
+      "kind": "mutation",
+      "estimate": -0.0006054241675883532,
+      "p": 0.9984001599840016,
+      "level": 0.00024745412075656423,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 18,
+      "kind": "practice",
+      "estimate": -0.0004088142013642937,
+      "p": 0.9732026797320268,
+      "level": 0.00023506538636893838,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 19,
+      "kind": "practice",
+      "estimate": -0.002241167239844799,
+      "p": 1.0,
+      "level": 0.00022384619879127124,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 20,
+      "kind": "mutation",
+      "estimate": -0.0016927882097661495,
+      "p": 1.0,
+      "level": 0.00021363880931078496,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 21,
+      "kind": "practice",
+      "estimate": -0.0019886239897459745,
+      "p": 1.0,
+      "level": 0.00020431257056580319,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 22,
+      "kind": "mutation",
+      "estimate": -0.001368484809063375,
+      "p": 1.0,
+      "level": 0.00019575836595833374,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 23,
+      "kind": "practice",
+      "estimate": -0.001957531785592437,
+      "p": 1.0,
+      "level": 0.0001878843563408348,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 24,
+      "kind": "physics:gain",
+      "estimate": -1.884662196971476e-05,
+      "p": 0.7724227577242275,
+      "level": 0.00018061269505909136,
+      "anchor_ok": true,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 25,
+      "kind": "mutation",
+      "estimate": -0.0037308267783373594,
+      "p": 1.0,
+      "level": 0.00017387696398272773,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 26,
+      "kind": "mutation",
+      "estimate": -0.002508634002879262,
+      "p": 1.0,
+      "level": 0.0001676201526973959,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 27,
+      "kind": "mutation",
+      "estimate": -0.0007707659970037639,
+      "p": 1.0,
+      "level": 0.00016179305137088503,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 28,
+      "kind": "practice",
+      "estimate": -0.0013051583664491773,
+      "p": 0.9996000399960004,
+      "level": 0.0001563529618726674,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 29,
+      "kind": "practice",
+      "estimate": -0.0021761045791208744,
+      "p": 1.0,
+      "level": 0.00015126265604681612,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 30,
+      "kind": "physics:diffusion",
+      "estimate": -0.01756320893764496,
+      "p": 1.0,
+      "level": 0.0001464895276098243,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 31,
+      "kind": "mutation",
+      "estimate": -0.001352002378553152,
+      "p": 1.0,
+      "level": 0.0001420048969832606,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 32,
+      "kind": "practice",
+      "estimate": -0.002355032367631793,
+      "p": 0.9999000099990001,
+      "level": 0.00013778343785006436,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 33,
+      "kind": "mutation",
+      "estimate": -0.0012412217911332846,
+      "p": 1.0,
+      "level": 0.00013380270129069636,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 34,
+      "kind": "physics:diffusion",
+      "estimate": -1.066700951923849e-05,
+      "p": 0.5497450254974503,
+      "level": 0.00013004271867353193,
+      "anchor_ok": true,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 35,
+      "kind": "mutation",
+      "estimate": -0.0010253660148009658,
+      "p": 1.0,
+      "level": 0.0001264856685105399,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 36,
+      "kind": "mutation",
+      "estimate": -0.0012311554746702313,
+      "p": 1.0,
+      "level": 0.0001231155955783195,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 37,
+      "kind": "practice",
+      "estimate": -0.0017574186204001307,
+      "p": 1.0,
+      "level": 0.00011991817298667286,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 38,
+      "kind": "practice",
+      "estimate": -0.0017101602861657739,
+      "p": 0.9999000099990001,
+      "level": 0.00011688049972724277,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 39,
+      "kind": "practice",
+      "estimate": -0.001660429872572422,
+      "p": 1.0,
+      "level": 0.00011399092768196088,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     }
+    ]
+   },
+   {
+    "mode": "naive",
+    "seed": 5,
+    "adopted": 1,
+    "false_adoptions": 1,
+    "believed_gain": 0.00010026062955148518,
+    "true_gain": -3.4928321838378906e-05,
+    "self_deception": 0.0001351889513898641,
+    "test_loss_start": 0.0046005453914403915,
+    "test_loss_end": 0.0046354737132787704,
+    "final_physics": {
+     "diffusion": 0.084908463848557,
+     "fire_rate": 0.5,
+     "gain": 1.0
+    },
+    "ledger": [
+     {
+      "t": 0,
+      "kind": "mutation",
+      "estimate": -0.002554790349677205,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 1,
+      "kind": "practice",
+      "estimate": -0.0018099058652296662,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 2,
+      "kind": "mutation",
+      "estimate": -0.001723891356959939,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 3,
+      "kind": "mutation",
+      "estimate": -0.000526786083355546,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 4,
+      "kind": "mutation",
+      "estimate": -0.0005180665175430477,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 5,
+      "kind": "physics:diffusion",
+      "estimate": -0.00022597081260755658,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 6,
+      "kind": "physics:gain",
+      "estimate": -5.6641059927642345e-05,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 7,
+      "kind": "practice",
+      "estimate": -0.0022516276221722364,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 8,
+      "kind": "mutation",
+      "estimate": -0.002014394849538803,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 9,
+      "kind": "mutation",
+      "estimate": -0.0014592827064916492,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 10,
+      "kind": "practice",
+      "estimate": -0.001394636812619865,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 11,
+      "kind": "physics:diffusion",
+      "estimate": -0.0020835513714700937,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 12,
+      "kind": "physics:diffusion",
+      "estimate": -0.007972564548254013,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 13,
+      "kind": "practice",
+      "estimate": -0.001658388995565474,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 14,
+      "kind": "mutation",
+      "estimate": -0.0008866472635418177,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 15,
+      "kind": "practice",
+      "estimate": -0.0022364044561982155,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 16,
+      "kind": "practice",
+      "estimate": -0.0018862151773646474,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 17,
+      "kind": "physics:diffusion",
+      "estimate": -0.00042172736721113324,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 18,
+      "kind": "mutation",
+      "estimate": -0.0008922972483560443,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 19,
+      "kind": "mutation",
+      "estimate": -0.0004963840474374592,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 20,
+      "kind": "practice",
+      "estimate": -0.0019509154371917248,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 21,
+      "kind": "mutation",
+      "estimate": -0.001031861174851656,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 22,
+      "kind": "practice",
+      "estimate": -0.0014625018229708076,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 23,
+      "kind": "practice",
+      "estimate": -0.0019107288680970669,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 24,
+      "kind": "physics:diffusion",
+      "estimate": 0.00010026062955148518,
+      "accepted": true,
+      "true_gain": -3.492868927423842e-05,
+      "believed_total": 0.00010026062955148518,
+      "true_total": -3.4928321838378906e-05
+     },
+     {
+      "t": 25,
+      "kind": "mutation",
+      "estimate": -0.0013356814160943031,
+      "accepted": false,
+      "believed_total": 0.00010026062955148518,
+      "true_total": -3.4928321838378906e-05
+     },
+     {
+      "t": 26,
+      "kind": "physics:gain",
+      "estimate": -6.835741805844009e-05,
+      "accepted": false,
+      "believed_total": 0.00010026062955148518,
+      "true_total": -3.4928321838378906e-05
+     },
+     {
+      "t": 27,
+      "kind": "mutation",
+      "estimate": -0.0017419077921658754,
+      "accepted": false,
+      "believed_total": 0.00010026062955148518,
+      "true_total": -3.4928321838378906e-05
+     },
+     {
+      "t": 28,
+      "kind": "mutation",
+      "estimate": -0.0016070893034338951,
+      "accepted": false,
+      "believed_total": 0.00010026062955148518,
+      "true_total": -3.4928321838378906e-05
+     },
+     {
+      "t": 29,
+      "kind": "mutation",
+      "estimate": -0.00310886069200933,
+      "accepted": false,
+      "believed_total": 0.00010026062955148518,
+      "true_total": -3.4928321838378906e-05
+     },
+     {
+      "t": 30,
+      "kind": "mutation",
+      "estimate": -0.001299424679018557,
+      "accepted": false,
+      "believed_total": 0.00010026062955148518,
+      "true_total": -3.4928321838378906e-05
+     },
+     {
+      "t": 31,
+      "kind": "mutation",
+      "estimate": -0.0007323824102059007,
+      "accepted": false,
+      "believed_total": 0.00010026062955148518,
+      "true_total": -3.4928321838378906e-05
+     },
+     {
+      "t": 32,
+      "kind": "mutation",
+      "estimate": -0.0007527685957029462,
+      "accepted": false,
+      "believed_total": 0.00010026062955148518,
+      "true_total": -3.4928321838378906e-05
+     },
+     {
+      "t": 33,
+      "kind": "mutation",
+      "estimate": -0.001573838060721755,
+      "accepted": false,
+      "believed_total": 0.00010026062955148518,
+      "true_total": -3.4928321838378906e-05
+     },
+     {
+      "t": 34,
+      "kind": "mutation",
+      "estimate": -0.0006608418188989162,
+      "accepted": false,
+      "believed_total": 0.00010026062955148518,
+      "true_total": -3.4928321838378906e-05
+     },
+     {
+      "t": 35,
+      "kind": "practice",
+      "estimate": -0.0013158656656742096,
+      "accepted": false,
+      "believed_total": 0.00010026062955148518,
+      "true_total": -3.4928321838378906e-05
+     },
+     {
+      "t": 36,
+      "kind": "mutation",
+      "estimate": -0.001739515457302332,
+      "accepted": false,
+      "believed_total": 0.00010026062955148518,
+      "true_total": -3.4928321838378906e-05
+     },
+     {
+      "t": 37,
+      "kind": "practice",
+      "estimate": -0.0006894506514072418,
+      "accepted": false,
+      "believed_total": 0.00010026062955148518,
+      "true_total": -3.4928321838378906e-05
+     },
+     {
+      "t": 38,
+      "kind": "mutation",
+      "estimate": -0.0017568990588188171,
+      "accepted": false,
+      "believed_total": 0.00010026062955148518,
+      "true_total": -3.4928321838378906e-05
+     },
+     {
+      "t": 39,
+      "kind": "mutation",
+      "estimate": -0.0016518041957169771,
+      "accepted": false,
+      "believed_total": 0.00010026062955148518,
+      "true_total": -3.4928321838378906e-05
+     }
+    ]
+   },
+   {
+    "mode": "gated",
+    "seed": 5,
+    "adopted": 0,
+    "false_adoptions": 0,
+    "believed_gain": 0.0,
+    "true_gain": 0.0,
+    "self_deception": 0.0,
+    "test_loss_start": 0.0046005453914403915,
+    "test_loss_end": 0.0046005453914403915,
+    "final_physics": {
+     "diffusion": 0.1,
+     "fire_rate": 0.5,
+     "gain": 1.0
+    },
+    "ledger": [
+     {
+      "t": 0,
+      "kind": "mutation",
+      "estimate": -0.0028255172073841095,
+      "p": 1.0,
+      "level": 0.005847726537947628,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 1,
+      "kind": "practice",
+      "estimate": -0.00176928099244833,
+      "p": 1.0,
+      "level": 0.0012716956507362724,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 2,
+      "kind": "mutation",
+      "estimate": -0.0018386668525636196,
+      "p": 1.0,
+      "level": 0.0010831292932902538,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 3,
+      "kind": "mutation",
+      "estimate": -0.0006186819518916309,
+      "p": 1.0,
+      "level": 0.0009007709751049019,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 4,
+      "kind": "mutation",
+      "estimate": -0.0009499717853032053,
+      "p": 1.0,
+      "level": 0.0007636671303722039,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 5,
+      "kind": "physics:diffusion",
+      "estimate": -0.0008842497481964529,
+      "p": 0.9998000199980002,
+      "level": 0.0006606297665357777,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 6,
+      "kind": "physics:gain",
+      "estimate": 9.002988917927723e-06,
+      "p": 0.39706029397060294,
+      "level": 0.0005812505985267993,
+      "anchor_ok": true,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 7,
+      "kind": "practice",
+      "estimate": -0.0025508576072752476,
+      "p": 0.9998000199980002,
+      "level": 0.0005185062590675968,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 8,
+      "kind": "mutation",
+      "estimate": -0.0020328201353549957,
+      "p": 1.0,
+      "level": 0.0004677751738596854,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 9,
+      "kind": "mutation",
+      "estimate": -0.0017625732580199838,
+      "p": 1.0,
+      "level": 0.0004259582693291594,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 10,
+      "kind": "practice",
+      "estimate": -0.0014363202499225736,
+      "p": 1.0,
+      "level": 0.0003909201728775095,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 11,
+      "kind": "physics:diffusion",
+      "estimate": -0.0027100651059299707,
+      "p": 1.0,
+      "level": 0.0003611491153589082,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 12,
+      "kind": "physics:diffusion",
+      "estimate": -0.0076711601577699184,
+      "p": 1.0,
+      "level": 0.0003355478634249676,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 13,
+      "kind": "practice",
+      "estimate": -0.001940096146427095,
+      "p": 1.0,
+      "level": 0.0003133021444568061,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 14,
+      "kind": "mutation",
+      "estimate": -0.001448786468245089,
+      "p": 1.0,
+      "level": 0.0002937956341276524,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 15,
+      "kind": "practice",
+      "estimate": -0.00252547487616539,
+      "p": 1.0,
+      "level": 0.00027655360037905297,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 16,
+      "kind": "practice",
+      "estimate": -0.0017754570581018925,
+      "p": 1.0,
+      "level": 0.00026120463948624376,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 17,
+      "kind": "physics:diffusion",
+      "estimate": -0.0002883586275856942,
+      "p": 0.9999000099990001,
+      "level": 0.00024745412075656423,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 18,
+      "kind": "mutation",
+      "estimate": -0.0007857082528062165,
+      "p": 1.0,
+      "level": 0.00023506538636893838,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 19,
+      "kind": "mutation",
+      "estimate": -0.0006464153411798179,
+      "p": 1.0,
+      "level": 0.00022384619879127124,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 20,
+      "kind": "practice",
+      "estimate": -0.0017180900322273374,
+      "p": 0.9999000099990001,
+      "level": 0.00021363880931078496,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 21,
+      "kind": "mutation",
+      "estimate": -0.0009648556006141007,
+      "p": 1.0,
+      "level": 0.00020431257056580319,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 22,
+      "kind": "practice",
+      "estimate": -0.002019044943153858,
+      "p": 0.9999000099990001,
+      "level": 0.00019575836595833374,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 23,
+      "kind": "practice",
+      "estimate": -0.002209494123235345,
+      "p": 1.0,
+      "level": 0.0001878843563408348,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 24,
+      "kind": "physics:diffusion",
+      "estimate": -0.00010414113057777286,
+      "p": 0.7435256474352565,
+      "level": 0.00018061269505909136,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 25,
+      "kind": "mutation",
+      "estimate": -0.0016588239232078195,
+      "p": 1.0,
+      "level": 0.00017387696398272773,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 26,
+      "kind": "physics:gain",
+      "estimate": -2.7844236683449708e-05,
+      "p": 0.8051194880511949,
+      "level": 0.0001676201526973959,
+      "anchor_ok": true,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 27,
+      "kind": "mutation",
+      "estimate": -0.0011479062959551811,
+      "p": 0.9994000599940006,
+      "level": 0.00016179305137088503,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 28,
+      "kind": "mutation",
+      "estimate": -0.0009558711317367852,
+      "p": 1.0,
+      "level": 0.0001563529618726674,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 29,
+      "kind": "mutation",
+      "estimate": -0.0024473490193486214,
+      "p": 1.0,
+      "level": 0.00015126265604681612,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 30,
+      "kind": "mutation",
+      "estimate": -0.0007750433869659901,
+      "p": 1.0,
+      "level": 0.0001464895276098243,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 31,
+      "kind": "mutation",
+      "estimate": -0.0006646833498962224,
+      "p": 1.0,
+      "level": 0.0001420048969832606,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 32,
+      "kind": "mutation",
+      "estimate": -0.0007546310662291944,
+      "p": 1.0,
+      "level": 0.00013778343785006436,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 33,
+      "kind": "mutation",
+      "estimate": -0.0018977030413225293,
+      "p": 1.0,
+      "level": 0.00013380270129069636,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 34,
+      "kind": "mutation",
+      "estimate": -0.0013581272214651108,
+      "p": 1.0,
+      "level": 0.00013004271867353193,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 35,
+      "kind": "practice",
+      "estimate": -0.0013040918856859207,
+      "p": 0.9999000099990001,
+      "level": 0.0001264856685105399,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 36,
+      "kind": "mutation",
+      "estimate": -0.0012433977099135518,
+      "p": 1.0,
+      "level": 0.0001231155955783195,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 37,
+      "kind": "practice",
+      "estimate": -0.002048523398116231,
+      "p": 1.0,
+      "level": 0.00011991817298667286,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 38,
+      "kind": "mutation",
+      "estimate": -0.0015198532491922379,
+      "p": 1.0,
+      "level": 0.00011688049972724277,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     },
+     {
+      "t": 39,
+      "kind": "mutation",
+      "estimate": -0.0022560853976756334,
+      "p": 1.0,
+      "level": 0.00011399092768196088,
+      "anchor_ok": false,
+      "accepted": false,
+      "believed_total": 0.0,
+      "true_total": 0.0
+     }
+    ]
+   }
+  ]
+ },
+ "seconds": 1544
+}
