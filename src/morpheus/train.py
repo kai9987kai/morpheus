@@ -1,10 +1,7 @@
-"""Evolution-strategies training of the tissue's update rule (no autodiff needed).
+"""Training of the tissue's update rule by backpropagation through time (grad.py).
 
-Antithetic Gaussian perturbations, centred-rank fitness shaping and Adam
-(Salimans et al. 2017, "Evolution Strategies as a Scalable Alternative to RL").
-Every population member in a generation is evaluated on the same founders, wounds
-and fire masks (common random numbers), so fitness differences come from the
-parameters alone.
+(An evolution-strategies trainer was tried first; with 2,450 parameters and 112-step
+lives it plateaued near loss 0.17 while BPTT reaches ~0.02, so it was removed.)
 
 Objective per tissue (lower is better):
 
@@ -54,36 +51,6 @@ def objective(theta_batch, wounds, physics, proto, seed, comparator_mask, tgt,
     return out["grow_loss"] + out["regen_loss"] + self_model_weight * out["self_model_error"], out
 
 
-def _member_losses(args):
-    members, wounds, cm, physics, proto, seed, tgt = args
-    t = len(wounds)
-    batch = np.repeat(members, t, axis=0)
-    loss, _ = objective(batch, np.tile(wounds, (len(members), 1, 1)), physics, proto, seed,
-                        np.tile(cm, len(members)), tgt, crn_group=t)
-    return loss.reshape(len(members), t).mean(axis=1)
-
-
-_POOL = None
-
-
-def _pool(workers):
-    global _POOL
-    if _POOL is None and workers > 1:
-        import multiprocessing as mp
-        _POOL = mp.get_context("fork").Pool(workers)
-    return _POOL
-
-
-def evaluate_members(members, wounds, cm, physics, proto, seed, tgt, workers=1):
-    """Mean loss of each parameter vector in ``members`` on the same tissues and fire masks."""
-    pool = _pool(workers)
-    if pool is None:
-        return _member_losses((members, wounds, cm, physics, proto, seed, tgt))
-    chunks = np.array_split(members, workers)
-    parts = pool.map(_member_losses, [(c, wounds, cm, physics, proto, seed, tgt) for c in chunks if len(c)])
-    return np.concatenate(parts)
-
-
 class Adam:
     def __init__(self, n, lr, b1=0.9, b2=0.999, eps=1e-8):
         self.m, self.v, self.t = np.zeros(n), np.zeros(n), 0
@@ -98,40 +65,15 @@ class Adam:
         return self.lr * mh / (np.sqrt(vh) + self.eps)
 
 
-def centred_ranks(x: np.ndarray) -> np.ndarray:
-    r = np.empty(len(x))
-    r[np.argsort(x)] = np.arange(len(x))
-    return r / (len(x) - 1) - 0.5
+_POOL = None
 
 
-def es_gradient(theta, rng, pairs, sigma, tissues_per_member, physics, proto, seed, tgt, workers=1):
-    """Estimate the gradient of the mean loss with antithetic sampling. Returns (grad, mean loss)."""
-    noise = rng.standard_normal((pairs, theta.size)).astype(np.float32)
-    members = np.concatenate([theta + sigma * noise, theta - sigma * noise])       # (2K, P)
-    _, wounds = anatomy.random_wounds(tissues_per_member, rng)
-    cm = rng.random(tissues_per_member) > 0.25
-    fit = evaluate_members(members, wounds, cm, physics, proto, seed, tgt, workers)
-    r = centred_ranks(fit)
-    g = ((r[:pairs] - r[pairs:])[:, None] * noise).sum(0) / (2 * pairs * sigma)
-    return g, float(fit.mean())
-
-
-def train(generations=300, pairs=16, sigma=0.02, lr=0.01, tissues_per_member=2, seed=0,
-          physics=Physics(), proto=Protocol(), theta=None, log=None, weight_decay=0.0005, workers=1):
-    rng = np.random.default_rng(seed)
-    theta = init_params(rng) if theta is None else theta.astype(np.float32).copy()
-    opt = Adam(N_PARAMS, lr)
-    tgt = anatomy.target()
-    history = []
-    t0 = time.time()
-    for gen in range(generations):
-        g, mean_loss = es_gradient(theta, rng, pairs, sigma, tissues_per_member, physics, proto,
-                                   int(rng.integers(1 << 31)), tgt, workers)
-        theta = (theta - opt.update(g) - lr * weight_decay * theta).astype(np.float32)
-        history.append(mean_loss)
-        if log and (gen % 10 == 0 or gen == generations - 1):
-            log(f"gen {gen:4d}  population loss {mean_loss:.4f}  ({time.time() - t0:.0f}s)")
-    return theta, history
+def _pool(workers):
+    global _POOL
+    if _POOL is None and workers > 1:
+        import multiprocessing as mp
+        _POOL = mp.get_context("fork").Pool(workers)
+    return _POOL
 
 
 def save_weights(path, theta, physics: Physics, meta: dict):
@@ -148,9 +90,6 @@ def load_weights(path):
         raise ValueError(f"{path}: {theta.size} parameters, model expects {N_PARAMS}")
     return theta, Physics(**doc["physics"]), doc.get("meta", {})
 
-
-# --------------------------------------------------------------------------------------
-# Backpropagation through time (the default trainer; ES above is kept for the RSI proposer)
 
 def _bptt_chunk(args):
     from .grad import loss_and_grad

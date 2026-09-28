@@ -2,7 +2,8 @@
 
 The organism repeatedly proposes edits to its own developmental rule (its network
 weights) and to its own physics (comparator gain, gap-junction coupling), and decides
-whether to adopt each edit. Two ways of deciding are compared on the *same* proposer:
+whether to adopt each edit. Proposals are "practice" (a few steps of its own learning
+algorithm on fresh wounds), random mutation, or a physics edit. Two ways of deciding are compared on the *same* proposer:
 
     naive  adopt when the edit lowers mean loss on a small evaluation suite that is
            reused for every decision (the usual "benchmark hill-climb")
@@ -24,7 +25,7 @@ import math
 
 import numpy as np
 
-from . import anatomy, stats, train
+from . import anatomy, grad, stats, train
 from .life import Protocol, live
 from .tissue import Physics
 
@@ -38,11 +39,12 @@ class Config:
     anchor: int = 16                 # frozen anchor suite (gated only)
     anchor_tolerance: float = 0.02   # relative anchor regression allowed
     test: int = 128                  # auditor's held-out suite
-    es_pairs: int = 8
-    es_step: float = 0.004
-    mutation_sd: float = 0.01
+    practice_steps: int = 2          # "practice": a few Adam steps of backprop on fresh tissues
+    practice_batch: int = 8
+    practice_lr: float = 2e-4
+    mutation_sd: float = 0.001
     physics_sd: float = 0.3
-    p_es: float = 0.45
+    p_practice: float = 0.4
     p_mutation: float = 0.4          # remainder: physics edits
 
 
@@ -59,12 +61,15 @@ def losses(theta, physics, s) -> np.ndarray:
 
 def propose(theta, physics: Physics, rng, cfg: Config):
     u = rng.random()
-    if u < cfg.p_es:
-        g, _ = train.es_gradient(theta, rng, cfg.es_pairs, 0.02, 2, physics, Protocol(),
-                                 int(rng.integers(1 << 31)), anatomy.target())
-        step = cfg.es_step * g / (np.sqrt((g ** 2).mean()) + 1e-12)
-        return "es", (theta - step).astype(np.float32), physics
-    if u < cfg.p_es + cfg.p_mutation:
+    if u < cfg.p_practice:
+        th = theta.astype(np.float64)
+        opt = train.Adam(th.size, cfg.practice_lr)
+        for _ in range(cfg.practice_steps):
+            _, wounds = anatomy.random_wounds(cfg.practice_batch, rng)
+            _, g, _ = grad.loss_and_grad(th, wounds, physics, Protocol(), int(rng.integers(1 << 31)))
+            th = th - opt.update(train._normalise(g))
+        return "practice", th.astype(np.float32), physics
+    if u < cfg.p_practice + cfg.p_mutation:
         return "mutation", (theta + cfg.mutation_sd * rng.standard_normal(theta.size)).astype(np.float32), physics
     field = "gain" if rng.random() < 0.5 else "diffusion"
     new = dataclasses.replace(physics, **{field: float(getattr(physics, field) * math.exp(cfg.physics_sd * rng.standard_normal()))})
