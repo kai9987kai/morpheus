@@ -93,9 +93,10 @@ def load_weights(path):
 
 def _bptt_chunk(args):
     from .grad import loss_and_grad
-    theta, wounds, cm, physics, proto, seed = args
-    loss, g, _ = loss_and_grad(theta, wounds, physics, proto, seed, comparator_mask=cm)
-    return loss * len(wounds), g * len(wounds)
+    theta, wounds, cm, physics, proto, seed, init_state, init_eps = args
+    loss, g, ex = loss_and_grad(theta, wounds, physics, proto, seed, comparator_mask=cm,
+                                init_state=init_state, init_eps=init_eps)
+    return loss * len(wounds), g * len(wounds), ex["state"], ex["eps"]
 
 
 def _normalise(g: np.ndarray) -> np.ndarray:
@@ -110,21 +111,60 @@ def _normalise(g: np.ndarray) -> np.ndarray:
 
 
 def train_bptt(iterations=2000, batch=16, lr=2e-3, seed=0, physics=Physics(), proto=Protocol(),
-               theta=None, workers=4, log=None, dropout=0.25):
+               theta=None, workers=4, log=None, dropout=0.25, pool_size=128, persist_steps=48):
+    """Each iteration trains on two half-batches and averages their gradients:
+
+    life         founder cells grow (64 steps), are wounded and regenerate (48 steps), as in
+                 the experiments
+    persistence  tissues sampled from a pool of old tissues (ages 112 steps and up, since each
+                 pass returns them to the pool) are wounded with probability 1/2 and must hold
+                 or regrow the body for another 48 steps. This trains anatomical homeostasis
+                 beyond the length of one life (sample-pool training, Mordvintsev et al. 2020).
+    """
     rng = np.random.default_rng(seed)
     theta = init_params(rng).astype(np.float64) if theta is None else theta.astype(np.float64).copy()
     opt = Adam(N_PARAMS, lr)
-    pool = _pool(workers)
+    mp_pool = _pool(workers)
+    persist_proto = Protocol(grow=0, regen=persist_steps, tail_window=proto.tail_window)
+    pool_s, pool_e = [], []
     history, t0 = [], time.time()
+    half = batch // 2
+
+    def run(jobs):
+        return mp_pool.map(_bptt_chunk, jobs) if mp_pool else [_bptt_chunk(j) for j in jobs]
+
+    def split(n):
+        return [c for c in np.array_split(np.arange(n), max(workers, 1)) if len(c)]
+
     for it in range(iterations):
         opt.lr = lr * (0.1 if it >= 0.7 * iterations else 1.0)
-        _, wounds = anatomy.random_wounds(batch, rng)
-        cm = rng.random(batch) > dropout
-        chunks = np.array_split(np.arange(batch), max(workers, 1))
-        jobs = [(theta, wounds[c], cm[c], physics, proto, int(rng.integers(1 << 31))) for c in chunks if len(c)]
-        parts = pool.map(_bptt_chunk, jobs) if pool else [_bptt_chunk(j) for j in jobs]
+        n_life = batch if len(pool_s) < 2 * half else half
+        _, wounds = anatomy.random_wounds(n_life, rng)
+        cm = rng.random(n_life) > dropout
+        jobs = [(theta, wounds[c], cm[c], physics, proto, int(rng.integers(1 << 31)), None, None) for c in split(n_life)]
+        n_persist = batch - n_life
+        if n_persist:
+            idx = rng.choice(len(pool_s), n_persist, replace=False)
+            _, pw = anatomy.random_wounds(n_persist, rng)
+            pw &= (rng.random(n_persist) < 0.5)[:, None, None]
+            pcm = rng.random(n_persist) > dropout
+            ps, pe = np.stack([pool_s[i] for i in idx]), np.stack([pool_e[i] for i in idx])
+            jobs += [(theta, pw[c], pcm[c], physics, persist_proto, int(rng.integers(1 << 31)), ps[c], pe[c])
+                     for c in split(n_persist)]
+        parts = run(jobs)
         loss = sum(p[0] for p in parts) / batch
         g = sum(p[1] for p in parts) / batch
+        finals_s = np.concatenate([p[2] for p in parts])
+        finals_e = np.concatenate([p[3] for p in parts])
+        if n_persist:
+            for k, i in enumerate(idx):          # persistence tissues go back, older
+                pool_s[i], pool_e[i] = finals_s[n_life + k], finals_e[n_life + k]
+        for k in range(n_life):                  # fresh lives join the pool, replacing random members
+            if len(pool_s) < pool_size:
+                pool_s.append(finals_s[k]); pool_e.append(finals_e[k])
+            else:
+                j = int(rng.integers(pool_size))
+                pool_s[j], pool_e[j] = finals_s[k], finals_e[k]
         theta = theta - opt.update(_normalise(g))
         history.append(loss)
         if log and (it % 20 == 0 or it == iterations - 1):

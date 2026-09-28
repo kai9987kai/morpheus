@@ -23,8 +23,15 @@ SELF_MODEL_WEIGHT = 0.05
 
 def loss_and_grad(theta, wounds, physics: Physics, proto: Protocol, seed: int,
                   comparator_mask=None, self_model_weight=SELF_MODEL_WEIGHT, crn_group=None,
-                  dtype=np.float32):
-    """Mean over tissues of grow loss + regen loss + weight * self-model error, and its gradient."""
+                  dtype=np.float32, init_state=None, init_eps=None):
+    """Mean over tissues of grow loss + regen loss + weight * self-model error, and its gradient.
+
+    With ``init_state`` (and ``init_eps``) the life starts from those tissues instead of a
+    founder cell; with ``proto.grow == 0`` the wound is applied to them at once. This is the
+    persistence phase of training: old tissues from a pool are wounded and must regrow.
+
+    Returns (mean loss, gradient, extras) with extras = per-tissue loss, final state and error.
+    """
     assert theta.ndim == 1, "shared parameters only"
     n, size = wounds.shape[0], wounds.shape[1]
     tgt = anatomy.target(size)
@@ -40,8 +47,8 @@ def loss_and_grad(theta, wounds, physics: Physics, proto: Protocol, seed: int,
     D, gain = physics.diffusion, physics.gain
 
     tgt = tgt.astype(dtype)
-    s = seed_state(n, size, size).astype(dtype)
-    eps = np.zeros((n, size, size, VIS), dtype)
+    s = (seed_state(n, size, size) if init_state is None else init_state).astype(dtype)
+    eps = (np.zeros((n, size, size, VIS)) if init_eps is None else init_eps).astype(dtype)
     per_tissue = np.zeros(n)
     tape = []
     for t in range(T):
@@ -68,6 +75,7 @@ def loss_and_grad(theta, wounds, physics: Physics, proto: Protocol, seed: int,
         per_tissue += self_model_weight * (eps.astype(np.float64) ** 2).mean(axis=(1, 2, 3)) / T
         tape.append((s, x, a, f, pre, alive, clipm, eps, w, s2 if w else None))
         s = s2
+    final_state, final_eps = s, eps
 
     gW1, gb1 = np.zeros_like(W1), np.zeros_like(b1)
     gW2, gb2 = np.zeros_like(W2), np.zeros_like(b2)
@@ -106,6 +114,6 @@ def loss_and_grad(theta, wounds, physics: Physics, proto: Protocol, seed: int,
             gs_in *= keep
         gs = gs_in
     grad = np.concatenate([gW1.ravel(), gb1, gW2.ravel(), gb2]).astype(np.float64)
-    return float(per_tissue.mean()), grad, per_tissue
+    return float(per_tissue.mean()), grad, {"per_tissue": per_tissue, "state": final_state, "eps": final_eps}
 
 

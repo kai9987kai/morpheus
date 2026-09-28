@@ -33,3 +33,21 @@ def test_gradient_matches_finite_differences():
         lm, _, _ = grad.loss_and_grad(theta - e, wounds, physics, proto, 5, comparator_mask=cm, dtype=np.float64)
         fd = (lp - lm) / (2 * h)
         assert abs(g[i] - fd) <= 1e-5 * max(1e-3, abs(fd)), (i, g[i], fd)
+
+
+def test_gradient_from_initial_state_matches_finite_differences():
+    rng, theta, wounds, _, physics, cm = _setup()
+    proto = Protocol(grow=0, regen=6, tail_window=3)
+    s0 = np.abs(rng.normal(0, 0.5, (3, 12, 12, 13)))
+    e0 = rng.normal(0, 0.1, (3, 12, 12, 5))
+    kw = dict(comparator_mask=cm, dtype=np.float64, init_state=s0, init_eps=e0)
+    _, g, ex = grad.loss_and_grad(theta, wounds, physics, proto, 5, **kw)
+    assert ex["state"].shape == s0.shape
+    h = 1e-5
+    for i in rng.choice(N_PARAMS, 6, replace=False):
+        e = np.zeros(N_PARAMS)
+        e[i] = h
+        lp, _, _ = grad.loss_and_grad(theta + e, wounds, physics, proto, 5, **kw)
+        lm, _, _ = grad.loss_and_grad(theta - e, wounds, physics, proto, 5, **kw)
+        fd = (lp - lm) / (2 * h)
+        assert abs(g[i] - fd) <= 1e-5 * max(1e-3, abs(fd)), (i, g[i], fd)

@@ -26,7 +26,7 @@ def cmd_train(a):
     theta, hist = train.train_bptt(iterations=a.iterations, seed=a.seed, workers=a.workers, log=_log)
     physics = train.Physics()
     train.save_weights(a.out, theta, physics, {
-        "trainer": "bptt", "iterations": a.iterations, "batch": 16, "lr": 2e-3, "seed": a.seed,
+        "trainer": "bptt+persistence-pool", "iterations": a.iterations, "batch": 16, "lr": 2e-3, "seed": a.seed,
         "final_loss_last50": float(np.mean(hist[-50:])), "seconds": round(time.time() - t0)})
     _log(f"saved {a.out}")
 
@@ -139,7 +139,7 @@ def main(argv=None):
     ap = argparse.ArgumentParser(prog="morpheus", description=__doc__)
     sub = ap.add_subparsers(dest="cmd", required=True)
     t = sub.add_parser("train", help="train a rule by backpropagation through time")
-    t.add_argument("--iterations", type=int, default=2000)
+    t.add_argument("--iterations", type=int, default=3000)
     t.add_argument("--seed", type=int, default=0)
     t.add_argument("--workers", type=int, default=4)
     t.add_argument("--out", default="weights/rule_a.json")
