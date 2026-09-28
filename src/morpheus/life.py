@@ -121,15 +121,15 @@ def live(theta, wounds: np.ndarray, physics: Physics, proto: Protocol, seed: int
     s = s * ~wounds[..., None]
     regenerate(proto.regen, 0, proto.voltage_pulse)
     regen_loss = np.mean(trace[-proto.tail_window:], axis=0)
-    out = {"state": s, "grown": grown, "self_model_error": sm_err / len(trace), "grow_loss": grow_loss, "regen_loss": regen_loss,
+    out = {"state": s, "eps": eps, "grown": grown, "self_model_error": sm_err / len(trace), "grow_loss": grow_loss, "regen_loss": regen_loss,
            "trace": np.stack(trace, axis=1)}
     if proto.second_wound_after:
         s = s * ~wounds[..., None]
         regenerate(proto.second_wound_after, proto.regen)
         out["second_regen_loss"] = np.mean(trace[-proto.tail_window:], axis=0)
-        out["state"] = s
+        out["state"], out["eps"] = s, eps
     if proto.record_eps:
-        out["eps"] = np.stack(eps_rec)
+        out["eps_stream"] = np.stack(eps_rec)
     if snaps:
         out["snapshots"] = snaps
     return out
@@ -148,3 +148,18 @@ def _shuffle_within_body(e: np.ndarray, s: np.ndarray, rng: np.random.Generator)
 
 def voltage(s: np.ndarray) -> np.ndarray:
     return s[..., VOLT]
+
+
+def continue_life(theta, state, eps, wounds, physics: Physics, steps: int, seed: int,
+                  tgt: np.ndarray | None = None, tail_window: int = 8) -> dict:
+    """Wound existing tissues (author comparator) and let them regenerate for ``steps`` steps."""
+    n, size = state.shape[0], state.shape[1]
+    tgt = anatomy.target(size) if tgt is None else tgt
+    fires = fire_masks(np.random.default_rng(seed), n, size, physics.fire_rate)
+    s = state * ~wounds[..., None]
+    e = eps * ~wounds[..., None]
+    trace = []
+    for _ in range(steps):
+        s, e, _, _ = step(s, e, theta, physics, next(fires))
+        trace.append(anatomy.loss(s, tgt))
+    return {"state": s, "eps": e, "regen_loss": np.mean(trace[-tail_window:], axis=0)}

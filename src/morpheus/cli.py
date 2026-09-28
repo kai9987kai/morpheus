@@ -74,6 +74,8 @@ def cmd_run(a):
         doc["H2"] = experiments.h2_gap_junctions(theta, physics, n=a.n, log=_log)
     if which in ("h3", "all"):
         doc["H3"] = experiments.h3_voltage_memory(theta, physics, n=a.n, log=_log)
+    if which == "h3locus":
+        doc["H3_locus_exploratory"] = experiments.h3_memory_locus(theta, physics, n=a.n, log=_log)
     if which in ("cal", "all"):
         doc["CAL"] = experiments.calibration(theta, physics, reps=a.reps, n=a.n, log=_log)
     if which in ("h4", "rsi"):
@@ -145,7 +147,7 @@ def main(argv=None):
     t.add_argument("--out", default="weights/rule_a.json")
     t.set_defaults(fn=cmd_train)
     r = sub.add_parser("run", help="run preregistered experiments")
-    r.add_argument("experiment", choices=["h1", "h2", "h3", "cal", "all", "h4", "rsi"])
+    r.add_argument("experiment", choices=["h1", "h2", "h3", "cal", "all", "h4", "rsi", "h3locus"])
     r.add_argument("--weights", default="weights/rule_a.json")
     r.add_argument("--n", type=int, default=128)
     r.add_argument("--reps", type=int, default=40)

@@ -28,7 +28,7 @@ from pathlib import Path
 import numpy as np
 
 from . import __version__, anatomy, stats
-from .life import Protocol, live
+from .life import Protocol, continue_life, live
 from .tissue import C, TYPES, VIS, VOLT
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -87,7 +87,7 @@ def h1_authorship(theta, physics, n=96, seed=1, log=print) -> dict:
     hook = RidgeR2()
     author = live(theta, wounds, physics, Protocol(comparator="author", record_eps=True), fseed, on_regen_step=hook)
     res["author"], r2["author"] = _summ(author, tgt), hook.r2()
-    donor = np.roll(author["eps"], 1, axis=1)  # tissue i receives tissue i-1's own error stream
+    donor = np.roll(author["eps_stream"], 1, axis=1)  # tissue i receives tissue i-1's own error stream
     for cond in ("transplant", "zero", "delayed", "shuffled"):
         hook = RidgeR2()
         out = live(theta, wounds, physics, Protocol(comparator=cond), fseed,
@@ -166,6 +166,30 @@ def h3_voltage_memory(theta, physics, n=96, seed=3, pulse_steps=12, log=print) -
             "pulse_second": stats.mean_ci(_anterior_identity(pulse["state"], tgt)),
         },
     }
+
+
+def h3_memory_locus(theta, physics, n=128, seed=3, pulse_steps=12, log=print) -> dict:
+    """EXPLORATORY (not preregistered). Where does the clamp-induced change live?
+
+    After the first regeneration (clamped vs control), copy one channel group of the control
+    tissue into the clamped tissue, then amputate the head again and regenerate 48 steps.
+    If restoring a group abolishes the persistent deficit, that group carries the memory.
+    """
+    _, wounds, fseed = _suite(n, seed, kinds=("head_amputation",))
+    v_star = tail_voltage(theta, physics)
+    ctrl = live(theta, wounds, physics, Protocol(), fseed)
+    pulse = live(theta, wounds, physics, Protocol(voltage_pulse=(v_star, pulse_steps)), fseed)
+    groups = {"none": [], "voltage": [VOLT], "identity": [2, 3, 4], "hidden": list(range(5, C)),
+              "all_but_voltage": [0, 2, 3, 4] + list(range(5, C))}
+    base = continue_life(theta, ctrl["state"], ctrl["eps"], wounds, physics, 48, fseed + 11)["regen_loss"]
+    out = {}
+    for name, chans in groups.items():
+        s = pulse["state"].copy()
+        s[..., chans] = ctrl["state"][..., chans]
+        r = continue_life(theta, s, pulse["eps"], wounds, physics, 48, fseed + 11)["regen_loss"]
+        out[name] = stats.paired(r - base, seed=seed, alternative="two-sided")
+        log(f"H3-locus restore {name:16s} deficit {out[name]['mean']:+.5f}")
+    return {"exploratory": True, "n_tissues": n, "restored_group_deficit_vs_control": out}
 
 
 def calibration(theta, physics, reps=20, n=96, seed=4, log=print) -> dict:

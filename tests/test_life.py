@@ -29,7 +29,7 @@ def test_deterministic_and_paired():
     z = live(th, w, ph, Protocol(grow=10, regen=8, comparator="zero"), 7)
     np.testing.assert_array_equal(a["grown"], z["grown"])
     # Transplanting a tissue's own stream back into itself reproduces the author condition.
-    t = live(th, w, ph, Protocol(grow=10, regen=8, comparator="transplant"), 7, donor_eps=a["eps"])
+    t = live(th, w, ph, Protocol(grow=10, regen=8, comparator="transplant"), 7, donor_eps=a["eps_stream"])
     np.testing.assert_allclose(t["state"], a["state"], atol=1e-6)
 
 
