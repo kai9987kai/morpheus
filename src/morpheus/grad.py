@@ -24,7 +24,7 @@ SELF_MODEL_WEIGHT = 0.05
 def loss_and_grad(theta, wounds, physics: Physics, proto: Protocol, seed: int,
                   comparator_mask=None, self_model_weight=SELF_MODEL_WEIGHT, crn_group=None,
                   dtype=np.float32, init_state=None, init_eps=None, regen_target=None,
-                  v_inject=None, inject_steps=0, inject_mode="add"):
+                  v_inject=None, inject_steps=0, inject_mode="add", regen_weight=None):
     """Mean over tissues of grow loss + regen loss + weight * self-model error, and its gradient.
 
     With ``init_state`` (and ``init_eps``) the life starts from those tissues instead of a
@@ -34,7 +34,9 @@ def loss_and_grad(theta, wounds, physics: Physics, proto: Protocol, seed: int,
     ``regen_target`` replaces the anatomy scored at the end of regeneration. ``v_inject`` (H,W)
     is added to every cell's voltage on each of the first ``inject_steps`` steps after the wound
     (a designed bioelectric intervention); with ``inject_mode="clamp"`` voltage is instead held at
-    ``v_inject`` on those steps. Its gradient is returned as extras["g_inject"].
+    ``v_inject`` on those steps. ``v_inject`` may also be (P,H,W): a program of P phases that
+    split the ``inject_steps`` evenly. Its gradient is returned as extras["g_inject"] (same shape).
+    ``regen_weight`` (H,W), mean 1, reweights the regeneration loss spatially.
 
     Returns (mean loss, gradient, extras) with extras = per-tissue loss, final state and error.
     """
@@ -54,8 +56,12 @@ def loss_and_grad(theta, wounds, physics: Physics, proto: Protocol, seed: int,
 
     tgt = tgt.astype(dtype)
     rtgt = tgt if regen_target is None else regen_target.astype(dtype)
-    inj = None if v_inject is None else v_inject.astype(dtype)[None, :, :]
-    g_inject = np.zeros((size, size))
+    inj = None if v_inject is None else np.asarray(v_inject, dtype).reshape(-1, size, size)
+    g_inject = None if inj is None else np.zeros(inj.shape)
+    rw = None if regen_weight is None else np.asarray(regen_weight, dtype)[None, :, :, None]
+
+    def phase(t):
+        return (t - G) * inj.shape[0] // inject_steps
     s = (seed_state(n, size, size) if init_state is None else init_state).astype(dtype)
     eps = (np.zeros((n, size, size, VIS)) if init_eps is None else init_eps).astype(dtype)
     per_tissue = np.zeros(n)
@@ -75,9 +81,9 @@ def loss_and_grad(theta, wounds, physics: Physics, proto: Protocol, seed: int,
             u[..., VOLT:VOLT + 1] += D * gap_junction_flux(s[..., VOLT:VOLT + 1], pre)
         if inj is not None and G <= t < G + inject_steps:
             if inject_mode == "clamp":
-                u[..., VOLT] = inj
+                u[..., VOLT] = inj[phase(t)]
             else:
-                u[..., VOLT] += inj
+                u[..., VOLT] += inj[phase(t)]
         clipm = np.abs(u) < STATE_CLIP
         c = np.clip(u, -STATE_CLIP, STATE_CLIP)
         alive = pre & alive_mask(c)
@@ -85,7 +91,10 @@ def loss_and_grad(theta, wounds, physics: Physics, proto: Protocol, seed: int,
         eps = ((s2 - s)[..., :VIS] - f * pred) * alive
         w = 1.0 / Wn if (G - Wn <= t < G) or (t >= T - Wn) else 0.0
         if w:
-            per_tissue += w * anatomy.loss(s2, tgt if t < G else rtgt)
+            if rw is not None and t >= G:
+                per_tissue += w * (rw * (anatomy.visible(s2) - rtgt) ** 2).mean(axis=(1, 2, 3))
+            else:
+                per_tissue += w * anatomy.loss(s2, tgt if t < G else rtgt)
         per_tissue += self_model_weight * (eps.astype(np.float64) ** 2).mean(axis=(1, 2, 3)) / T
         tape.append((s, x, a, f, pre, alive, clipm, eps, w, s2 if w else None))
         s = s2
@@ -102,6 +111,8 @@ def loss_and_grad(theta, wounds, physics: Physics, proto: Protocol, seed: int,
         if w:
             vis = anatomy.visible(s2)
             g_vis = w * 2 * (vis - (tgt if t < G else rtgt)) / (hw * 4) / n
+            if rw is not None and t >= G:
+                g_vis = g_vis * rw
             gs2[..., 0:1] += g_vis[..., 0:1]
             gs2[..., 2:5] += g_vis[..., 1:4]
         ge_t = (ge + self_model_weight * 2 * eps / (hw * VIS) / T / n) * alive
@@ -111,7 +122,7 @@ def loss_and_grad(theta, wounds, physics: Physics, proto: Protocol, seed: int,
         gpred = -ge_t * f
         gu = gs2 * alive * clipm
         if inj is not None and G <= t < G + inject_steps:
-            g_inject += gu[..., VOLT].sum(0)
+            g_inject[phase(t)] += gu[..., VOLT].sum(0)
             if inject_mode == "clamp":
                 gu = gu.copy()
                 gu[..., VOLT] = 0
@@ -134,4 +145,5 @@ def loss_and_grad(theta, wounds, physics: Physics, proto: Protocol, seed: int,
         gs = gs_in
     grad = np.concatenate([gW1.ravel(), gb1, gW2.ravel(), gb2]).astype(np.float64)
     return float(per_tissue.mean()), grad, {"per_tissue": per_tissue, "state": final_state, "eps": final_eps,
-                                             "g_inject": g_inject}
+                                             "g_inject": None if g_inject is None else
+                                             (g_inject[0] if np.ndim(v_inject) == 2 else g_inject)}

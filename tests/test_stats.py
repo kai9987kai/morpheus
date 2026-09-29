@@ -43,3 +43,24 @@ def test_stouffer():
     assert abs(z) < 1e-6 and abs(p - 0.5) < 1e-6
     z, p = stats.stouffer([0.05])
     assert abs(z - 1.6449) < 1e-3 and abs(p - 0.05) < 1e-6
+
+
+def test_betting_eprocess_is_valid_under_null_and_grows_under_alternative():
+    rng = np.random.default_rng(0)
+    hits = 0
+    for _ in range(300):
+        ep = stats.BettingEProcess()
+        if any(ep.update(float(x)) >= 20 for x in rng.uniform(-1, 1, 200)):
+            hits += 1
+    assert hits / 300 <= 0.05 + 0.03          # Ville: P(sup K >= 20) <= 0.05
+    ep = stats.BettingEProcess()
+    for x in rng.uniform(-0.6, 1, 200):
+        ep.update(float(x))
+    assert ep.wealth > 1e3
+
+
+def test_elond_levels():
+    e = stats.ELond(0.1)
+    a0 = e.level()
+    e.record(True)
+    assert 0 < a0 < 0.1 and e.level() > 0

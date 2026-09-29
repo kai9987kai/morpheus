@@ -102,3 +102,28 @@ def test_clamp_gradient_matches_finite_differences_and_simulator():
         lm, _, _ = grad.loss_and_grad(theta, wounds, physics, proto, 5, v_inject=pat - e, **kw)
         fd = (lp - lm) / (2 * h)
         assert abs(ex["g_inject"].flat[i] - fd) <= 1e-5 * max(1e-3, abs(fd)), (i, ex["g_inject"].flat[i], fd)
+
+
+def test_phased_weighted_clamp_gradient():
+    from morpheus.life import live
+    rng, theta, wounds, _, physics, _ = _setup()
+    prog = rng.normal(0, 0.5, (3, 12, 12))
+    wmap = rng.uniform(0.2, 2.0, (12, 12))
+    wmap /= wmap.mean()
+    proto = Protocol(grow=8, regen=6, tail_window=3)
+    kw = dict(dtype=np.float64, inject_steps=4, inject_mode="clamp", self_model_weight=0.0)
+    L, _, ex = grad.loss_and_grad(theta, wounds, physics, proto, 5, v_inject=prog, **kw)
+    out = live(theta.astype(np.float32), wounds, physics,
+               Protocol(grow=8, regen=6, tail_window=3, voltage_inject=(prog.astype(np.float32), 4, "clamp")), 5)
+    assert abs(L - (out["grow_loss"] + out["regen_loss"]).mean()) < 1e-6
+    assert ex["g_inject"].shape == prog.shape
+    kw["regen_weight"] = wmap
+    _, _, ex = grad.loss_and_grad(theta, wounds, physics, proto, 5, v_inject=prog, **kw)
+    h = 1e-5
+    for i in rng.choice(prog.size, 8, replace=False):
+        e = np.zeros_like(prog)
+        e.flat[i] = h
+        lp, _, _ = grad.loss_and_grad(theta, wounds, physics, proto, 5, v_inject=prog + e, **kw)
+        lm, _, _ = grad.loss_and_grad(theta, wounds, physics, proto, 5, v_inject=prog - e, **kw)
+        fd = (lp - lm) / (2 * h)
+        assert abs(ex["g_inject"].flat[i] - fd) <= 1e-5 * max(1e-3, abs(fd)), (i, ex["g_inject"].flat[i], fd)

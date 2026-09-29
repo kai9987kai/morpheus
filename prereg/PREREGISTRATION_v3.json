@@ -1,0 +1,31 @@
+{
+  "title": "Morpheus v0.3: compiling a second head with voltage programs, and an audit that is honest without being timid",
+  "version": "3.0",
+  "date": "2026-09-29",
+  "status": "Committed before any confirmatory v0.3 run. v0.1 and v0.2 results stand unchanged.",
+  "disclosed_pilots": [
+    "Compiler v3 pilots used rule A on TRAINING tissues only (design pools, validation seed [0, 991], wound seed 999, fire seed 4242), never the H7 held-out suite (seed 7). Validation posterior head index: v3 with a 12-step, 3-phase program about -0.60; 24 steps / 4 phases -0.15; 48 steps / 6 phases +0.25 (+0.29 on 16 pilot tissues, 94% majority-head; +0.11 after 96 steps of release; -0.76 after re-amputation). These pilots fixed the protocol below (48 steps, 6 phases).",
+    "e-audit pilots used rule early with loop seed 100 (the confirmatory seeds are 0-9) for 12 proposals. They exposed and fixed three design problems before any confirmatory run: futility (stop when the running mean difference is <= 0 after 16 tissues), the spending sequence (uniform over the known 30-proposal horizon), and the clipping bound (0.001 instead of 0.005). No edit was adopted in either pilot."
+  ],
+  "hypotheses": {
+    "H7": {
+      "claim": "Compiler v3 (a 6-phase clamp program over the whole 48-step regeneration; tail-focused objective, tail region weighted 4x; multi-start over doses -3, -1.5, 0, 1.5, 3 with 120 scouting iterations each, the best start by validation posterior head index continued to 600 iterations; 16 training tissues per iteration) grows more head tissue where the tail was than the v0.2 designed pattern, on held-out tissues.",
+      "measure": "posterior head index at the end of regeneration",
+      "test": "one-sided sign-flip on v3 minus v2, alpha 0.05, bootstrap CI",
+      "rules": "rule A primary, rule B replication (each with its own v2 and v3 designs, design seed 0)",
+      "n": 128, "suite_seed": 7,
+      "support_rule": "p < 0.05 and CI lower bound > 0; 'replicated' if also so for rule B",
+      "secondary": ["fraction of tissues with a majority-head posterior (descriptive)", "96 steps after release with no wound: v3 minus untreated (one-sided): does the compiled head hold?", "after a second tail amputation with no clamp: v3 minus untreated (two-sided): is it remembered?"]
+    },
+    "H8": {
+      "claim": "An anytime-valid e-value audit (paired differences on fresh tissues in looks of 8, clipped to +-0.001, predictable-bet betting e-process, stop for success at 1/alpha_t or for futility when the running mean is <= 0 after 16 tissues, at most 96 tissues; e-LOND at alpha 0.1 with uniform spending over 30 proposals; the same 2% anchor check) keeps the audit's honesty while recovering real gains.",
+      "design": "rule early, loop seeds 0-9, 30 proposals, the same proposer as v0.2 H4b; compared seed by seed with the v0.2 naive and gated loops in results/rsi_early.json",
+      "tests": {
+        "H8a": "e-audit true gain minus gated true gain > 0 (one-sided exact sign-flip over 10 seeds, alpha 0.05)",
+        "H8b": "naive self-deception minus e-audit self-deception > 0 (one-sided exact sign-flip, alpha 0.05)"
+      },
+      "secondary": "evaluation tissues per loop (e-audit vs gated), adoptions and false adoptions (descriptive)"
+    }
+  },
+  "deviations": "Listed in docs/DEVIATIONS.md under 'v0.3'."
+}

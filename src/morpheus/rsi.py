@@ -12,6 +12,11 @@ algorithm on fresh wounds), random mutation, or a physics edit. Two ways of deci
            LORD++ online-FDR level, and never regress on a frozen anchor suite by more
            than a tolerance (anti-forgetting)
 
+    eaudit (v0.3) test every edit *sequentially* on fresh tissues with an anytime-valid betting
+           e-process, spending more tissues only while the edit looks promising, and adopt
+           when the e-value clears the e-LOND online-FDR level (Xu & Ramdas 2024), with the
+           same anchor check. Stopping early for futility or success keeps validity.
+
 Each loop keeps a ledger of what it *believes* it gained (the estimate at the moment
 of adoption) and an auditor, which the loop never sees, measures what it *actually*
 gained on a large held-out test suite. Their difference is the loop's
@@ -38,6 +43,10 @@ class Config:
     naive_eval: int = 8              # reused tissues for every naive decision
     anchor: int = 16                 # frozen anchor suite (gated only)
     anchor_tolerance: float = 0.02   # relative anchor regression allowed
+    e_batch: int = 8                 # eaudit: fresh tissues per sequential look
+    e_max: int = 96                  # eaudit: most tissues spent on one edit
+    e_bound: float = 0.001           # eaudit: paired differences are clipped to +-e_bound (fixed a priori)
+    e_futility_after: int = 16       # eaudit: stop an edit once its mean difference is <= 0 after this many tissues
     test: int = 128                  # auditor's held-out suite
     practice_steps: int = 2          # "practice": a few Adam steps of backprop on fresh tissues
     practice_batch: int = 8
@@ -78,7 +87,7 @@ def propose(theta, physics: Physics, rng, cfg: Config):
 
 def run_loop(theta0, physics0: Physics, mode: str, seed: int, cfg: Config = Config(), log=None) -> dict:
     """Run one self-improvement loop. ``seed`` fixes the proposer; suites are derived from it."""
-    assert mode in ("naive", "gated")
+    assert mode in ("naive", "gated", "eaudit")
     prop_rng = np.random.default_rng([seed, 1])        # same proposer stream for both modes
     fresh_seeds = np.random.default_rng([seed, 2])
     naive_suite = suite(cfg.naive_eval, 10_000 + seed)
@@ -90,7 +99,9 @@ def run_loop(theta0, physics0: Physics, mode: str, seed: int, cfg: Config = Conf
     test_now = losses(theta, physics, test_suite)
     test_start = float(test_now.mean())
     naive_now = losses(theta, physics, naive_suite) if mode == "naive" else None
-    anchor_now = losses(theta, physics, anchor_suite) if mode == "gated" else None
+    anchor_now = losses(theta, physics, anchor_suite) if mode in ("gated", "eaudit") else None
+    elond = stats.ELond(cfg.alpha, horizon=cfg.proposals, uniform=True)
+    spent = 0
     believed, ledger = 0.0, []
 
     for t in range(cfg.proposals):
@@ -101,6 +112,29 @@ def run_loop(theta0, physics0: Physics, mode: str, seed: int, cfg: Config = Conf
             est = float((naive_now - cand).mean())
             accept = est > 0
             row.update(estimate=est, accepted=bool(accept))
+        elif mode == "eaudit":
+            ep = stats.BettingEProcess()
+            level = elond.level()
+            ds = []
+            while len(ds) < cfg.e_max:
+                fresh = suite(cfg.e_batch, int(fresh_seeds.integers(1 << 31)))
+                d = losses(theta, physics, fresh) - losses(cand_theta, cand_phys, fresh)
+                ds.extend(d.tolist())
+                for x in np.clip(d / cfg.e_bound, -1, 1):
+                    ep.update(float(x))
+                if ep.wealth >= 1 / level or (len(ds) >= cfg.e_futility_after and np.mean(ds) <= 0):
+                    break
+            spent += len(ds)
+            passed = ep.wealth >= 1 / level
+            elond.record(passed)
+            est = float(np.mean(ds))
+            anchor_ok = True
+            if passed:
+                anchor_cand = losses(cand_theta, cand_phys, anchor_suite)
+                anchor_ok = anchor_cand.mean() <= anchor_now.mean() * (1 + cfg.anchor_tolerance)
+            accept = passed and anchor_ok
+            row.update(estimate=est, e_value=float(ep.wealth), level=level, tissues=len(ds),
+                       anchor_ok=bool(anchor_ok), accepted=bool(accept))
         else:
             fresh = suite(cfg.gated_eval, int(fresh_seeds.integers(1 << 31)))
             d = losses(theta, physics, fresh) - losses(cand_theta, cand_phys, fresh)
@@ -137,6 +171,7 @@ def run_loop(theta0, physics0: Physics, mode: str, seed: int, cfg: Config = Conf
         "self_deception": believed - (test_start - float(test_now.mean())),
         "test_loss_start": test_start, "test_loss_end": float(test_now.mean()),
         "final_physics": dataclasses.asdict(physics),
+        "evaluation_tissues": spent if mode == "eaudit" else (cfg.gated_eval * cfg.proposals if mode == "gated" else cfg.naive_eval),
         "ledger": ledger,
         "theta": theta,
     }

@@ -281,3 +281,38 @@ def h1_pooled(docs: dict) -> dict:
     z, p = stats.stouffer([v["p"] for v in per.values()])
     return {"rules": list(docs), "per_rule": {k: {x: v[x] for x in ("mean", "d_z", "p", "frac_positive")} for k, v in per.items()},
             "stouffer_z": z, "pooled_p": p, "rules_significant": int(sum(v["p"] < 0.05 for v in per.values()))}
+
+
+# ------------------------------------------------------------------------------------------
+# v0.3 (prereg/PREREGISTRATION_v3.json)
+
+def h7_compiler_v3(theta, physics, program, steps, v2_pattern, v2_steps, n=128, seed=7, log=print) -> dict:
+    """H7: the v3 program (phased, long clamp) grows more posterior head than the v0.2 pattern on
+    held-out tissues. Also: does the compiled head hold for 96 steps after release, and after a
+    second amputation with no clamp?"""
+    from . import compiler
+    rng = np.random.default_rng(seed)
+    wounds = compiler.tail_wounds(n, rng)
+    fseed = int(rng.integers(1 << 31))
+    none = np.zeros_like(wounds)
+    conds = {"none": None, "v2": (v2_pattern, v2_steps, "clamp"), "v3": (program, steps, "clamp")}
+    end, hold, again = {}, {}, {}
+    for name, inj in conds.items():
+        out = live(theta, wounds, physics, Protocol(voltage_inject=inj), fseed)
+        h = continue_life(theta, out["state"], out["eps"], none, physics, 96, fseed + 17)
+        r = continue_life(theta, out["state"], out["eps"], wounds, physics, 48, fseed + 13)
+        end[name], hold[name], again[name] = (compiler.posterior_head_index(x) for x in (out["state"], h["state"], r["state"]))
+        log(f"H7 {name:5s} end {end[name].mean():+.3f}  held 96 steps {hold[name].mean():+.3f}  re-amputated {again[name].mean():+.3f}")
+    return {
+        "n_tissues": n,
+        "posterior_head_index": {k: stats.mean_ci(v) for k, v in end.items()},
+        "after_release_96": {k: stats.mean_ci(v) for k, v in hold.items()},
+        "after_reamputation": {k: stats.mean_ci(v) for k, v in again.items()},
+        "majority_head_fraction": {k: float((v > 0).mean()) for k, v in end.items()},
+        "majority_head_fraction_after_release": {k: float((v > 0).mean()) for k, v in hold.items()},
+        "primary": {"H7_v3_minus_v2": stats.paired(end["v3"] - end["v2"], seed=seed)},
+        "secondary": {
+            "H7_hold_v3_minus_none": stats.paired(hold["v3"] - hold["none"], seed=seed),
+            "H7_reamputation_v3_minus_none": stats.paired(again["v3"] - again["none"], seed=seed, alternative="two-sided"),
+        },
+    }

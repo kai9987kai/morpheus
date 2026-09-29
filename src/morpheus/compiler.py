@@ -110,3 +110,76 @@ def shuffled(pattern: np.ndarray, seed: int) -> np.ndarray:
     idx = np.flatnonzero(body)
     out.flat[idx] = pattern.flat[np.random.default_rng(seed).permutation(idx)]
     return out
+
+
+# ------------------------------------------------------------------------------------------
+# Compiler v3 (v0.3): phased programs, a tail-focused objective, multi-start over voltage dose
+
+def tail_weight(focus: float = 4.0, size: int = anatomy.SIZE) -> np.ndarray:
+    """Loss weight map, mean 1: the normal tail region (where the new head must grow) counts ``focus``x."""
+    w = np.ones((size, size))
+    w[anatomy.target(size)[..., 3] > 0.5] = focus
+    return w / w.mean()
+
+
+def _chunk3(args):
+    from .grad import loss_and_grad
+    theta, wounds, physics, seed, s0, e0, program, steps, tgt2, wmap = args
+    loss, _, ex = loss_and_grad(theta, wounds, physics, Protocol(grow=0, regen=48), seed,
+                                self_model_weight=0.0, init_state=s0, init_eps=e0, regen_target=tgt2,
+                                v_inject=program, inject_steps=steps, inject_mode="clamp", regen_weight=wmap)
+    return loss * len(wounds), ex["g_inject"] * len(wounds)
+
+
+def _optimise(theta, physics, q, iterations, rng, pool_s, pool_e, steps, tgt2, wmap, batch, lr, workers, log, tag):
+    from .train import Adam, _pool
+    opt = Adam(q.size, lr)
+    mp = _pool(workers)
+    hist = []
+    for it in range(iterations):
+        idx = rng.choice(len(pool_s), batch, replace=False)
+        wounds = tail_wounds(batch, rng)
+        prog = pattern_of(q)
+        chunks = [c for c in np.array_split(np.arange(batch), max(workers, 1)) if len(c)]
+        jobs = [(theta, wounds[c], physics, int(rng.integers(1 << 31)), pool_s[idx[c]], pool_e[idx[c]],
+                 prog, steps, tgt2, wmap) for c in chunks]
+        parts = mp.map(_chunk3, jobs) if mp else [_chunk3(j) for j in jobs]
+        hist.append(sum(p[0] for p in parts) / batch)
+        g = sum(p[1] for p in parts) / batch
+        q = q - opt.update((g * AMPLITUDE * (1 - np.tanh(q) ** 2)).ravel()).reshape(q.shape)
+        if log and (it % 50 == 0 or it == iterations - 1):
+            log(f"[{tag}] iter {it:4d}  weighted loss {np.mean(hist[-20:]):.4f}")
+    return q, hist
+
+
+def _validate(theta, physics, prog, steps, seed, n=32):
+    """Mean posterior head index on training-side validation tissues (never the held-out suite)."""
+    rng = np.random.default_rng([seed, 991])
+    w = tail_wounds(n, rng)
+    out = live(theta, w, physics, Protocol(voltage_inject=(prog, steps, "clamp")), int(rng.integers(1 << 31)))
+    return float(posterior_head_index(out["state"]).mean())
+
+
+def design_v3(theta, physics: Physics, phases=6, steps=48, doses=(-3.0, -1.5, 0.0, 1.5, 3.0), scout=120,
+              iterations=600, batch=16, lr=0.1, focus=4.0, seed=0, workers=4, log=None) -> dict:
+    """Scout each starting dose for ``scout`` iterations, keep the start with the best validation
+    posterior head index, and continue it to ``iterations`` in total."""
+    rng = np.random.default_rng([seed, 303])
+    pool_s, pool_e = grown_pool(theta, physics, 256, int(rng.integers(1 << 31)))
+    tgt2, wmap = two_headed_target(), tail_weight(focus)
+    scouts = []
+    for d in doses:
+        q0 = np.full((phases, anatomy.SIZE, anatomy.SIZE), np.arctanh(d / AMPLITUDE))
+        q, h = _optimise(theta, physics, q0, scout, rng, pool_s, pool_e, steps, tgt2, wmap, batch, lr, workers, log, f"dose {d:+.1f}")
+        v = _validate(theta, physics, pattern_of(q), steps, seed)
+        scouts.append({"dose": d, "validation_posterior_head_index": v, "loss_last20": float(np.mean(h[-20:]))})
+        if log:
+            log(f"scout dose {d:+.1f}: validation posterior head index {v:+.3f}")
+        if v == max(s["validation_posterior_head_index"] for s in scouts):
+            best_q = q
+    q, h = _optimise(theta, physics, best_q, iterations - scout, rng, pool_s, pool_e, steps, tgt2, wmap, batch, lr, workers, log, "final")
+    best = max(scouts, key=lambda s: s["validation_posterior_head_index"])
+    return {"pattern": pattern_of(q), "steps": steps, "mode": "clamp", "phases": phases, "scouts": scouts,
+            "chosen_dose": best["dose"], "validation_posterior_head_index": _validate(theta, physics, pattern_of(q), steps, seed),
+            "iterations": iterations, "scout_iterations": scout, "focus": focus, "batch": batch, "lr": lr, "seed": seed,
+            "history": h}

@@ -134,3 +134,49 @@ def fmt_p(p: float) -> str:
 
 def isfinite(x) -> bool:
     return isinstance(x, (int, float)) and math.isfinite(x)
+
+
+class BettingEProcess:
+    """Anytime-valid test of H0: E[x] <= 0 for x in [-1, 1] (Waudby-Smith & Ramdas 2024).
+
+    Wealth K_n = prod(1 + lambda_i x_i) with a predictable bet lambda_i in [0, 1/2] (aGRAPA-style
+    plug-in from the observations before i). Under H0, K is a nonnegative supermartingale, so
+    P(sup K >= 1/a) <= a at any stopping time (Ville's inequality).
+    """
+
+    def __init__(self):
+        self.wealth, self.n, self.s, self.ss = 1.0, 0, 0.0, 0.0
+
+    def update(self, x: float) -> float:
+        mu = self.s / (self.n + 1)
+        var = (self.ss - self.s ** 2 / max(self.n, 1) + 0.25) / (self.n + 1) if self.n else 0.25
+        lam = min(max(mu / (var + mu * mu), 0.0), 0.5) if mu > 0 else 0.0
+        if self.n == 0:
+            lam = 0.1
+        self.wealth *= 1 + lam * x
+        self.n += 1
+        self.s += x
+        self.ss += x * x
+        return self.wealth
+
+
+class ELond:
+    """e-LOND online FDR control with e-values (Xu & Ramdas 2024): test t rejects when its e-value
+    reaches 1/alpha_t with alpha_t = alpha * gamma_t * (discoveries so far + 1). Valid under
+    arbitrary dependence between tests."""
+
+    def __init__(self, alpha=0.1, horizon=100000, uniform=False):
+        """With ``uniform=True`` the spending sequence is gamma_t = 1/horizon for a known, finite
+        number of tests (still sums to 1, so the guarantee holds), instead of a decaying one."""
+        self.alpha = alpha
+        j = np.arange(1, horizon + 1, dtype=float)
+        g = np.ones_like(j) if uniform else np.log(np.maximum(j, 2)) / (j * np.exp(np.sqrt(np.log(j))))
+        self.gamma = g / g.sum()
+        self.t, self.discoveries = 0, 0
+
+    def level(self) -> float:
+        return float(self.alpha * self.gamma[min(self.t, len(self.gamma) - 1)] * (self.discoveries + 1))
+
+    def record(self, rejected: bool):
+        self.t += 1
+        self.discoveries += int(rejected)

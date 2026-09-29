@@ -118,10 +118,13 @@ def live(theta, wounds: np.ndarray, physics: Physics, proto: Protocol, seed: int
                 clamp = (np.ones(s[..., :1].shape, bool), pulse[0])
             add = vset = None
             if inject is not None and k < inject[1]:
+                pat = np.asarray(inject[0])
+                if pat.ndim == 3:                      # a program of phases splitting the steps evenly
+                    pat = pat[k * pat.shape[0] // inject[1]]
                 if len(inject) > 2 and inject[2] == "clamp":
-                    vset = inject[0]
+                    vset = pat
                 else:
-                    add = inject[0]
+                    add = pat
             tick(t, eps_in, diffusion=0.0 if proto.gap_block else None, v_clamp=clamp, v_add=add, v_set=vset)
             t += 1
 

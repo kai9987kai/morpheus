@@ -62,6 +62,31 @@ def run_rsi(weights, seeds, proposals, workers):
             "loops": loops}
 
 
+def run_eaudit(weights, seeds, proposals, workers, baseline):
+    """H8: e-audited loops on the same seeds as the v0.2 naive and gated loops, compared per seed."""
+    jobs = [(weights, "eaudit", s, proposals) for s in seeds]
+    if workers > 1:
+        import multiprocessing as mp
+        with mp.get_context("fork").Pool(workers) as pool:
+            loops = pool.map(_rsi_job, jobs)
+    else:
+        loops = [_rsi_job(j) for j in jobs]
+    from . import stats
+    base = json.loads(Path(baseline).read_text(encoding="utf-8"))["H4"]["loops"]
+    by = {(r["mode"], r["seed"]): r for r in base + loops}
+    col = lambda mode, k: np.array([by[(mode, s)][k] for s in seeds])  # noqa: E731
+    summary = {}
+    for mode in ("naive", "gated", "eaudit"):
+        summary[mode] = {k: stats.mean_ci(col(mode, k)) for k in ("adopted", "false_adoptions", "believed_gain", "true_gain", "self_deception")}
+        if mode != "naive":   # v0.2 loops predate the field; a gated loop always spends 24 per proposal
+            spent = [by[(mode, s)].get("evaluation_tissues", 24 * proposals) for s in seeds]
+            summary[mode]["evaluation_tissues_per_loop"] = float(np.mean(spent))
+    return {"seeds": seeds, "proposals": proposals, "baseline": baseline, "summary": summary,
+            "primary": {"H8a_eaudit_minus_gated_true_gain": stats.paired(col("eaudit", "true_gain") - col("gated", "true_gain"), alternative="greater"),
+                        "H8b_naive_minus_eaudit_self_deception": stats.paired(col("naive", "self_deception") - col("eaudit", "self_deception"), alternative="greater")},
+            "loops": loops}
+
+
 def cmd_run(a):
     if a.experiment == "h1pool":
         docs = {Path(f).stem: json.loads(Path(f).read_text(encoding="utf-8"))["H1"] for f in a.files}
@@ -88,6 +113,17 @@ def cmd_run(a):
         doc["design"] = {k: v for k, v in r.items() if k != "history"}
         doc["design"]["loss_first20"] = float(np.mean(r["history"][:20]))
         doc["design"]["loss_last20"] = float(np.mean(r["history"][-20:]))
+    if which == "design3":
+        from . import compiler
+        r = compiler.design_v3(theta, physics, seed=a.seed, workers=a.workers, log=_log)
+        doc["design"] = {k: v for k, v in r.items() if k != "history"}
+        doc["design"]["loss_last20"] = float(np.mean(r["history"][-20:]))
+    if which == "h7":
+        p3 = json.loads(Path(a.pattern).read_text(encoding="utf-8"))["design"]
+        p2 = json.loads(Path(a.pattern_v2).read_text(encoding="utf-8"))["design"]
+        doc["pattern_files"] = [a.pattern, a.pattern_v2]
+        doc["H7"] = experiments.h7_compiler_v3(theta, physics, np.asarray(p3["pattern"], np.float32), p3["steps"],
+                                               np.asarray(p2["pattern"], np.float32), p2["steps"], n=a.n, log=_log)
     if which == "h5":
         pdoc = json.loads(Path(a.pattern).read_text(encoding="utf-8"))["design"]
         doc["pattern_file"] = a.pattern
@@ -97,6 +133,8 @@ def cmd_run(a):
         doc["H3_locus_exploratory"] = experiments.h3_memory_locus(theta, physics, n=a.n, log=_log)
     if which in ("cal", "all"):
         doc["CAL"] = experiments.calibration(theta, physics, reps=a.reps, n=a.n, log=_log)
+    if which == "eaudit":
+        doc["H8"] = run_eaudit(a.weights, list(range(a.seeds)), a.proposals, a.workers, a.baseline)
     if which in ("h4", "rsi"):
         doc["H4"] = run_rsi(a.weights, list(range(a.seeds)), a.proposals, a.workers)
     doc["seconds"] = round(time.time() - t0)
@@ -173,7 +211,7 @@ def main(argv=None):
     t.add_argument("--out", default="weights/rule_a.json")
     t.set_defaults(fn=cmd_train)
     r = sub.add_parser("run", help="run preregistered experiments")
-    r.add_argument("experiment", choices=["h1", "h2", "h3", "cal", "all", "h4", "rsi", "h3locus", "design", "h5", "h1pool"])
+    r.add_argument("experiment", choices=["h1", "h2", "h3", "cal", "all", "h4", "rsi", "h3locus", "design", "h5", "h1pool", "design3", "h7", "eaudit"])
     r.add_argument("--weights", default="weights/rule_a.json")
     r.add_argument("--n", type=int, default=128)
     r.add_argument("--reps", type=int, default=40)
@@ -183,6 +221,8 @@ def main(argv=None):
     r.add_argument("--iterations", type=int, default=600, help="design iterations")
     r.add_argument("--seed", type=int, default=0, help="design seed")
     r.add_argument("--pattern", help="results file holding a designed pattern (for h5)")
+    r.add_argument("--pattern-v2", help="v0.2 design results file (for h7)")
+    r.add_argument("--baseline", help="v0.2 RSI results with the naive and gated loops (for eaudit)")
     r.add_argument("--files", nargs="*", default=["results/rule_a.json", "results/rule_b.json", "results/rule_c.json"],
                    help="per-rule results files (for h1pool)")
     r.add_argument("--out", required=True)
