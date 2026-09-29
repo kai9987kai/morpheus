@@ -118,7 +118,7 @@ python -m pytest -q                            # gradient check, JS/Python parit
 morpheus claims check                          # every quoted number against the results files
 ```
 
-Open **`web/index.html`** in a browser for the interactive lab: cut the tissue with a scalpel, paint voltage, block gap junctions, silence or delay the self-model, apply the compiled voltage code (**Amputate tail + designed clamp**), and see the evidence panels. It needs no server or build step. `morpheus export-web` refreshes `web/data.js` from the current weights and results.
+Open **`web/index.html`** in a browser for the interactive lab: cut the tissue with a scalpel, paint voltage, block gap junctions, silence or delay the self-model, apply the compiled voltage code (**Amputate tail + compiled voltage program**), and see the evidence panels. It needs no server or build step. `morpheus export-web` refreshes `web/data.js` from the current weights and results.
 
 Reproduce everything (about 4 hours on a 4-core laptop CPU):
 
