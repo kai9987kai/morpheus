@@ -2,7 +2,7 @@
 
 **Does a body know itself? Synthetic tissues that grow from one cell, carry a self-model in every cell, keep a memory in their membrane voltage, and try to improve their own rules while an auditor checks whether they are fooling themselves.**
 
-Author/project lead: **Kai Piper** · Version **0.2.0** · 28 September 2026
+Author/project lead: **Kai Piper** · Version **0.3.0** · 28 September 2026
 
 > **Scientific status.** Everything here is a synthetic computational experiment on a neural cellular automaton. "Self-model" names a trained forward model inside each simulated cell. Nothing here detects or implies sentience, consciousness or biological validity.
 
@@ -14,7 +14,14 @@ Morpheus puts three lines of research that normally stay apart into one preregis
 
 The tissues then **try to improve themselves**. They propose edits to their own rule, by practising with their own learning algorithm, by random mutation, or by editing their own physics. A naive loop adopts whatever beats a reused benchmark. An audited loop tests each edit on fresh tissues under **online false-discovery-rate control** (LORD++; [Ramdas et al. 2017](https://arxiv.org/abs/1710.00499)) with a frozen anti-forgetting anchor. An auditor the loops never see measures what each loop *actually* gained, so the difference between what a loop believes and what is true measures its **self-deception**.
 
-### New in v0.2: an anatomical compiler, and self-improvement that can actually improve
+### New in v0.3: compiled second heads, and an audit that is honest without being timid
+
+* **The compiler now grows second heads.** v0.2 applied one frozen voltage pattern for 12 steps and only nudged the tail. v0.3 compiles a *program*: 6 voltage maps played in sequence across the whole regeneration, designed with a tail-focused objective from the best of five starting voltage doses. On held-out tissues, **91% (rule A) and 96% (rule B) of tail stumps regrow a posterior that is mostly head**, and most keep it 96 steps after the program stops. Cut that head off again, though, and the tissue mostly regrows a tail: the program writes anatomy, not a lasting target morphology. That is the opposite of Levin's permanently two-headed planaria, and the gap is now a clear target.
+* **Honest self-improvement no longer has to be timid.** v0.2's audited loop was honest but gained almost nothing. The v0.3 loop tests each self-edit with an anytime-valid betting e-process ([Waudby-Smith & Ramdas](https://arxiv.org/abs/2010.09686)), under e-LOND online FDR control ([Xu & Ramdas 2024](https://arxiv.org/abs/2311.06412)). It spends tissues only while an edit looks promising and drops losers after 16 tissues. On the same seeds and proposals it recovered **almost all of the naive loop's real gain** (3.3e-4 vs 3.6e-4, against 0.4e-4 for the fixed gate). Its self-deception was **a fifth of the naive loop's**, it made zero false adoptions, and it used fewer tissues than the fixed gate.
+
+v0.3 was preregistered in [`prereg/PREREGISTRATION_v3.json`](prereg/PREREGISTRATION_v3.json) before any confirmatory run, with its pilots disclosed there.
+
+### v0.2: an anatomical compiler, and self-improvement that can actually improve
 
 * **The anatomical compiler works, partly.** Morpheus can now *design* a bioelectric intervention. Gradient descent through the whole regeneration finds a voltage pattern that, clamped for 12 steps after a tail amputation, makes held-out stumps grow head tissue where the tail was. Holding the same voltages at scrambled positions works far less well, so the spatial code matters. This replicates across both rules. The change is also remembered: after a second amputation with no intervention, treated tissues still regrow more head posteriorly. It is partial, though. No tissue grew a clean second head, and the lasting memory in rule A is not specific to the code.
 * **Bioelectric codes did not transfer between rules** (exploratory). Rule B's pattern applied to rule A reprograms it more than rule A's own design, and a shuffled version of it does even better. That means voltage *dose* dominated, and the compiler found a local optimum. Better compilers (multi-start, dose-aware) are the obvious next step.
@@ -49,7 +56,8 @@ To my knowledge, none of these has been done before:
 
 * **Authorship tested causally inside a regenerating body.** Error streams are transplanted between tissues cell for cell, so the input statistics match and only ownership differs. Delayed and spatially shuffled controls, and the Ghost-v7 question of whether the error is predictable from the receiver's own state, go with it.
 * **Levin-style bioelectric experiments preregistered on an evolved synthetic tissue**, including the re-amputation persistence test for a rewritten target morphology.
-* **An anatomical compiler**: exact gradients through a regenerating tissue used to design a spatial voltage code that reprograms what regrows, tested against the same voltages scrambled and for memory through re-amputation.
+* **An anatomical compiler**: exact gradients through a regenerating tissue design a time-varying voltage program that makes tail stumps grow heads. It is tested against scrambled voltages, after release, and for memory through re-amputation.
+* **Anytime-valid audited self-improvement**: each self-edit is a sequential e-value test under online FDR control, so a self-improving system can keep its real gains while refusing to fool itself.
 * **Recursive self-improvement audited for self-deception.** Online FDR control over an unbounded stream of self-modifications, and an independent held-out auditor that turns "how much is this system fooling itself?" into a number.
 * **One engine in two languages.** The Python (NumPy) engine used for science and the JavaScript engine in the browser lab are tested step for step against each other. The trainer is exact backpropagation through time written by hand in NumPy and checked against finite differences, with no deep-learning framework.
 
@@ -79,6 +87,8 @@ flowchart LR
 
 | claim | status | evidence |
 |---|---|---|
+| **Compiled second heads: a gradient-designed voltage program makes nearly every tail stump grow a head** | **replicated** | 6-phase clamp program over the 48-step regeneration, 128 held-out tissues. Posterior head index untreated → v0.2 pattern → v0.3 program: rule A -0.99 → -0.73 → 0.28 (v3 − v2 d_z 5.35, p 1.0e-04); rule B -1.00 → -0.77 → 0.49 (d_z 5.58, p 1.0e-04). Tissues with a majority-head posterior: rule A 0.91, rule B 0.96; still so 96 steps after the clamp is released: 0.75, 0.91 |
+| **An anytime-valid e-value audit is honest without being timid: it keeps real gains and drops the self-deception** | **supported** | under-trained rule, same 10 seeds × 30 self-edits as v0.2. True gain: naive 3.6e-04, fixed gate 4.2e-05, e-audit 3.3e-04 (e-audit − gate d_z 1.03, p 0.008). Self-deception: naive 5.8e-04, e-audit 1.2e-04 (naive − e-audit d_z 1.16, p 0.003). False adoptions per loop: naive 1.5, e-audit 0.0. Tissues spent per loop: gate 720, e-audit 690 |
 | **Anatomical compiler: a voltage code designed by gradient descent makes tail stumps grow head tissue where the tail was** | **replicated** | posterior head index on 128 held-out tissues (−1 = normal tail, +1 = head), untreated → shuffled clamp → designed clamp: rule A -0.99 → -0.89 → -0.72 (designed − shuffled d_z 0.90, p 1.0e-04); rule B -1.00 → -0.96 → -0.77 (d_z 3.36, p 1.0e-04). Partial: no tissue ended with a majority-head posterior (0.00, 0.00) |
 | **Authorship: a regenerating tissue does better with its own self-model error than with a transplanted one** | **supported** | open after v0.1 (rules disagreed); settled by the preregistered three-rule test in v0.2: transplant minus author d_z rule A 0.05 (p 0.29), rule B 0.30 (p 4.0e-04), rule C 0.35 (p 2.0e-04); Stouffer-pooled p 8.7e-06, 2 of 3 rules significant. Small effect: rule C regeneration error author 0.00457 vs transplant 0.00471 |
 | **With real improvements available, naive self-improvement loops overstate their own progress more than audited loops** | **supported** | under-trained rule, 10 seeds × 30 self-edits: naive loops believed 9.4e-04 but the auditor measured 3.6e-04; audited loops believed 8.0e-05, measured 4.2e-05; naive minus audited self-deception d_z 0.80, fraction of seeds 0.90, p 0.005 |
@@ -89,6 +99,7 @@ flowchart LR
 | The clamp's effect persists through a second amputation with no clamp (anatomical memory rewritten) | **mixed** | second-regeneration error, previously clamped minus control: rule A d_z 1.57, fraction worse 0.97, p 1.0e-04; rule B d_z 0.11, p 0.20; rule C (v0.2) d_z 2.70, fraction worse 1.00, p 1.0e-04. Persists in 2 of 3 rules |
 | In rule A, the persisting change is not held by any single channel group; voltage carries most of it | **exploratory** | second-regeneration deficit after copying control channels into the clamped tissue: none restored 0.00279; identity 0.00251; hidden 0.00332; everything except voltage 0.00167 (so ~60% remains with voltage); voltage alone 0.0408, much worse, because a control voltage map no longer fits the altered body |
 | The compiled change is remembered: after a second tail amputation with no intervention, previously clamped tissues still regrow more head posteriorly | **replicated** | posterior head index after the second regeneration, untreated → designed history: rule A -0.96 → -0.86 (d_z 2.94, p 1.0e-04); rule B -1.00 → -0.88 (d_z 1.56, p 1.0e-04). Caveat: in rule A a shuffled clamp leaves as much memory (-0.84), so what persists there is not specific to the code |
+| The compiled head is maintained but barely remembered: cut it off again and the tissue mostly regrows a tail | **descriptive** | posterior head index after a second tail amputation with no clamp, untreated → compiled: rule A -0.97 → -0.76 (d_z 2.81), rule B -1.00 → -0.86 (d_z 1.15). The program writes anatomy, not a lasting target morphology |
 | Bioelectric codes do not transfer as codes: across rules, voltage dose matters more than arrangement, and the compiler found only a local optimum | **exploratory** | rule B's pattern on rule A: designed -0.18, shuffled -0.06 (shuffled works better; both far beyond rule A's own design, -0.72); rule A's pattern on rule B: designed -0.66 vs shuffled -0.68 |
 | The price of honesty: the audited loop is timid, and the naive loop truly improves more while overstating it | **descriptive** | edits adopted per loop: naive 4.2, audited 0.3; true gain naive 3.6e-04 vs audited 4.2e-05; false-adoption fraction naive 0.36 |
 | A naive self-improvement loop overstates its own progress more than an audited (online-FDR-gated) loop | **not supported** | rule A, 6 seeds × 40 proposed self-edits per loop: naive loops believed they gained 5.4e-05 but the auditor measured 2.6e-05; the gated loops adopted 0.0 edits per loop, so their self-deception is exactly zero; naive minus gated self-deception p 0.19 (not significant with 6 seeds) |
@@ -125,6 +136,10 @@ morpheus train --seed 2 --out weights/rule_c.json && morpheus run all --weights 
 morpheus run h1pool --out results/h1_pooled.json
 morpheus train --seed 3 --iterations 300 --out weights/rule_early.json
 morpheus run rsi --weights weights/rule_early.json --seeds 10 --proposals 30 --out results/rsi_early.json
+# v0.3
+morpheus run design3 --weights weights/rule_a.json --out results/design3_rule_a.json   # ~15 min
+morpheus run h7 --weights weights/rule_a.json --pattern results/design3_rule_a.json --pattern-v2 results/design_rule_a.json --out results/h7_rule_a.json
+morpheus run eaudit --weights weights/rule_early.json --seeds 10 --proposals 30 --baseline results/rsi_early.json --out results/eaudit_early.json
 morpheus claims render && morpheus export-web
 ```
 
@@ -152,8 +167,8 @@ Runs are deterministic for a given NumPy version: every founder, wound and updat
 * The unit of analysis is a tissue under one evolved rule. Rule B, trained with a different seed, is the only test of whether a result holds for other rules.
 * The anatomy is 32×32 and the rule is small. The voltage channel is free (it has no target), so any bioelectric prepattern is the rule's own invention and may differ between rules.
 * "Authorship" here is operational: whether the comparator input is the cell's own error, at the right time and place. It says nothing about experience.
-* The self-improvement results depend on the proposer and the starting rule. From well-trained rules (v0.1) few proposals were real improvements; from an under-trained rule (v0.2) the audit matters, but the gate is then too strict to capture most real gains. A more powerful audit (anytime-valid sequential tests that spend more tissues on promising edits) is the natural next step.
-* The compiler optimises one fixed pattern from one starting point, with a mean-squared-error objective over the whole body. It reaches partial reprogramming only, and a pattern from another rule did better, so its optimum is local.
+* The self-improvement results depend on the proposer and the starting rule. All three loops were compared on one under-trained rule with 10 seeds; the e-audit's clipping bound (0.001) suits this rule's effect sizes and would need rescaling for other tasks.
+* The compiler clamps every cell's voltage for the whole regeneration, a far stronger intervention than a drug bath. Its heads are maintained but not remembered through re-amputation. Designing for memory (optimising the second regeneration too) is the next step.
 * Trained tissues hold their shape for a few hundred steps and then slowly drift (anatomical error about 0.003 at step 250 and 0.017 at step 660 for rule A). Every preregistered test ends by step 160.
 * Two deviations from the preregistration, both made before any confirmatory number was seen, are listed in `docs/DEVIATIONS.md`. The first version of rule A (without the persistence phase) was discarded unanalysed.
 

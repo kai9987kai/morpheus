@@ -3,6 +3,186 @@
   "note": "Edit this file, then run: morpheus claims render. CI runs: morpheus claims check. Statuses follow prereg/PREREGISTRATION.json: rule A is primary, rule B is the replication. 'descriptive' and 'exploratory' rows were not preregistered as tests.",
   "claims": [
     {
+      "id": "H7",
+      "status": "replicated",
+      "headline": true,
+      "claim": "Compiled second heads: a gradient-designed voltage program makes nearly every tail stump grow a head",
+      "evidence_text": "6-phase clamp program over the 48-step regeneration, 128 held-out tissues. Posterior head index untreated → v0.2 pattern → v0.3 program: rule A {a_n} → {a_2} → {a_3} (v3 − v2 d_z {a_dz}, p {a_p}); rule B {b_n} → {b_2} → {b_3} (d_z {b_dz}, p {b_p}). Tissues with a majority-head posterior: rule A {a_m}, rule B {b_m}; still so 96 steps after the clamp is released: {a_mh}, {b_mh}",
+      "evidence": {
+        "a_n": {
+          "file": "results/h7_rule_a.json",
+          "pointer": "/H7/posterior_head_index/none/mean",
+          "value": -0.994140625,
+          "decimals": 2
+        },
+        "a_2": {
+          "file": "results/h7_rule_a.json",
+          "pointer": "/H7/posterior_head_index/v2/mean",
+          "value": -0.7310267857142856,
+          "decimals": 2
+        },
+        "a_3": {
+          "file": "results/h7_rule_a.json",
+          "pointer": "/H7/posterior_head_index/v3/mean",
+          "value": 0.2763671875,
+          "decimals": 2
+        },
+        "a_dz": {
+          "file": "results/h7_rule_a.json",
+          "pointer": "/H7/primary/H7_v3_minus_v2/d_z",
+          "value": 5.353436317507867,
+          "decimals": 2
+        },
+        "a_p": {
+          "file": "results/h7_rule_a.json",
+          "pointer": "/H7/primary/H7_v3_minus_v2/p",
+          "value": 9.999000099990002e-05,
+          "decimals": "sci"
+        },
+        "b_n": {
+          "file": "results/h7_rule_b.json",
+          "pointer": "/H7/posterior_head_index/none/mean",
+          "value": -1.0,
+          "decimals": 2
+        },
+        "b_2": {
+          "file": "results/h7_rule_b.json",
+          "pointer": "/H7/posterior_head_index/v2/mean",
+          "value": -0.7672991071428572,
+          "decimals": 2
+        },
+        "b_3": {
+          "file": "results/h7_rule_b.json",
+          "pointer": "/H7/posterior_head_index/v3/mean",
+          "value": 0.49386160714285715,
+          "decimals": 2
+        },
+        "b_dz": {
+          "file": "results/h7_rule_b.json",
+          "pointer": "/H7/primary/H7_v3_minus_v2/d_z",
+          "value": 5.579279450166185,
+          "decimals": 2
+        },
+        "b_p": {
+          "file": "results/h7_rule_b.json",
+          "pointer": "/H7/primary/H7_v3_minus_v2/p",
+          "value": 9.999000099990002e-05,
+          "decimals": "sci"
+        },
+        "a_m": {
+          "file": "results/h7_rule_a.json",
+          "pointer": "/H7/majority_head_fraction/v3",
+          "value": 0.90625,
+          "decimals": 2
+        },
+        "b_m": {
+          "file": "results/h7_rule_b.json",
+          "pointer": "/H7/majority_head_fraction/v3",
+          "value": 0.9609375,
+          "decimals": 2
+        },
+        "a_mh": {
+          "file": "results/h7_rule_a.json",
+          "pointer": "/H7/majority_head_fraction_after_release/v3",
+          "value": 0.75,
+          "decimals": 2
+        },
+        "b_mh": {
+          "file": "results/h7_rule_b.json",
+          "pointer": "/H7/majority_head_fraction_after_release/v3",
+          "value": 0.90625,
+          "decimals": 2
+        }
+      }
+    },
+    {
+      "id": "H8",
+      "status": "supported",
+      "headline": true,
+      "claim": "An anytime-valid e-value audit is honest without being timid: it keeps real gains and drops the self-deception",
+      "evidence_text": "under-trained rule, same 10 seeds × 30 self-edits as v0.2. True gain: naive {nt}, fixed gate {gt}, e-audit {et} (e-audit − gate d_z {a_dz}, p {a_p}). Self-deception: naive {nd}, e-audit {ed} (naive − e-audit d_z {b_dz}, p {b_p}). False adoptions per loop: naive {nf}, e-audit {ef}. Tissues spent per loop: gate {gs}, e-audit {es}",
+      "evidence": {
+        "nt": {
+          "file": "results/eaudit_early.json",
+          "pointer": "/H8/summary/naive/true_gain/mean",
+          "value": 0.0003567013889551163,
+          "decimals": "sci"
+        },
+        "gt": {
+          "file": "results/eaudit_early.json",
+          "pointer": "/H8/summary/gated/true_gain/mean",
+          "value": 4.230029881000519e-05,
+          "decimals": "sci"
+        },
+        "et": {
+          "file": "results/eaudit_early.json",
+          "pointer": "/H8/summary/eaudit/true_gain/mean",
+          "value": 0.00033013969659805297,
+          "decimals": "sci"
+        },
+        "a_dz": {
+          "file": "results/eaudit_early.json",
+          "pointer": "/H8/primary/H8a_eaudit_minus_gated_true_gain/d_z",
+          "value": 1.0331504124946538,
+          "decimals": 2
+        },
+        "a_p": {
+          "file": "results/eaudit_early.json",
+          "pointer": "/H8/primary/H8a_eaudit_minus_gated_true_gain/p",
+          "value": 0.0078125,
+          "decimals": 3
+        },
+        "nd": {
+          "file": "results/eaudit_early.json",
+          "pointer": "/H8/summary/naive/self_deception/mean",
+          "value": 0.0005820993334054947,
+          "decimals": "sci"
+        },
+        "ed": {
+          "file": "results/eaudit_early.json",
+          "pointer": "/H8/summary/eaudit/self_deception/mean",
+          "value": 0.00012399550253682613,
+          "decimals": "sci"
+        },
+        "b_dz": {
+          "file": "results/eaudit_early.json",
+          "pointer": "/H8/primary/H8b_naive_minus_eaudit_self_deception/d_z",
+          "value": 1.1623738856269934,
+          "decimals": 2
+        },
+        "b_p": {
+          "file": "results/eaudit_early.json",
+          "pointer": "/H8/primary/H8b_naive_minus_eaudit_self_deception/p",
+          "value": 0.0029296875,
+          "decimals": 3
+        },
+        "nf": {
+          "file": "results/eaudit_early.json",
+          "pointer": "/H8/summary/naive/false_adoptions/mean",
+          "value": 1.5,
+          "decimals": 1
+        },
+        "ef": {
+          "file": "results/eaudit_early.json",
+          "pointer": "/H8/summary/eaudit/false_adoptions/mean",
+          "value": 0.0,
+          "decimals": 1
+        },
+        "gs": {
+          "file": "results/eaudit_early.json",
+          "pointer": "/H8/summary/gated/evaluation_tissues_per_loop",
+          "value": 720.0,
+          "decimals": "int"
+        },
+        "es": {
+          "file": "results/eaudit_early.json",
+          "pointer": "/H8/summary/eaudit/evaluation_tissues_per_loop",
+          "value": 690.4,
+          "decimals": "int"
+        }
+      }
+    },
+    {
       "id": "H5",
       "status": "replicated",
       "headline": true,
@@ -625,6 +805,50 @@
           "pointer": "/H5/primary/H6_persistence_designed_minus_none/p",
           "value": 9.999000099990002e-05,
           "decimals": "sci"
+        }
+      }
+    },
+    {
+      "id": "H7-memory",
+      "status": "descriptive",
+      "claim": "The compiled head is maintained but barely remembered: cut it off again and the tissue mostly regrows a tail",
+      "evidence_text": "posterior head index after a second tail amputation with no clamp, untreated → compiled: rule A {a_n} → {a_3} (d_z {a_dz}), rule B {b_n} → {b_3} (d_z {b_dz}). The program writes anatomy, not a lasting target morphology",
+      "evidence": {
+        "a_n": {
+          "file": "results/h7_rule_a.json",
+          "pointer": "/H7/after_reamputation/none/mean",
+          "value": -0.9672154017857142,
+          "decimals": 2
+        },
+        "a_3": {
+          "file": "results/h7_rule_a.json",
+          "pointer": "/H7/after_reamputation/v3/mean",
+          "value": -0.7613002232142857,
+          "decimals": 2
+        },
+        "a_dz": {
+          "file": "results/h7_rule_a.json",
+          "pointer": "/H7/secondary/H7_reamputation_v3_minus_none/d_z",
+          "value": 2.8052788552632824,
+          "decimals": 2
+        },
+        "b_n": {
+          "file": "results/h7_rule_b.json",
+          "pointer": "/H7/after_reamputation/none/mean",
+          "value": -0.9995814732142857,
+          "decimals": 2
+        },
+        "b_3": {
+          "file": "results/h7_rule_b.json",
+          "pointer": "/H7/after_reamputation/v3/mean",
+          "value": -0.8582589285714285,
+          "decimals": 2
+        },
+        "b_dz": {
+          "file": "results/h7_rule_b.json",
+          "pointer": "/H7/secondary/H7_reamputation_v3_minus_none/d_z",
+          "value": 1.1500524558552512,
+          "decimals": 2
         }
       }
     },

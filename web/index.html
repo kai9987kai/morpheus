@@ -82,7 +82,7 @@ code { font-family: var(--mono); font-size: 12.5px; }
       <button id="reset">Regrow from one cell</button>
       <button id="cuthead">Amputate head</button>
       <button id="cuttail">Amputate tail</button>
-      <button id="compile" title="Amputate the tail, then clamp every cell's voltage to the pattern designed by gradient descent for 12 steps">Amputate tail + designed clamp</button>
+      <button id="compile" title="Amputate the tail, then clamp every cell's voltage to the pattern designed by gradient descent for 12 steps">Amputate tail + compiled voltage program</button>
     </div>
     <div class="row">
       <label>comparator <select id="comp"><option value="author">own error (author)</option><option value="zero">silenced</option><option value="delayed">own, 8 steps late</option></select></label>
@@ -107,6 +107,14 @@ code { font-family: var(--mono); font-size: 12.5px; }
     <section class="panel">
       <h2>Regeneration under each comparator condition (H1)</h2>
       <div id="h1" class="note">–</div>
+    </section>
+    <section class="panel">
+      <h2>Compiled second heads (H7): v0.3 voltage programs</h2>
+      <div id="h7" class="note">–</div>
+    </section>
+    <section class="panel">
+      <h2>Honest and not timid (H8): three ways to decide on a self-edit</h2>
+      <div id="h8" class="note">–</div>
     </section>
     <section class="panel">
       <h2>Anatomical compiler (H5, H6): can a designed voltage code grow a head where the tail was?</h2>
@@ -141,8 +149,11 @@ code { font-family: var(--mono); font-size: 12.5px; }
   const target = D.target;
   let view = "anatomy", tool = "scalpel", playing = true, brush = null, lossHist = [], compiling = 0;
   // The designed clamp for the embedded rule (morpheus run design), if one was exported.
-  const designEntry = Object.values(D.designs || {}).find((d) => d.weights.endsWith("rule_a.json"));
-  const design = designEntry ? Float32Array.from(designEntry.pattern.flat()) : null;
+  // Prefer the v0.3 phased program; each phase is one S x S voltage map, played in order.
+  const designs = D.designs || {};
+  const designEntry = designs.design3_rule_a || designs.design_rule_a || null;
+  const phases = designEntry ? (Array.isArray(designEntry.pattern[0][0]) ? designEntry.pattern : [designEntry.pattern]) : [];
+  const program = phases.map((ph) => Float32Array.from(ph.flat()));
 
   function lossNow() {
     let l = 0;
@@ -220,7 +231,11 @@ code { font-family: var(--mono); font-size: 12.5px; }
     const mode = document.getElementById("comp").value;
     const opts = { epsIn: tissue.comparatorInput(mode, 8) };
     if (!document.getElementById("gap").checked) opts.diffusion = 0;
-    if (compiling > 0) { opts.vset = design; compiling--; }
+    if (compiling > 0) {
+      const k = designEntry.steps - compiling;
+      opts.vset = program[Math.floor(k * program.length / designEntry.steps)];
+      compiling--;
+    }
     if (brush && tool !== "scalpel") opts.vclamp = { mask: brushMask(brush), value: tool === "vplus" ? 1 : -1 };
     tissue.step(opts);
   }
@@ -263,7 +278,8 @@ code { font-family: var(--mono); font-size: 12.5px; }
   document.getElementById("cuthead").onclick = () => tissue.cut((y, x) => x < mid - S * 0.17);
   document.getElementById("cuttail").onclick = () => tissue.cut((y, x) => x > mid + S * 0.14);
   const compileBtn = document.getElementById("compile");
-  if (!design) compileBtn.disabled = true;
+  if (!designEntry) compileBtn.disabled = true;
+  else compileBtn.title = `Amputate the tail, then clamp every cell's voltage to the designed program (${program.length} phase(s) over ${designEntry.steps} steps)`;
   compileBtn.onclick = () => { tissue.cut((y, x) => x > mid + S * 0.14); compiling = designEntry.steps; };
 
   function legend() {
@@ -318,7 +334,31 @@ code { font-family: var(--mono); font-size: 12.5px; }
       });
     });
     document.getElementById("h5").innerHTML = '<div class="bars">' + rows.join("") +
-      '</div><p class="note">Posterior head index: in the tail region, fraction of cells that are head minus fraction that are tail (−1 = a normal tail, +1 = a head). The designed clamp was found by gradient descent through the whole regeneration; the shuffled control holds the same voltages at scrambled positions. Try it on the living tissue with <b>Amputate tail + designed clamp</b>.</p>';
+      '</div><p class="note">Posterior head index: in the tail region, fraction of cells that are head minus fraction that are tail (−1 = a normal tail, +1 = a head). The designed clamp was found by gradient descent through the whole regeneration; the shuffled control holds the same voltages at scrambled positions. Try it on the living tissue with <b>Amputate tail + compiled voltage program</b>.</p>';
+  }
+  const h7rules = ["h7_rule_a", "h7_rule_b"].filter((k) => D.results && D.results[k] && D.results[k].H7);
+  if (h7rules.length) {
+    const rows = [];
+    h7rules.forEach((k) => {
+      const r = D.results[k].H7, label = "rule " + k.slice(-1).toUpperCase();
+      [["posterior_head_index", "end of program"], ["after_release_96", "96 steps after release"], ["after_reamputation", "cut again, no clamp"]].forEach(([key, when]) => {
+        ["none", "v2", "v3"].forEach((c) => {
+          const v = r[key][c].mean, w = ((v + 1) / 2 * 100).toFixed(1);
+          const col = c === "v3" ? "var(--head)" : c === "v2" ? "var(--trunk)" : "var(--tail)";
+          rows.push(`<span>${label}</span><div class="bar" style="width:${w}%;background:${col}"></div><code>${v.toFixed(2)}</code><span></span><span class="note">${c === "none" ? "untreated" : c + " design"}, ${when}</span><span></span>`);
+        });
+      });
+    });
+    document.getElementById("h7").innerHTML = '<div class="bars">' + rows.join("") +
+      '</div><p class="note">Posterior head index (−1 = normal tail, +1 = head). The v0.3 program plays 6 voltage maps across the whole regeneration. Most tissues keep the new head after release, but a second cut mostly brings the tail back.</p>';
+  }
+  const E = D.results && D.results.eaudit_early && D.results.eaudit_early.H8;
+  if (E) {
+    const S8 = E.summary, f = (x) => x.toExponential(1);
+    const row = (m, name) => `<tr><td>${name}</td><td><code>${f(S8[m].believed_gain.mean)}</code></td><td><code>${f(S8[m].true_gain.mean)}</code></td><td><code>${f(S8[m].self_deception.mean)}</code></td><td><code>${S8[m].false_adoptions.mean.toFixed(1)}</code></td></tr>`;
+    document.getElementById("h8").innerHTML = '<table><tr><th>loop</th><th>believed gain</th><th>true gain</th><th>self-deception</th><th>false adoptions</th></tr>' +
+      row("naive", "naive (reused benchmark)") + row("gated", "fixed gate (LORD++)") + row("eaudit", "e-audit (betting e-process + e-LOND)") +
+      '</table><p class="note">Means over the same 10 seeds and 30 proposed self-edits, from an under-trained rule. The auditor measures true gain on 128 held-out tissues that no loop ever sees.</p>';
   }
   const R = D.results && D.results.rsi;
   if (R && R.H4) drawRSI(R.H4);

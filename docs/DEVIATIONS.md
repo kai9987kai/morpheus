@@ -40,3 +40,7 @@ decision rules are unchanged.
 ## v0.2
 
 None. Every v0.2 test ran as fixed in `prereg/PREREGISTRATION_v2.json` (committed in a3fabe8, before any v0.2 confirmatory run). The design command writes its pattern to `results/design_rule_*.json`, and the tests read it from there.
+
+## v0.3
+
+None. Every v0.3 test ran as fixed in `prereg/PREREGISTRATION_v3.json` (committed in 97fec30, before any v0.3 confirmatory run).

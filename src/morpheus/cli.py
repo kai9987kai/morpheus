@@ -174,7 +174,7 @@ def cmd_export_web(a):
     for p in sorted((ROOT / "results").glob("*.json")):
         doc = json.loads(p.read_text(encoding="utf-8"))
         if "design" in doc:
-            data["designs"][p.stem] = {"pattern": [[round(v, 3) for v in row] for row in doc["design"]["pattern"]],
+            data["designs"][p.stem] = {"pattern": np.round(np.asarray(doc["design"]["pattern"], float), 3).tolist(),
                                        "steps": doc["design"]["steps"], "mode": doc["design"]["mode"],
                                        "weights": doc["weights"]}
             continue
